@@ -2,7 +2,8 @@ import { m } from '../metinler';
 import { KartYuzu } from '../kart/KartYuzu';
 import type { Kart } from '../kart/kart';
 
-// Açılış (belge 2): kısa; logo yok, yazılar yer tutucu. Dokununca oyun seçimi.
+// Açılış (belge 2): kısa; logo yok. Oyunun adı "Düzada Cards Club", altında "Solitaire · Spider"
+// (Kemal, 15 Kasım). Kulüp izi yer tutucu. Dokununca oyun seçimi.
 const YELPAZE: Pick<Kart, 'takim' | 'deger' | 'acik'>[] = [
   { takim: 'maca', deger: 1, acik: true },
   { takim: 'kupa', deger: 13, acik: true },

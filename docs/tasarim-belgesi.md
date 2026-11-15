@@ -4,8 +4,9 @@
 > belgenin tamamı henüz Kemal'in onayından geçmedi. Karar değişirse önce bu belge, sonra kod
 > değişir.
 
-**Proje:** Kart oyunu (Kems Company). Oyunun adı: [ad: Kemal]
-**Depo:** `hkemal94/kart-oyunu` ("kart-oyunu" geçici çalışma adı; Kemal, 15 Kasım 2026)
+**Proje:** Kart oyunu (Kems Company). Oyunun adı: **Düzada Cards Club**; adın altındaki tanıtıcı
+satır "Solitaire · Spider" (Kemal, 15 Kasım 2026)
+**Depo:** `hkemal94/kart-oyunu` (depo adı çalışma adı olarak kalır, değişmez; Kemal, 15 Kasım 2026)
 **Yol haritası:** `docs/yol-haritasi.md`
 **Yazan:** Oyun Tasarımcısı (ilk taslak, 14 Kasım 2026); depoya Oyun Geliştiricisi taşıdı
 (15 Kasım 2026). Onay Kemal'in.
@@ -23,6 +24,13 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **15 Kasım gece (oyunun adı ve koyulaştırma):** Kemal oyunun adını seçti: **Düzada Cards Club**;
+  adın altındaki tanıtıcı satır "Solitaire · Spider" (İngilizcede de aynen). Açılışta, ana ekranda,
+  oyun seçiminde ve sayfa başlığında bu ad. Depo adı `kart-oyunu` çalışma adı olarak kalır. 7.
+  bölümdeki ad sorusu kapandı; oyun logosu yine ertelendi. Aynı gece koyulaştırmada düzeltme
+  (Kemal: "Bir kart en öndeyse koyu olmaz"): sütunun en önündeki kart oynanamasa da koyulaşmaz;
+  koyulaşma yalnız arkada kalan, oynanamayan açık kartlarda. Klasik solitaire'de açılanların ve
+  temellerin en üstteki kartı da en önde sayılır (öneri). Spider ve klasik solitaire'de (1.3).
 - **15 Kasım (kendiliğinden bitirme):** Kemal sıradaki adımı seçti: 4. paketten kalan kendiliğinden
   bitirme (1.3). Klasik solitaire'de bütün kartlar açık, deste ve açılan kartlar boşken masada
   "Bitir" düğmesi çıkar; oyun bunu kendisi başlatmaz. Aynı gün ikinci karar: günlük mücadelede
@@ -198,7 +206,8 @@ Sabitler (Kemal'in 14-11-2026 ve 15-11-2026 kararları):
 - **Ton:** sessiz, dinlendirici; bağıran dil, baskı, ünlem yok (marka kiti).
 - **Yazım:** Düzada (ü), Kemsköy (ö). Ekrandaki her yazı tek bir metin dosyasından gelir, Türkçesi
   ve İngilizcesi ayrı dosyada (öneri; öbür oyunlardaki gibi).
-- **Depo:** `hkemal94/kart-oyunu`; "kart-oyunu" geçici çalışma adıdır, oyunun adı değildir
+- **Ad:** Düzada Cards Club; tanıtıcı satır "Solitaire · Spider" (Kemal, 15 Kasım gece).
+- **Depo:** `hkemal94/kart-oyunu`; "kart-oyunu" çalışma adı olarak kalır, oyunun adı değildir
   (Kemal, 15 Kasım). Dal ve PR kuralları öbür oyunlarla aynı (`CLAUDE.md`).
 - **Teknoloji:** Vite + React + TypeScript, 2B (yapım planı 4; Kemal, 15 Kasım: "Oyuna başlayalım").
 
@@ -311,14 +320,15 @@ Dikey, kısa ve derli toplu; boş delik kalmaz, ekrana yayılmaz (Kemal'in DK Li
 öneri). Her ekran Türkçe ve İngilizce; İngilizcede yazı uzayabileceği için düğmeler buna göre
 bırakılır (öneri).
 - **Açılış:** Kems Company ve Sürek Kulübü izi (minik, boğmayan), sonra masa. Uzun açılış videosu yok.
+  Ortada kart yelpazesi, oyunun adı "Düzada Cards Club" ve altında "Solitaire · Spider" (Kemal, 15 Kasım gece).
 - **Alt sekmeler (Kemal, 15 Kasım):** altta üç sekme: ana ekran, mücadeleler, ben. Masada sekmeler
   görünmez (Kemal, 15 Kasım; masa tam ekran). Masadan "Ana ekran" ile çıkınca geri gelir (7. paket).
 - **Ana ekran (Kemal, 15 Kasım):** üstte günlük mücadele ve etkinlik kartları; ortada oyunun adı
-  [ad: Kemal] ve en iyi puan (en yüksek seri puanı; 8.3); altta "devam et" (yarım el varsa) ve
+  (Düzada Cards Club) ve en iyi puan (en yüksek seri puanı; 8.3); altta "devam et" (yarım el varsa) ve
   "yeni oyun". El yarımken "yeni oyun"a dokununca önce onay sorusu çıkar (aşağıda, "Eli bırakma").
   **Yapılan (7. paket):** üstte "Günlük mücadele" ve "Kartpostal etkinliği" kartları "Yakında"
   (8. ve 9. paket; **8. paketle** "Günlük mücadele" kartında bugünün tarihi ve "Oyna", bugün
-  kazanıldıysa yıldız ve "Takvim"); ortada küçük kart yelpazesi, oyunun adı [Kemal], "En iyi puan" ve hangi oyunun
+  kazanıldıysa yıldız ve "Takvim"); ortada küçük kart yelpazesi, oyunun adı (Düzada Cards Club), "En iyi puan" ve hangi oyunun
   puanı olduğu (yarım el varsa onun, yoksa son seçilen oyun ve zorluk; öneri); altta "Oyuna devam
   et" (yarım el yoksa soluk, altında "Yarım el yok") ve "Yeni oyun". Soruya "Evet" denirse yarım
   el silinir, o oyunun serisi biter, oyun seçimi açılır; "Hayır" denirse soru kapanır, ana ekran
@@ -706,7 +716,8 @@ Açık kalanlar:
   soru turu): Sürek Kulübü destesi çizilince karar verilecek; o zamana kadar kiremidin koyusu
   (#B8383D) kalır.
 - **Reklam sayıları ve fiyat:** reklam sıklığı, bir izlemede kaç ipucu, fiyatlar: [Kemal], deneme sonrası.
-- **Oyunun adı:** [ad: Kemal]. İstenirse ajans yalnız aday listesi verir. Oyun logosu ertelendi.
+- **Oyunun adı:** **kapandı** (Kemal, 15 Kasım gece): Düzada Cards Club; tanıtıcı satır "Solitaire ·
+  Spider". Oyun logosu ertelendi.
 - **Sonraki masalar:** 3.3'teki adaylar hangi sırayla paket olur.
 
 ## 8. Örnek oyundan gelenler (Kemal, 15 Kasım)

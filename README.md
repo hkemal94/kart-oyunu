@@ -1,7 +1,7 @@
 # kart-oyunu
 
-Kems Company'nin tek kişilik kart oyunu (Spider, sonra klasik solitaire). "kart-oyunu"
-geçici çalışma adıdır; oyunun adı [Kemal].
+Kems Company'nin tek kişilik kart oyunu (Spider, sonra klasik solitaire). Oyunun adı:
+**Düzada Cards Club** (Kemal, 15 Kasım 2026); depo adı "kart-oyunu" çalışma adı olarak kalır.
 
 - Kurallar ve çalışma şekli: `CLAUDE.md`
 - Oyunun tek kaynağı: `docs/tasarim-belgesi.md` (taslak)

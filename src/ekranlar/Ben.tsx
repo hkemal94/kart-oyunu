@@ -89,7 +89,14 @@ function AltSayfa({ sayfa, geri }: { sayfa: BenSayfasi; geri: () => void }) {
       {sayfa === 'istatistik' && <Istatistik />}
       {sayfa === 'nasil' && <NasilOynanir />}
       {sayfa === 'yardim' && <p className="yer-tutucu-yazi">{m('ben.yardim.yerTutucu')}</p>}
-      {sayfa === 'hakkinda' && <p className="yer-tutucu-yazi">{m('ben.hakkinda.yerTutucu')}</p>}
+      {sayfa === 'hakkinda' && (
+        <div className="hakkinda">
+          {/* Oyunun adı ve tanıtıcı satırı (Kemal, 15 Kasım); metnin kendisi yer tutucu */}
+          <h2 className="hakkinda-ad">{m('oyun.ad')}</h2>
+          <p className="hakkinda-alt">{m('acilis.altYazi')}</p>
+          <p className="yer-tutucu-yazi">{m('ben.hakkinda.yerTutucu')}</p>
+        </div>
+      )}
       {sayfa === 'gizlilik' && <p className="yer-tutucu-yazi">{m('ben.gizlilik.yerTutucu')}</p>}
     </main>
   );

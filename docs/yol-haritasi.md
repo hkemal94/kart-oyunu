@@ -129,6 +129,15 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   `src/pul/` klasöründe; görseller `src/pul/pullar.ts`'e tek tek eklenir. Bilgisayarda telefon
   boyutunda (390x844) denendi; gerçek telefonda denenmedi. Ekran görüntüleri:
   `docs/ekran-goruntuleri/pul-*.png`.
+- 15 Kasım 2026 gece (öneri; `ajans/kemal-notlari-15-11`; Kemal'in gece notları): (1) Oyunun adı
+  geldi (Kemal seçti): **Düzada Cards Club**, altındaki tanıtıcı satır "Solitaire · Spider" (İngilizcede
+  de aynen). Açılışta, ana ekranda, oyun seçiminde, Ben → Oyun hakkında'da ve tarayıcı sekmesinin
+  başlığında bu ad. Açılış ekranı ortada derli toplu; uzun telefonda kart yelpazesi biraz büyür. Depo
+  adı `kart-oyunu` çalışma adı olarak kalır. (2) Koyulaştırmada düzeltme (Kemal: "Bir kart en öndeyse
+  koyu olmaz"): sütunun en önündeki kart oynanamasa da koyu olmaz; yalnız arkada kalan, oynanamayan
+  açık kartlar koyulaşır (Spider ve klasik; klasikte açılanların ve temellerin en üstteki kartı da
+  koyu olmaz). Bilgisayarda telefon boyutunda (390x844) denendi; gerçek telefonda denenmedi. Ekran
+  görüntüleri: `docs/ekran-goruntuleri/ad-*.png`.
 - Sırada: 9. paket (kartpostal etkinliği); pul görselleri tasarlandıkça tek tek.
 
 ## Paketler
@@ -286,13 +295,13 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 ### 7. Ana ekran ve Ben sekmesi (Kemal, 15 Kasım; örnek oyun) · bitti (`ajans/ana-ekran`; Kemal birleştirince kesinleşir)
 
 - Altta üç sekme: ana ekran, mücadeleler, ben. Ana ekranda üstte günlük mücadele ve etkinlik
-  kartları (yer tutucu), ortada oyunun adı [Kemal] ve en iyi puan, altta "devam et" ve "yeni oyun"
+  kartları (yer tutucu), ortada oyunun adı (Düzada Cards Club, 15 Kasım gece) ve en iyi puan, altta "devam et" ve "yeni oyun"
   (belge 2).
 - Ben sekmesi: ödüller, ayarlar (5. paket buraya taşınır), nasıl oynanır, yardım, oyun hakkında,
   gizlilik; metinler yer tutucu.
 - Yapılan: ekranlar `src/ekranlar/AnaEkran.tsx`, `Ben.tsx`, `Sekmeler.tsx`; geçişler
   `src/Uygulama.tsx`. Ana ekran: üstte "Günlük mücadele" ve "Kartpostal etkinliği" (Yakında), ortada
-  oyunun adı [Kemal] ve en iyi puan (yarım el varsa onun, yoksa son seçilen oyun ve zorluk), altta
+  oyunun adı (Düzada Cards Club) ve en iyi puan (yarım el varsa onun, yoksa son seçilen oyun ve zorluk), altta
   "Oyuna devam et" (yarım el yoksa soluk) ve "Yeni oyun" (oyun seçimine; yarım el varken eli bırakma
   sorusu). Mücadeleler: yer tutucu. Ben: Ödüller (aylık ödüller, kartpostal koleksiyonu; boş),
   İstatistik, Ayarlar, Nasıl oynanır (standart kuralların kısa özeti; taslak, Kemal onaylayacak),
@@ -396,6 +405,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ## Bitenler
 
+- Oyunun adı (Düzada Cards Club) ve en öndeki kartın koyu olmaması (`ajans/kemal-notlari-15-11`,
+  15 Kasım 2026 gece; Kemal birleştirince kesinleşir).
 - Pul koleksiyonu, yer tutucu pullarla (`ajans/pul-koleksiyonu`, 15 Kasım 2026; pul görselleri
   sonra tek tek; Kemal birleştirince kesinleşir).
 - 4. Yardımcılar: kendiliğinden bitirme, klasik solitaire (`ajans/kendiliginden-bitirme`, 15 Kasım

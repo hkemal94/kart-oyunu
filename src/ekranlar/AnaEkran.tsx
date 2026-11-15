@@ -7,7 +7,7 @@ import { GununKarti } from './Gunluk';
 
 // Ana ekran (yol haritası 7; belge 2 ve 8.4; Kemal, 15 Kasım):
 // üstte günlük mücadele (8. paket: bugünün tarihi ve "Oyna"; kazanıldıysa yıldız) ve kartpostal
-// etkinliği ("yakında"; 9. paket), ortada oyunun adı [Kemal] ve seçili oyunun en iyi puanı, altta "Oyuna devam et" (yarım
+// etkinliği ("yakında"; 9. paket), ortada oyunun adı (Düzada Cards Club) ve seçili oyunun en iyi puanı, altta "Oyuna devam et" (yarım
 // el yoksa soluk) ve "Yeni oyun" (oyun seçimine gider; yarım el varken önce eli bırakma sorusu).
 
 interface Ozellik {

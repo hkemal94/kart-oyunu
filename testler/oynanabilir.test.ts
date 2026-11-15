@@ -153,3 +153,36 @@ test('Klasik oynanabilir: açılanlarda yalnız en üstteki alınabilir; deste l
   assert.ok(!o.has(alttaki.id));
   assert.equal(o.size, 1);
 });
+
+// --- Koyulaşma: en öndeki kart koyu olmaz (Kemal, 15 Kasım gece) -----------------------------
+
+test('Spider koyulaşma: en öndeki kart oynanamasa da koyu olmaz; arkadaki oynanamayan açık kart koyu', () => {
+  const alttaki = k(9, 'kupa');
+  const ustteki = k(8, 'maca'); // oynanamaz ama en önde
+  const kapali = k(2, 'karo', false);
+  const masa = spiderMasa([[kapali, alttaki, ustteki], [k(10, 'maca')]]);
+  const koyu = spider.koyulasacakKartlar(masa);
+  assert.ok(!spider.oynanabilirKartlar(masa).has(ustteki.id));
+  assert.ok(!koyu.has(ustteki.id));
+  assert.ok(koyu.has(alttaki.id));
+  assert.ok(!koyu.has(kapali.id));
+  // Tek açık kartı olan, hiçbir yere gidemeyen sütun: kart en önde, koyu değil
+  const tek = k(4, 'maca');
+  assert.ok(!spider.koyulasacakKartlar(spiderMasa([[tek]])).has(tek.id));
+});
+
+test('Klasik koyulaşma: sütunun, açılanların ve temelin en öndeki kartı koyu olmaz', () => {
+  const alttaki = k(9, 'kupa');
+  const ustteki = k(3, 'maca'); // oynanamaz ama en önde
+  const acilanAlt = k(12, 'sinek');
+  const acilanUst = k(12, 'karo'); // gidecek yer yok ama en önde
+  const masa = klondikeMasa([[k(2, 'karo', false), alttaki, ustteki]], { acilan: [acilanAlt, acilanUst] });
+  const koyu = klondike.koyulasacakKartlar(masa);
+  assert.ok(!klondike.oynanabilirKartlar(masa).has(ustteki.id));
+  assert.ok(!koyu.has(ustteki.id));
+  assert.ok(koyu.has(alttaki.id));
+  assert.ok(!koyu.has(acilanUst.id));
+  assert.ok(koyu.has(acilanAlt.id));
+  // Dolgu sütunlarının tek açık papazları da en önde: koyu değil
+  for (const s of masa.sutunlar) assert.ok(!koyu.has(s[s.length - 1].id));
+});

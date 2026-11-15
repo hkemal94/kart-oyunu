@@ -3,7 +3,7 @@
 Bu depoda çalışan her oturum önce bu dosyayı, sonra `docs/tasarim-belgesi.md`
 ve `docs/yol-haritasi.md`'yi okur. Tasarım belgesi oyunun tek kaynağıdır.
 
-Oyunun adı: [Kemal]. "kart-oyunu" deponun geçici çalışma adıdır (Kemal, 15 Kasım 2026).
+Oyunun adı: Düzada Cards Club (Kemal, 15 Kasım 2026); depo adı kart-oyunu çalışma adı olarak kalır.
 
 ## Kim için
 

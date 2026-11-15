@@ -20,7 +20,7 @@ import {
   kazandiMi,
   klondikeDagit,
   KLONDIKE_SUTUN_SAYISI,
-  oynanabilirKartlar,
+  koyulasacakKartlar,
   tasi,
   tasinabilirMi,
   temelNo,
@@ -152,7 +152,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
   const { masaRef, blokRef, alanRef, alan } = useMasaBlogu();
   const hareket = useHareket(alanRef);
   const kayan = useKayanlar();
-  const oynanabilir = useMemo(() => oynanabilirKartlar(masa), [masa]);
+  const koyulasacak = useMemo(() => koyulasacakKartlar(masa), [masa]);
   // Kendiliğinden bitirmede sırası gelen masalar (her biri bir kart daha temelde); boşsa bitirme yok
   const [bitirme, setBitirme] = useState<KlondikeMasasi[]>([]);
 
@@ -500,8 +500,8 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
                 left = surukleme.x - surukleme.tutX - alanR.left + (c.x - surukIlk.x);
                 top = surukleme.y - surukleme.tutY - alanR.top + (c.y - surukIlk.y);
               }
-              // O an hiçbir yere gidemeyen açık kart biraz koyu (ayar; kurallar src/kart/klondike.ts)
-              const soluk = ayarlar.koyulastir && c.k.acik && !oynanabilir.has(c.k.id);
+              // O an hiçbir yere gidemeyen, arkada kalan açık kart biraz koyu; en öndeki kart hiç koyu olmaz (ayar; kurallar src/kart/klondike.ts)
+              const soluk = ayarlar.koyulastir && koyulasacak.has(c.k.id);
               const sinif = [
                 'kart-yeri',
                 c.yer ? '' : 'sabit',
