@@ -9,6 +9,8 @@ yazılır; kaynağı Kemal'e sorulmadan eklenmez.
 
 Kartlar ve masa kodla çiziliyor (yer tutucu; hazır görsel yok). Kart simgeleri (maça, kupa,
 karo, sinek) yazı tipinin standart karakterleridir.
+Masadaki "Geri al" ve "İpucu" simgeleri (ok ve ampul) kodla çizilir; dışarıdan yüklenen
+simge yok, lisans gerekmez.
 
 Yazılım kütüphaneleri (React, Vite, TypeScript) MIT ve Apache 2.0 lisanslıdır; oyunun
 içinde görünmezler.

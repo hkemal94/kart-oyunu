@@ -1,18 +1,24 @@
 import { m } from '../metinler';
 import { KartYuzu } from '../kart/KartYuzu';
 import type { RenkSayisi } from '../kart/kart';
+import type { CekmeSayisi } from '../kart/klondike';
 
 // Oyun seçimi (belge 2; Kemal, 15 Kasım: Spider klasik solitaire'den önce).
-// Spider açık; klasik solitaire "yakında". Ayarlar, istatistik, paketler sonraki paketlerde.
+// Alt alta iki oyun: Spider (1, 2, 4 renk) ve klasik solitaire (1 ya da 3 kart çekme; 3. paket).
+// Ayarlar, istatistik, paketler sonraki paketlerde.
 const RENKLER: RenkSayisi[] = [1, 2, 4];
+const CEKMELER: CekmeSayisi[] = [1, 3];
 
 interface Ozellik {
   renk: RenkSayisi;
   renkSec: (r: RenkSayisi) => void;
   spiderBasla: () => void;
+  cekme: CekmeSayisi;
+  cekmeSec: (c: CekmeSayisi) => void;
+  klasikBasla: () => void;
 }
 
-export function OyunSecimi({ renk, renkSec, spiderBasla }: Ozellik) {
+export function OyunSecimi({ renk, renkSec, spiderBasla, cekme, cekmeSec, klasikBasla }: Ozellik) {
   return (
     <main className="secim">
       <header className="secim-ust">
@@ -47,11 +53,11 @@ export function OyunSecimi({ renk, renkSec, spiderBasla }: Ozellik) {
         </button>
       </section>
 
-      <section className="oyun-karti kapali">
+      <section className="oyun-karti">
         <div className="oyun-karti-ust">
           <div>
             <h2>
-              {m('secim.klasik')} <span className="rozet">{m('secim.yakinda')}</span>
+              {m('secim.klasik')}
             </h2>
             <p>{m('secim.klasik.aciklama')}</p>
           </div>
@@ -64,10 +70,16 @@ export function OyunSecimi({ renk, renkSec, spiderBasla }: Ozellik) {
         <div className="zorluk">
           <span>{m('secim.zorluk')}</span>
           <div className="secenekler">
-            <button disabled>{m('secim.cekme', 1)}</button>
-            <button disabled>{m('secim.cekme', 3)}</button>
+            {CEKMELER.map((c) => (
+              <button key={c} className={c === cekme ? 'secili' : ''} onClick={() => cekmeSec(c)}>
+                {m('secim.cekme', c)}
+              </button>
+            ))}
           </div>
         </div>
+        <button className="dugme ana genis" onClick={klasikBasla}>
+          {m('secim.yeniEl')}
+        </button>
       </section>
 
       <nav className="secim-alt">
