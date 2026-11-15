@@ -1,7 +1,18 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
 import { ipucuHakkiAl } from '../reklam/ipucuHakki';
-import { MasaDugmeleri, OyunSonu, ReklamKutusu, sureYazisi, useGeriAlHakki, useSure } from './masaOrtak';
+import {
+  BilgiSatiri,
+  ElBirakmaSorusu,
+  MasaDugmeleri,
+  OyunSonu,
+  ReklamKutusu,
+  useElBirakma,
+  useGeriAlHakki,
+  usePuan,
+  useSure,
+} from './masaOrtak';
+import { spiderOzeti } from '../kart/puan';
 import { KartYuzu } from '../kart/KartYuzu';
 import type { RenkSayisi } from '../kart/kart';
 import {
@@ -80,6 +91,9 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
   const kazandi = kazandiMi(masa);
   // Süre: el başında başlar, kazanınca durur
   const { saniye, sifirla: sureyiSifirla } = useSure(kazandi);
+  // Puan ve seri (6. paket; src/kart/puan.ts). El yarımken bırakmak seriyi bitirir.
+  const puan = usePuan('spider', renk, spiderOzeti(masa, saniye), kazandi);
+  const birakma = useElBirakma(masa.hamle > 0 && !kazandi, puan.seriyiBitir);
 
   // Uyarı ve sallanma kendiliğinden kaybolur
   useEffect(() => {
@@ -173,6 +187,7 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
     setEl((e) => e + 1);
     setGecmis([]);
     geriAlHak.yeniEl(); // haklar her elde baştan
+    puan.yeniEl();
     setSurukleme(null);
     setUyari(null);
     sureyiSifirla();
@@ -266,11 +281,7 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
 
   return (
     <main className="masa">
-      <header className="masa-bilgi">
-        <span>{m('masa.sure', sureYazisi(saniye))}</span>
-        <span className="masa-bilgi-baslik">{m('masa.baslik', renk)}</span>
-        <span>{m('masa.hamle', masa.hamle)}</span>
-      </header>
+      <BilgiSatiri saniye={saniye} baslik={m('masa.baslik', renk)} hamle={masa.hamle} puan={puan.puan} asama={puan.asama} />
 
       <div className="oyun-alani" ref={alanRef} onPointerUp={alaniBirak}>
         {masa.sutunlar.map((_, c) => (
@@ -376,14 +387,16 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
         geriAlKapali={gecmis.length === 0}
         kalanHak={geriAlHak.hak.kalan}
         ipucu={ipucuBas}
-        yeniEl={yeniEl}
-        geri={geri}
+        yeniEl={() => birakma.sor(yeniEl)}
+        geri={() => birakma.sor(geri)}
       />
+
+      {birakma.soruAcik && <ElBirakmaSorusu evet={birakma.evet} hayir={birakma.hayir} />}
 
       {geriAlHak.kutu && <ReklamKutusu kapat={geriAlHak.kutuyuKapat} hakAl={geriAlHak.reklamlaAl} />}
 
       {kazandi && (
-        <OyunSonu altBaslik={m('masa.baslik', renk)} saniye={saniye} hamle={masa.hamle} yeniEl={yeniEl} geri={geri} />
+        <OyunSonu altBaslik={m('masa.baslik', renk)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={geri} />
       )}
     </main>
   );

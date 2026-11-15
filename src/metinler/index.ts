@@ -28,3 +28,8 @@ export function m(anahtar: MetinAnahtari, ...degerler: (string | number)[]): str
   });
   return s;
 }
+
+// Sayıyı seçili dilin biçimiyle yazar (Türkçede 1.240, İngilizcede 1,240).
+export function sayi(n: number): string {
+  return n.toLocaleString(dil === 'tr' ? 'tr-TR' : 'en-US');
+}

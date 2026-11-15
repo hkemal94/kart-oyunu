@@ -70,8 +70,8 @@ button:disabled { cursor: default; }
 /* Masa: düz renkli yer tutucu (kulüp evi görseli 11. pakette) */
 .masa { height: 100%; display: flex; flex-direction: column; background: var(--lacivert); color: var(--krem); padding: calc(6px + env(safe-area-inset-top)) 6px calc(8px + env(safe-area-inset-bottom)); touch-action: none; position: relative; }
 /* Üstte ince bilgi satırı: süre, oyun, hamle (belge 2) */
-.masa-bilgi { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 0 4px 8px; font-size: 12px; font-variant-numeric: tabular-nums; opacity: 0.85; }
-.masa-bilgi > span { flex: 1; }
+.masa-bilgi { display: flex; align-items: center; justify-content: space-between; gap: 4px; padding: 0 4px 8px; font-size: clamp(10.5px, 3vw, 12px); font-variant-numeric: tabular-nums; opacity: 0.85; }
+.masa-bilgi > span { flex: none; white-space: nowrap; }
 .masa-bilgi > span:last-child { text-align: right; }
 .masa-bilgi-baslik { text-align: center; font-weight: 600; opacity: 0.75; }
 .oyun-alani { position: relative; flex: 1; min-height: 0; }
@@ -138,3 +138,12 @@ button:disabled { cursor: default; }
 .kart-yeri.sabit { pointer-events: none; }
 .uyari.alt { bottom: 8px; }
 .kart-yeri.sabit .kart { box-shadow: none; }
+
+/* Puan (6. paket): oyun sonundaki puan satırı, yeni en iyi işareti, oyun seçimindeki en iyi, eli bırakma sorusu */
+.oyun-sonu-kutu dl.puanlar { margin-top: -6px; border-top: none; }
+.oyun-sonu-kutu dl.puanlar dd { font-size: 18px; }
+.yeni-en-iyi { align-self: center; margin: -4px 0 4px; font-size: 12px; font-weight: 600; background: var(--lacivert); color: var(--krem); padding: 3px 10px; border-radius: 999px; }
+.en-iyi { margin: -6px 0 0; font-size: 12px; opacity: 0.7; text-align: center; font-variant-numeric: tabular-nums; }
+.birak-soru { margin: 4px 0 6px; font-size: 15px; }
+.birak-dugmeler { display: flex; gap: 8px; }
+.birak-dugmeler .dugme { flex: 1; padding: 11px 8px; }
