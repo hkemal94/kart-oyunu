@@ -8,8 +8,10 @@ import { gunlukRastgele, type GunlukEl } from '../oyun/gunluk';
 import { tarihYazisi, useGunlukYildiz } from './Gunluk';
 import { ekranaGoreAralik, kartOlcusu, sutunKonumlari } from '../kart/duzen';
 import { TAKIM_SIMGESI, type Kart } from '../kart/kart';
-import { DAGITIM_ADIMI, HAREKET } from '../kart/hareket';
+import { AKIS_ADIMI, DAGITIM_ADIMI, HAREKET } from '../kart/hareket';
 import {
+  bitirilebilirMi,
+  bitirmeAdimlari,
   cek,
   cekmeDurumu,
   ciftDokunusHedefi,
@@ -33,6 +35,7 @@ import {
   BilgiSatiri,
   ElBirakmaSorusu,
   HareketKalkani,
+  hareketAzMi,
   konumYazisi,
   MasaDugmeleri,
   OyunSonu,
@@ -56,6 +59,9 @@ import { klondikeOzeti } from '../kart/puan';
 // yoksa sallanır (Kemal, 15 Kasım). Desteye dokununca kart açılır; deste bitince açılanlar destenin
 // altına döner. Geri al ve ipucu Spider'daki gibi. Yeni elde kartlar desteden teker teker uçar; o an
 // oynanamayan açık kartlar biraz koyu (ayardan kapanır; Kemal'in telefon yorumları, 15 Kasım).
+// Kendiliğinden bitirme (4. paket; Kemal, 15 Kasım): bütün kartlar açık, deste ve açılanlar boşken
+// masada "Bitir" düğmesi çıkar; basınca kartlar en küçükten birer birer temellere kayar (akan sıra
+// hızıyla). Bitirme tek geri al adımıdır; sürerken masaya dokununca hemen biter.
 
 const ARALIK = 4; // sütunlar arası boşluk (piksel)
 const UST_ARALIK = 12; // üst sıra ile sütunlar arası boşluk
@@ -147,6 +153,8 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
   const hareket = useHareket(alanRef);
   const kayan = useKayanlar();
   const oynanabilir = useMemo(() => oynanabilirKartlar(masa), [masa]);
+  // Kendiliğinden bitirmede sırası gelen masalar (her biri bir kart daha temelde); boşsa bitirme yok
+  const [bitirme, setBitirme] = useState<KlondikeMasasi[]>([]);
 
   const kazandi = kazandiMi(masa);
   const { saniye, sifirla: sureyiSifirla } = useSure(kazandi, devam?.saniye);
@@ -283,7 +291,37 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
     setIpucu((o) => ({ ipucu: liste[sira], sayi: (o?.sayi ?? 0) + 1 }));
   };
 
+  // "Bitir": önceki masa geçmişe bir kez girer (tek geri al adımı); kartlar birer birer temele gider
+  const bitirBas = () => {
+    setSecim(null);
+    const adimlar = bitirmeAdimlari(masa);
+    if (adimlar.length === 0) return;
+    setGecmis((g) => [...g, masa]);
+    if (hareketAzMi()) {
+      setMasa(adimlar[adimlar.length - 1]);
+      return;
+    }
+    setBitirme(adimlar);
+  };
+  // Bitirme sürerken masaya dokununca kalan kartlar hemen temele geçer
+  const bitirmeyiBitir = () => {
+    if (bitirme.length === 0) return;
+    setMasa(bitirme[bitirme.length - 1]);
+    setBitirme([]);
+  };
+  useEffect(() => {
+    if (bitirme.length === 0) return;
+    const z = setTimeout(() => {
+      const [siradaki, ...kalan] = bitirme;
+      kayan.isaretle(yerler(masa), yerler(siradaki));
+      setMasa(siradaki);
+      setBitirme(kalan);
+    }, AKIS_ADIMI);
+    return () => clearTimeout(z);
+  }, [bitirme]);
+
   const yeniEl = () => {
+    setBitirme([]);
     hareket.bitir();
     setMasa(dagitim());
     setEl((e) => e + 1);
@@ -505,6 +543,17 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
           aria-label={m(desteDurumu === 'dondur' ? 'masa.desteDondur' : 'masa.cek')}
         />
 
+        {/* Kendiliğinden bitirme: yalnız el bitirilebilirken görünür; oyun kendisi başlatmaz */}
+        {bitirilebilirMi(masa) && bitirme.length === 0 && !hareket.kilitli && (
+          <button
+            className="dugme ana bitir-dugmesi"
+            onPointerUp={(e) => e.stopPropagation()}
+            onClick={bitirBas}
+          >
+            {m('masa.bitir')}
+          </button>
+        )}
+
         {uyari && (
           <p className="uyari alt" role="status">
             {m(uyari)}
@@ -525,6 +574,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
 
       {/* Dağıtım sürerken dokunma kapalı; masaya tek dokunuş dağıtımı hemen bitirir */}
       {hareket.kilitli && <HareketKalkani bitir={hareket.bitir} />}
+      {bitirme.length > 0 && <HareketKalkani bitir={bitirmeyiBitir} />}
 
       {birakma.soruAcik && <ElBirakmaSorusu evet={birakma.evet} hayir={birakma.hayir} />}
 

@@ -11,6 +11,8 @@
 //   oynanamayan kartlar koyu.
 // - klasik-kazan: klasik solitaire, 51 kart temelde; papaza çift dokununca oyun biter.
 // - klasik-orta: klasik solitaire, 3 kart çekme; hep aynı el, ipucunun ilk önerisiyle 40 hamle oynanmış.
+// - klasik-bitir: klasik solitaire, bitmeye yakın el (4. paket, kendiliğinden bitirme): deste ve açılan
+//   kartlar boş, sütunlardaki 30 kartın hepsi açık; masada "Bitir" düğmesi görünür.
 // - takvim, gunluk-kazan: günlük mücadele için hazır yıldızlar (aşağıda gunlukDenemesi).
 
 import type { Kart, RenkSayisi } from './kart';
@@ -92,7 +94,7 @@ export function denemeMasasi(tur: DenemeTuru): { renk: RenkSayisi; masa: SpiderM
   return { renk: 2, masa: { sutunlar, deste, tamamlanan: ['kupa'], hamle: 0 } };
 }
 
-export type KlondikeDenemeTuru = 'klasik-kazan' | 'klasik-orta';
+export type KlondikeDenemeTuru = 'klasik-kazan' | 'klasik-orta' | 'klasik-bitir';
 
 export function klondikeDenemesi(tur: KlondikeDenemeTuru): { masa: KlondikeMasasi } {
   if (tur === 'klasik-kazan') {
@@ -101,6 +103,24 @@ export function klondikeDenemesi(tur: KlondikeDenemeTuru): { masa: KlondikeMasas
     );
     const sutunlar: Kart[][] = Array.from({ length: 7 }, () => []);
     sutunlar[0] = [{ id: 'kupa-13', takim: 'kupa', deger: 13, acik: true }];
+    return { masa: { sutunlar, temeller, deste: [], acilan: [], cekme: 1, hamle: 0 } };
+  }
+  if (tur === 'klasik-bitir') {
+    // Temelde maça ve karo altıya, kupa ve sinek beşe kadar; kalan 30 kart sütunlarda, ters renk sıralı
+    const ust: Record<string, number> = { maca: 6, kupa: 5, karo: 6, sinek: 5 };
+    const kart = (takim: Kart['takim'], deger: number): Kart => ({ id: `${takim}-${deger}`, takim, deger, acik: true });
+    const temeller: Kart[][] = TEMEL_TAKIMLARI.map((takim) => Array.from({ length: ust[takim] }, (_, i) => kart(takim, i + 1)));
+    const dizi = (bas: number, takimlar: Kart['takim'][], adet: number) =>
+      Array.from({ length: adet }, (_, i) => kart(takimlar[i % 2], bas - i));
+    const sutunlar: Kart[][] = [
+      dizi(13, ['maca', 'kupa'], 5), // K♠ Q♥ J♠ 10♥ 9♠
+      dizi(13, ['kupa', 'maca'], 4), // K♥ Q♠ J♥ 10♠
+      dizi(13, ['karo', 'sinek'], 8), // K♦ Q♣ J♦ 10♣ 9♦ 8♣ 7♦ 6♣
+      dizi(13, ['sinek', 'karo'], 4), // K♣ Q♦ J♣ 10♦
+      dizi(8, ['kupa', 'maca'], 3), // 8♥ 7♠ 6♥
+      dizi(9, ['kupa', 'maca'], 3), // 9♥ 8♠ 7♥
+      dizi(9, ['sinek', 'karo'], 3), // 9♣ 8♦ 7♣
+    ];
     return { masa: { sutunlar, temeller, deste: [], acilan: [], cekme: 1, hamle: 0 } };
   }
   let masa = klondikeDagit(3, sabitRastgele(11));

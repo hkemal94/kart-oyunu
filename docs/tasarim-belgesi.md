@@ -23,6 +23,11 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **15 Kasım (kendiliğinden bitirme):** Kemal sıradaki adımı seçti: 4. paketten kalan kendiliğinden
+  bitirme (1.3). Klasik solitaire'de bütün kartlar açık, deste ve açılan kartlar boşken masada
+  "Bitir" düğmesi çıkar; oyun bunu kendisi başlatmaz. Aynı gün ikinci karar: günlük mücadelede
+  masadaki "Yeni el" günün elini baştan dağıtır (şu anki davranış kalır; 7. bölümdeki açık soru ve
+  14. soru kapandı). Spider'a kendiliğinden bitirme konmadı; karar Kemal'in (7).
 - **15 Kasım (telefon yorumları):** Kemal oyunu telefonda denedi, beş yorum yazdı; hepsi oyuna
   girdi (1.3, 2, 8.1). (1) Çift dokunuşla hızlı yerleştirme: iki masada da karta (Spider'da
   taşınabilir dizinin en üst kartına) iki kez dokununca kart gidebileceği yere kısa bir kaymayla
@@ -242,6 +247,15 @@ kalır.
   solitaire'de (öneri; Kemal'in onayı yok):** önce temele giden, sonra kapalı kartı açan, sonra
   öbürleri; hamle yoksa desteden çekmeyi gösterir.
 - **Kendiliğinden bitirme:** bütün kartlar açılınca oyun kalanları kendisi yerleştirir.
+  **Yapılan (4. paket, `ajans/kendiliginden-bitirme`; Kemal, 15 Kasım):** klasik solitaire'de
+  bütün kartlar açık, deste ve açılan kartlar boşken (el bu durumda her zaman biter) masanın
+  altında, düğme şeridinin üstünde belirgin bir "Bitir" düğmesi çıkar. Oyun kendisi başlatmaz;
+  basınca kartlar en küçükten başlayarak birer birer temellere kayar (Spider'daki akan sıranın
+  hızıyla, ayar dosyasındaki "hareket" süreleri). Sürerken masaya dokununca kalan kartlar hemen
+  yerine geçer. Her kart bir hamle sayılır (elle bitirmekle aynı puan; öneri); puan, istatistik ve
+  günlük mücadele yıldızı normal kazanç gibi işler. Bitirme tek geri al adımıdır (öneri: daha sade;
+  el zaten kazanılmış olur). Kurallar `src/kart/klondike.ts` (`bitirilebilirMi`, `bitirmeAdimlari`),
+  testleri `testler/bitirme.test.ts`. Spider'da yok: karar Kemal'in (7. bölüm).
 - **Kaldığı yerden devam:** uygulama kapanınca oyun kaybolmaz; ana ekranda "devam et" çıkar.
   **Yapılan (7. paket):** en az bir hamle yapılmış, kazanılmamış el telefonun tarayıcısında
   saklanır (her hamlede, telefon başka uygulamaya geçince ve masadan çıkınca). Saklananlar: oyun ve
@@ -659,8 +673,13 @@ Açık kalanlar:
 - **Günlük mücadelede dağıtım:** aynı gün aynı zorlukta herkese aynı dağıtım (8.1). Kemal 15 Kasım'da
   "bunu yap" dedi; 8. paketle kodda. Kapandı.
 - **Günlük mücadelede önceki aylar:** takvim en çok Ocak 2026'ya kadar (Kemal 15 Kasım). Kapandı.
-- **Günlük elde "Yeni el":** şimdi aynı günün elini baştan dağıtıyor (eli bırakma sorusuyla).
-  Adaylar: aynı günün eli baştan (şu anki) · düğme günlük elde gizlensin.
+- **Günlük elde "Yeni el":** aynı günün elini baştan dağıtır (eli bırakma sorusuyla). Kemal
+  15 Kasım: şu anki davranış kalır. Kapandı.
+- **Spider'da kendiliğinden bitirme:** Spider'da tam diziler zaten kendiliğinden kalkıyor; klasikteki
+  gibi "bütün kartlar açık, deste boş" anında elin her zaman bittiği net bir kural yok. Adaylar:
+  Spider'da "Bitir" olmasın (önerilen, şu anki) · deste bitmiş, kapalı kart kalmamış ve her sütun
+  tek takımdan sıralı tek dizi olduğunda "Bitir" çıksın, basınca diziler birleştirilip toplansın ·
+  oyun o an kalan hamlelerle bitip bitmediğini kendisi denesin, bitiyorsa "Bitir" çıksın.
 - **Kart köşesindeki harfler:** dile göre değişsin mi (öneri: değişir). İskelette iki dilde de
   A, J, Q, K; harfler metin dosyasında, karar gelince yalnız orası değişir. 5. pakette de böyle
   kaldı (Türkçe harfler belgede yazılı değil). Değişirse hangi harfler: [Kemal].
@@ -830,5 +849,9 @@ Açık kalanlar sayı ya da seçim; web denemesinde ve ilgili paket gelince soru
    "Ana ekran" (önerilen, şu anki) · "Menü" adıyla küçük bir menü açılsın.
 13. Kart oyunu: Günlük mücadele takviminde ne kadar geriye gidilebilsin? **Cevaplandı:** takvim en
    çok Ocak 2026'ya kadar (Kemal 15 Kasım).
-14. Kart oyunu: Günlük elde masadaki "Yeni el" ne yapsın? Adaylar: aynı günün elini baştan dağıtsın
-   (önerilen, şu anki) · günlük elde gizlensin.
+14. Kart oyunu: Günlük elde masadaki "Yeni el" ne yapsın? **Cevaplandı:** aynı günün elini baştan
+   dağıtır, şu anki davranış kalır (Kemal 15 Kasım).
+15. Kart oyunu: Spider'da da "Bitir" düğmesi olsun mu? Neden: Spider'da tam diziler zaten
+   kendiliğinden kalkıyor; "her zaman biter" anı klasikteki kadar net değil (7. bölüm). Adaylar:
+   olmasın (önerilen, şu anki) · deste bitmiş, kapalı kart yok ve her sütun tek takımdan sıralı tek
+   diziyse çıksın · oyun bitip bitmediğini kendisi denesin, bitiyorsa çıksın.

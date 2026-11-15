@@ -259,3 +259,44 @@ export function oynanabilirKartlar(masa: KlondikeMasasi): Set<string> {
   masa.temeller.forEach((_, no) => ustte({ tur: 'temel', no }));
   return sonuc;
 }
+
+// ---------------------------------------------------------------------------------------------
+// Kendiliğinden bitirme (yol haritası 4. paket; Kemal, 15 Kasım). Ekrandan ayrı; testleri
+// testler/bitirme.test.ts. Oyun bunu kendisi başlatmaz: masada "Bitir" düğmesi çıkar, basınca kartlar
+// birer birer temellere gider.
+
+// Bitirilebilir mi: el bitmemiş, deste ve açılan kartlar boş, sütunlardaki bütün kartlar açık. Bu
+// durumda el her zaman biter: sütunlardaki açık kartlar sıralı olduğu için kalan en küçük kart hep
+// bir sütunun en üstündedir ve kendi temeline gider.
+export function bitirilebilirMi(masa: KlondikeMasasi): boolean {
+  return (
+    !kazandiMi(masa) &&
+    masa.deste.length === 0 &&
+    masa.acilan.length === 0 &&
+    masa.sutunlar.every((s) => s.every((k) => k.acik))
+  );
+}
+
+// Bitirmenin adımları: her adımda değeri en küçük olan üst kart (eşitse soldaki sütun) temele gider.
+// Her adım bir hamle sayılır (elle bitirmekle aynı puan). Dizinin son masası kazanılmış eldir.
+// Bitirilemiyorsa boş liste.
+export function bitirmeAdimlari(masa: KlondikeMasasi): KlondikeMasasi[] {
+  if (!bitirilebilirMi(masa)) return [];
+  const adimlar: KlondikeMasasi[] = [];
+  let simdiki = masa;
+  while (!kazandiMi(simdiki)) {
+    let no = -1;
+    for (let c = 0; c < simdiki.sutunlar.length; c++) {
+      const s = simdiki.sutunlar[c];
+      const ust = s[s.length - 1];
+      if (!ust || ust.deger !== simdiki.temeller[temelNo(ust.takim)].length + 1) continue;
+      if (no < 0 || ust.deger < simdiki.sutunlar[no][simdiki.sutunlar[no].length - 1].deger) no = c;
+    }
+    if (no < 0) return []; // olmaması gerekir; olursa hiç başlamaz
+    const yeni = tasi(simdiki, { tur: 'sutun', no, sira: simdiki.sutunlar[no].length - 1 }, { tur: 'temel' });
+    if (!yeni) return [];
+    adimlar.push(yeni);
+    simdiki = yeni;
+  }
+  return adimlar;
+}

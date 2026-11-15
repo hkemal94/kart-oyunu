@@ -155,6 +155,8 @@ button:disabled { cursor: default; }
 .deste.klasik.ipucu { animation: ipucu 0.8s ease-in-out 2; }
 .kart-yeri.sabit { pointer-events: none; }
 .uyari.alt { bottom: 8px; }
+/* Kendiliğinden bitirme (4. paket): oyun alanının altında, ortada belirgin düğme */
+.dugme.bitir-dugmesi { position: absolute; left: 0; right: 0; margin: 0 auto; width: max-content; bottom: 12px; z-index: 650; min-height: 44px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35); animation: belir 0.2s ease-out; }
 .kart-yeri.sabit .kart { box-shadow: none; }
 
 /* Puan (6. paket): oyun sonundaki puan satırı, yeni en iyi işareti, oyun seçimindeki en iyi, eli bırakma sorusu */

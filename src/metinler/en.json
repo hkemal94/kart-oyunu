@@ -36,6 +36,7 @@
   "masa.uyari.bosSutun": "You can't deal while a column is empty. Put a card in every column first.",
   "masa.geriAl": "Undo",
   "masa.ipucu": "Hint",
+  "masa.bitir": "Finish",
   "masa.geriAlHak": "{0} undos left",
   "masa.reklam.baslik": "You're out of undos",
   "masa.reklam.yerTutucu": "[PLACEHOLDER: ad goes here]",

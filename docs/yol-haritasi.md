@@ -100,7 +100,15 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   dosyasında (`src/oyun/ayarlar.json` → hareket; öneri, Kemal ayarlar). Telefonda "hareketi azalt"
   açıksa hareketler atlanır. Bilgisayarda telefon boyutunda (390x844) denendi; gerçek telefonda
   denenmedi. Ekran görüntüleri: `docs/ekran-goruntuleri/yorum-*.png`.
-- Sırada: 4. paketten kalan kendiliğinden bitirme; sonra 9. paket (kartpostal etkinliği).
+- 15 Kasım 2026 (öneri; `ajans/kendiliginden-bitirme`; Kemal: sıradaki adım kendiliğinden bitirme):
+  4. paketten kalan kendiliğinden bitirme. Klasik solitaire'de bütün kartlar açık, deste ve açılan
+  kartlar boşken masanın altında "Bitir" düğmesi çıkar; basınca kartlar en küçükten birer birer
+  temellere kayar, el kazanılır (puan, istatistik, günlük yıldız normal). Bitirme tek geri al adımı;
+  sürerken masaya dokununca hemen biter. Spider'a konmadı (karar Kemal'in; belge 7, soru 15).
+  Günlük elde "Yeni el" günün elini baştan dağıtır: Kemal "şu anki kalsın" dedi, belgeye karar
+  olarak yazıldı. Bilgisayarda telefon boyutunda (390x844) denendi; gerçek telefonda denenmedi.
+  Ekran görüntüleri: `docs/ekran-goruntuleri/bitir-*.png`.
+- Sırada: 9. paket (kartpostal etkinliği).
 
 ## Paketler
 
@@ -166,7 +174,7 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 - Bu pakette yok: kendiliğinden bitirme (4. paket), puan (6. paket).
 - Neye bağlı: 2. paket.
 
-### 4. Yardımcılar · geri al, ipucu, kaldığı yerden devam ve istatistik bitti; kendiliğinden bitirme bekliyor
+### 4. Yardımcılar · bitti (kendiliğinden bitirme `ajans/kendiliginden-bitirme`; Kemal birleştirince kesinleşir)
 
 - Geri al, ipucu, kendiliğinden bitirme, kaldığı yerden devam (telefonun tarayıcısında saklanır),
   süre ve hamle sayacı, basit istatistik. Alt şeritte geri al, ipucu, yeni el, menü; üstte ince
@@ -199,7 +207,16 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   geçmişi saklanmaz (öneri). Kurallar `src/oyun/yarimEl.ts`, testleri `testler/devam.test.ts`.
 - **Basit istatistik · bitti** (7. paketle). Oyun ve zorluk başına oynanan, kazanılan, en iyi süre;
   Ben sekmesinde. `src/oyun/istatistik.ts`, testleri `testler/istatistik.test.ts`.
-- **Bekliyor:** kendiliğinden bitirme; oyun sonu ekranında istatistik (öneri). Süre ve hamle sayacı
+- **Kendiliğinden bitirme · bitti (klasik solitaire; `ajans/kendiliginden-bitirme`).** Bütün
+  kartlar açık, deste ve açılan kartlar boşken masanın altında "Bitir" düğmesi; oyun kendisi
+  başlatmaz. Basınca kartlar en küçükten birer birer temellere kayar (akan sıra hızı, ayar
+  dosyasındaki "hareket"); sürerken masaya dokununca hemen biter; telefonda "hareketi azalt" açıksa
+  kartlar hemen yerinde. Her kart bir hamle (elle bitirmekle aynı puan); puan, istatistik ve günlük
+  yıldız normal kazanç gibi. Tek geri al adımı. Kurallar `src/kart/klondike.ts`, testleri
+  `testler/bitirme.test.ts`. Deneme yolu (yalnız geliştirmede): `?deneme=klasik-bitir`. Spider'da
+  yok: Spider'da tam diziler zaten kendiliğinden kalkıyor, "her zaman biter" anı net değil; karar
+  Kemal'in (belge 7, soru 15).
+- **Bekliyor:** oyun sonu ekranında istatistik (öneri). Süre ve hamle sayacı
   2. pakette geldi; ayardan kapatma 5. pakette.
 - Neye bağlı: 2. ve 3. paket.
 
@@ -291,7 +308,7 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   saatine göre değişir. Günlük yarım el ayrı yerde saklanır (normal "Oyuna devam et" ile
   karışmaz); bir tane olur; başka bir günlük el açılırken eli bırakma sorusu çıkar, "Evet" o elin
   serisini bitirir. Masadaki "Yeni el" günlük elde aynı günün elini baştan dağıtır (eli bırakma
-  sorusuyla). Kazanılmış gün yeniden oynanabilir, yeni yıldız gelmez. Takvim en çok Ocak 2026'ya
+  sorusuyla; Kemal 15 Kasım: bu davranış kalır). Kazanılmış gün yeniden oynanabilir, yeni yıldız gelmez. Takvim en çok Ocak 2026'ya
   kadar geri gider; o ayda geri ok soluk ve kapalı (Kemal, 15 Kasım telefon yorumları).
   Günlük el istatistiğe de sayılır. Ay ve gün adları metin dosyasında, dile göre.
 - Deneme yolları (yalnız geliştirmede): `?deneme=takvim` (takvime hazır yıldızlar: geçen ay tam,
@@ -358,6 +375,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ## Bitenler
 
+- 4. Yardımcılar: kendiliğinden bitirme, klasik solitaire (`ajans/kendiliginden-bitirme`, 15 Kasım
+  2026; Kemal birleştirince kesinleşir). 4. paketin bütün maddeleri bitti.
 - Kemal'in telefon yorumları (15 Kasım): çift dokunuşla hızlı yerleştirme, teker teker dağıtma,
   oynanamayan kartları koyulaştırma (ayarla), tamamlanan sıranın akışı, takvimin Ocak 2026 sınırı
   (`ajans/telefon-yorumlari-1`, 15 Kasım 2026; Kemal birleştirince kesinleşir).
