@@ -23,6 +23,13 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **15 Kasım (puan paketi, 6. paket):** Kemal: "Puanla devam et". Seri, aşama, en iyi puan ve eli
+  bırakma sorusu oyuna girdi (8.3, 2). Puan formülü için ajans üç aday getirdi (a, b, c; 8.3);
+  Kemal seçecek, o zamana kadar aday a varsayılan. Adaylar adresten denenir (`?puan=b`). Ajansın
+  önerisi olarak kodda duranlar (Kemal'in onayı yok): seri de en iyi puan gibi oyun ve zorluk
+  başına ayrı; hiç hamle yapılmamış el bırakılırken soru çıkmaz, seri bitmez; masadaki puan
+  "şimdi bitse" puanıdır. Kaybetmenin tanımı belgede yok; şimdilik seriyi yalnız eli bırakmak
+  bitirir (soru, 7).
 - **15 Kasım (soru turu 2. set):** Kartpostal yerleri (Kemal seçti, yedi yer): İskele ve The Imperial Kemsköy; Liman ve Deniz Feneri; Dirlik Stadı; Küçükçetmi Çiftliği; Merkez ve Belediye; Ada Tepesi ve sırtlar (Kuzey Sırtı, Çetmi Sırtı); Sahil Yolu ve Güney Burnu.
   Kartpostallar yazısız: üstünde yer adı ya da başka yazı yok. Aylık ödül nesneleri: ajans 18
   adaylık bir liste getirdi, Kemal seçecek (8.1, 8.2, 7).
@@ -208,7 +215,7 @@ bırakılır (öneri).
 - **Ben sekmesi (Kemal, 15 Kasım):** ödüller (aylık ödüller ve kartpostal koleksiyonu), ayarlar,
   nasıl oynanır, yardım, oyun hakkında, gizlilik. İstatistik ve paketlerin yeri: öneri, bu sekme;
   karar Kemal'in.
-- **Masa:** üstte ince bilgi satırı (süre, hamle; ayarda açıksa puan; küçük ve sessiz, kapatılabilir), ortada oyun
+- **Masa:** üstte ince bilgi satırı (süre, hamle; ayarda açıksa puan ve aşama; küçük ve sessiz, kapatılabilir; ayarlar gelene kadar puan hep görünür, 6. paket), ortada oyun
   alanı, arkada seçili masa (kulüp evi ya da Sade Meyhane), altta başparmak hizasında ince bir
   şerit: geri al, ipucu, yeni el, menü. Deneme elinde bilgi satırında küçük, sessiz bir "deneme"
   izi (öneri). Bilgi satırında o anki aşama da görünebilir (öneri; "Aşama 1, 2, 3…", 8.3).
@@ -216,7 +223,8 @@ bırakılır (öneri).
   çıkar; anlamı "eli bırakıyor musun, serin biter". Metni [YER TUTUCU: eli bırakma
   sorusu], Kemal onaylar. "Evet" denirse yeni el başlar; bırakılan el kaybedilmiş sayılır ve seri
   biter (8.3). "Hayır" denirse oyuncu ele döner. Sessiz ve kısa; uyarı dili, ünlem yok (ton).
-  Masadaki "yeni el" düğmesinin de aynı soruyu sorması öneridir.
+  Masadaki "yeni el" ve "oyun seçimi" düğmeleri de aynı soruyu sorar (6. paket; öneri). Hiç hamle
+  yapılmamış elde soru çıkmaz (öneri). Düğmeler "Evet" ve "Hayır".
 - **Oyun sonu:** kartlar masada kısa bir hareketle toplanır; süre, hamle, puan ve en iyi puan,
   istatistik; "yeni el" ve "oyun seçimi". Kazanınca puan bir sonraki ele taşınır ve yeni aşama
   gösterilir (Kemal, 15 Kasım; 8.3); "yeni el" serinin bir sonraki elidir. Kazanmayınca seri biter,
@@ -523,9 +531,13 @@ Açık kalanlar:
 - **Aylık ödül nesneleri:** her ay bir Düzada nesnesi ya da simgesi (Kemal, 15 Kasım soru turu);
   hangileri olacağı [Kemal]: ajans 18 adaylık bir liste getirdi, Kemal seçecek (15 Kasım soru
   turu 2. set). Örnekteki kupa kopyalanmaz.
-- **Puan adayları:** yapı belli (8.3); aşama başına artış, süre ve hamlenin payı ve formül için
-  ajans puan paketi (yol haritası 6) yapılırken 2-3 aday getirir, Kemal seçer (Kemal, 15 Kasım soru
-  turu).
+- **Puan formülü:** a / b / c (8.3; puan paketi, 15 Kasım). Kodda varsayılan a; adres sonuna
+  `?puan=b` yazılarak denenir. Sayılar da adaydır, seçilen adayın sayıları ayrıca değişebilir.
+- **Kaybetme:** el ne zaman kaybedilmiş sayılır? Şimdilik yalnız eli bırakınca (8.3). Adaylar:
+  yalnız eli bırakınca (şu anki) · Spider ve klasik solitaire'de yapılacak hamle kalmayınca da
+  (o an "yeniden dene" kutusu çıkar).
+- **Seri oyun ve zorluk başına mı:** şimdilik evet (öneri; en iyi puan gibi). Aday: tek seri,
+  hangi oyun oynanırsa oynansın sürer.
 - **Eli bırakma sorusunun metni:** [YER TUTUCU], Kemal onaylar (2. bölüm).
 - **El sonu reklamı:** birkaç elde bir (Kemal, 15 Kasım); kaç elde bir ve ilk kaç oyunda hiç
   yok: [Kemal]. Reklamsız satın alınınca ipucu reklamsız mı: [Kemal].
@@ -604,12 +616,39 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
   - **En iyi puan = en yüksek seri puanı** (Kemal, 15 Kasım).
 - Aşama başına artış, süre ve hamlenin payı ve formül: [Kemal] (uydurma sayı yok). **Ajans puan
   paketi (yol haritası 6) yapılırken 2-3 aday getirir, Kemal seçer** (Kemal, 15 Kasım soru turu).
+- **Adaylar (puan paketi, 15 Kasım; Kemal seçecek).** Üçü de yaygın solitaire puanlama yollarına
+  dayanır; hiçbiri başka bir oyunun tablosu değildir. Kodda tek yerde: `src/kart/puan.ts`. Bütün
+  sayılar **aday**dır, karar değil. Deneme: adres sonuna `?puan=a`, `?puan=b` ya da `?puan=c`;
+  yazılmazsa a. Deneme sırasında her adayın serisi ve en iyi puanı ayrı saklanır.
+  - **a · Çarpanlı taban (varsayılan):** her el 2000'den başlar; her hamle 2, her dakika 30 puan
+    düşer; kazanılan el en az 200 getirir. Sonuç aşamayla çarpılır (Aşama 2'de iki katı).
+  - **b · Hamle başı puan:** puan oynarken toplanır. Spider'da tamamlanan her dizi 100, klasik
+    solitaire'de temele giden her kart 15, açılan her kapalı kart 5 getirir; her hamle 1 götürür.
+    Kazanınca süre bonusu: 20 dakikadan önce biterse kalan her saniye 1 puan. Aşama başına yarım
+    kat artar (Aşama 2'de 1,5 katı, Aşama 3'te 2 katı).
+  - **c · Bonuslu sabit puan:** kazanılan her el 1000 getirir; 20 dakikadan önce biterse kalan
+    her saniye 1, 300 hamleden az biterse kalan her hamle 2 puan eklenir. Aşama çarpmaz; Aşama 1'in
+    üstündeki her aşama 250 ekler.
+  - **Örnek el:** Spider, 200 hamle, 15 dakika. a: Aşama 1'de 1150, Aşama 2'de 2300, Aşama 3'te
+    3450 (üç elin serisi 6900). b: 1120, 1680, 2240 (seri 5040). c: 1500, 1750, 2000 (seri 5250).
+    Klasik solitaire, 120 hamle, 5 dakika, Aşama 1: a 1610, b 1665, c 2260.
+  - Kısaca: a'da aşama en hızlı büyür, uzun seriler çok öne geçer; b'de puan her hamlede görünür
+    biçimde artar ("her hamlede puanı göster" ayarına en uygun olan); c'de puan en dengeli, aşama
+    yalnız küçük bir ek getirir.
+- **Kodda duranlar (6. paket; öneri, Kemal'in onayı yok):** masanın üst satırında "Puan" ve
+  "Aşama"; puan, biriken seri puanı ile bu elin "şimdi bitse" puanının toplamıdır. Seri de en iyi
+  puan gibi oyun ve zorluk başına ayrı tutulur (soru, 7). Oyun sonunda bu elin puanı, seri puanı,
+  yeni aşama ve seri en iyiyi geçtiyse "Yeni en iyi" işareti. Oyun seçiminde her kartın altında
+  seçili zorluğun en iyi puanı. Seri ve en iyi puan telefonun tarayıcısında saklanır.
+- **Kaybetme:** belgede kaybetmenin tanımı yok (ör. Spider'da hamle kalmayınca). Şimdilik seriyi
+  yalnız eli bırakmak bitirir; tanım Kemal'e soruldu (7).
 - **En iyi puan oyun ve zorluk başına ayrı** (Kemal, 15 Kasım soru turu): ör. 1 renk Spider ile
   4 renk Spider'ın en iyi puanı ayrı saklanır.
 - **Günlük mücadele eli seriye sayılır** (Kemal, 15 Kasım soru turu; 8.1): kazanınca aşama artar,
   kaybedince seri biter.
 - Kaldığı yerden devam (1.3): uygulama kapanınca seri bitmez; yarım el "devam et" ile sürer (öneri;
-  eli bırakmak yalnız "yeni oyun" ya da "yeni el" ile olur).
+  eli bırakmak yalnız "yeni oyun" ya da "yeni el" ile olur). "Devam et" henüz yok (4. paket); o
+  gelene kadar sayfa kapanınca yarım el kaybolur ama seri sürer.
 - Ayarlarda "her hamlede puanı göster" (Kemal): açıksa masanın bilgi satırında puan görünür.
 
 ### 8.4 Ana ekran ve Ben sekmesi
@@ -632,9 +671,17 @@ Açık kalanlar sayı ya da seçim; web denemesinde ve ilgili paket gelince soru
    Web denemesinde ayarlanabilir gelir (9. paket), Kemal seçer.
 4. Kart oyunu: Aylık ödülde hangi ay hangi Düzada nesnesi ya da simgesi? Ajans 18 adaylık bir
    liste getirdi (15 Kasım soru turu 2. set); Kemal seçecek.
-5. Kart oyunu: Puan hesabı: puan paketi (6. paket) yapılırken ajans 2-3 aday getirir, Kemal seçer.
+5. Kart oyunu: Puan hesabı hangi aday olsun? Neden: formülü Kemal seçecek (15 Kasım). Nasıl
+   denenir: adres sonuna `?puan=a`, `?puan=b`, `?puan=c`. Adaylar (8.3): a · çarpanlı taban
+   (şu anki varsayılan) · b · hamle başı puan · c · bonuslu sabit puan.
 6. Kart oyunu: Klasik solitaire'de açılan kartlar destenin altına kaç kez dönsün? Neden: deste
    bitince ne olacağı belgede yoktu; şimdilik standart olan sınırsız. Adaylar: sınırsız
    (önerilen) · 3 kart çekmede üç kez, 1 kart çekmede bir kez · ayarlardan seçilsin.
 7. Kart oyunu: Klasik solitaire'de ipucu hangi sırayla gelsin? Adaylar: temele giden, kapalı
    kartı açan, öbürleri; hamle yoksa desteden çek (önerilen, şu anki) · başka bir sıra.
+8. Kart oyunu: El ne zaman kaybedilmiş sayılsın (seri biter)? Neden: belgede kaybetmenin tanımı
+   yok. Adaylar: yalnız eli bırakınca (önerilen, şu anki) · yapılacak hamle kalmayınca da.
+9. Kart oyunu: Seri her oyun ve zorlukta ayrı mı sürsün? Adaylar: ayrı, en iyi puan gibi
+   (önerilen, şu anki) · tek seri, oyun değişse de sürer.
+10. Kart oyunu: Eli bırakma sorusunun metni ne olsun? Şimdi "[YER TUTUCU: eli bırakma sorusu]";
+   anlamı "eli bırakıyor musun, serin biter" (2).

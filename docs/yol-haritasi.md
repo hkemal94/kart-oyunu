@@ -37,6 +37,11 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   altta aynı düğmeler (geri al hakla, ipucu, yeni el, oyun seçimi). Belgeye Kemal'in soru turu 2.
   set kararları da işlendi (kartpostal yerleri, yazısız kartpostal, aylık ödül adayları).
   Bilgisayarda telefon boyutunda denendi; gerçek telefonda denenmedi.
+- 15 Kasım 2026 (öneri; `ajans/puan`): 6. paket, puan ve en iyi puan (Kemal: "Puanla devam et").
+  Masanın üst satırında puan ve aşama; oyun sonunda bu elin puanı, seri puanı, yeni aşama ve "Yeni
+  en iyi"; oyun seçiminde her kartın altında en iyi puan; el yarımken "Yeni el" ya da "Oyun
+  seçimi"ne basınca eli bırakma sorusu. Formül için üç aday (a, b, c; `?puan=b`); Kemal seçecek.
+  Bilgisayarda telefon boyutunda denendi; gerçek telefonda denenmedi.
 - Sırada: 4. paketin kalan maddeleri (kendiliğinden bitirme, kaldığı yerden devam, istatistik).
 
 ## Paketler
@@ -141,13 +146,25 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   Kart köşesindeki harflerin dile göre değişmesi açık soru. Titreşim ve "her hamlede puanı göster"
   (Kemal, 15 Kasım; puan 6. pakette gelince çalışır).
 
-### 6. Puan ve en iyi puan (Kemal, 15 Kasım; örnek oyun)
+### 6. Puan ve en iyi puan (Kemal, 15 Kasım; örnek oyun) · bitti (formül seçimi Kemal'de; `ajans/puan`)
 
 - Süre ve hamleye göre çarpanlı puan, "tüm zamanların en iyisi"; oyun sonu ekranında ve ayar açıksa
   masanın bilgi satırında (belge 8.3).
 - Formül ve çarpanlar [Kemal]; bu paket yapılırken ajans 2-3 aday getirir, Kemal seçer (Kemal,
   15 Kasım soru turu). En iyi puan oyun ve zorluk başına ayrı; günlük mücadele eli seriye sayılır
   (Kemal, 15 Kasım soru turu).
+- Yapılan: kurallar ve üç aday `src/kart/puan.ts`'te, ekrandan ayrı; testleri `testler/puan.test.ts`.
+  Kazanınca elin puanı seriye eklenir, aşama bir artar; eli bırakınca seri sıfırlanır; en iyi
+  puan (en yüksek seri puanı) oyun ve zorluk başına ayrı. Seri ve en iyi puan telefonun
+  tarayıcısında saklanır, sayfa kapanıp açılınca sürer. Adaylar (belge 8.3): a · çarpanlı taban
+  (varsayılan), b · hamle başı puan, c · bonuslu sabit puan; adres sonuna `?puan=b` yazılarak
+  denenir. Bütün sayılar aday, Kemal seçecek.
+- Ekranda: üst satırda "Puan" ve "Aşama" (ayarlar gelene kadar hep görünür); oyun sonunda "Bu el",
+  "Seri puanı", "Yeni aşama", "Yeni en iyi"; oyun seçiminde "En iyi: …"; eli bırakma sorusu
+  ("[YER TUTUCU: eli bırakma sorusu]", Evet / Hayır). Ekran görüntüleri:
+  `docs/ekran-goruntuleri/puan-*.png`.
+- Bu pakette yok: günlük mücadele (8. paket; puan kodu hazır), kaybetme ekranı (kaybetmenin tanımı
+  Kemal'e soru), ayardaki "her hamlede puanı göster" (5. paket).
 - Neye bağlı: 4. paket (süre ve hamle sayacı), Kemal'in formül kararı.
 
 ### 7. Ana ekran ve Ben sekmesi (Kemal, 15 Kasım; örnek oyun)
@@ -232,3 +249,5 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   birleştirince kesinleşir).
 - 3. Klasik solitaire, geri al ve ipucuyla (`ajans/klasik-solitaire`, 15 Kasım 2026; önce
   `ajans/geri-al-ipucu`, sonra bu birleşince kesinleşir).
+- 6. Puan ve en iyi puan (`ajans/puan`, 15 Kasım 2026; formül seçimi Kemal'de; Kemal birleştirince
+  kesinleşir).

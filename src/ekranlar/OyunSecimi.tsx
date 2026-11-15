@@ -1,10 +1,13 @@
-import { m } from '../metinler';
+import { useState } from 'react';
+import { m, sayi } from '../metinler';
+import { enIyiOku, kayitOku, puanAdayi, puanAnahtari } from '../kart/puan';
 import { KartYuzu } from '../kart/KartYuzu';
 import type { RenkSayisi } from '../kart/kart';
 import type { CekmeSayisi } from '../kart/klondike';
 
 // Oyun seçimi (belge 2; Kemal, 15 Kasım: Spider klasik solitaire'den önce).
 // Alt alta iki oyun: Spider (1, 2, 4 renk) ve klasik solitaire (1 ya da 3 kart çekme; 3. paket).
+// Her kartın altında seçili zorluğun en iyi puanı (6. paket; belge 8.3, oyun ve zorluk başına ayrı).
 // Ayarlar, istatistik, paketler sonraki paketlerde.
 const RENKLER: RenkSayisi[] = [1, 2, 4];
 const CEKMELER: CekmeSayisi[] = [1, 3];
@@ -19,6 +22,11 @@ interface Ozellik {
 }
 
 export function OyunSecimi({ renk, renkSec, spiderBasla, cekme, cekmeSec, klasikBasla }: Ozellik) {
+  const [kayit] = useState(() => kayitOku(localStorage, puanAdayi(location.search)));
+  const enIyi = (anahtar: string) => {
+    const p = enIyiOku(kayit, anahtar);
+    return p === null ? m('secim.enIyiYok') : m('secim.enIyi', sayi(p));
+  };
   return (
     <main className="secim">
       <header className="secim-ust">
@@ -51,6 +59,7 @@ export function OyunSecimi({ renk, renkSec, spiderBasla, cekme, cekmeSec, klasik
         <button className="dugme ana genis" onClick={spiderBasla}>
           {m('secim.yeniEl')}
         </button>
+        <p className="en-iyi">{enIyi(puanAnahtari('spider', renk))}</p>
       </section>
 
       <section className="oyun-karti">
@@ -80,6 +89,7 @@ export function OyunSecimi({ renk, renkSec, spiderBasla, cekme, cekmeSec, klasik
         <button className="dugme ana genis" onClick={klasikBasla}>
           {m('secim.yeniEl')}
         </button>
+        <p className="en-iyi">{enIyi(puanAnahtari('klasik', cekme))}</p>
       </section>
 
       <nav className="secim-alt">

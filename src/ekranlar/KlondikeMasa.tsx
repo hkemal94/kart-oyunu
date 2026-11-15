@@ -22,7 +22,18 @@ import {
   type KlondikeMasasi,
   type Yer,
 } from '../kart/klondike';
-import { MasaDugmeleri, OyunSonu, ReklamKutusu, sureYazisi, useGeriAlHakki, useSure } from './masaOrtak';
+import {
+  BilgiSatiri,
+  ElBirakmaSorusu,
+  MasaDugmeleri,
+  OyunSonu,
+  ReklamKutusu,
+  useElBirakma,
+  useGeriAlHakki,
+  usePuan,
+  useSure,
+} from './masaOrtak';
+import { klondikeOzeti } from '../kart/puan';
 
 // Klasik solitaire masası (yol haritası, 3. paket; belge 1.1). Kurallar src/kart/klondike.ts'te.
 // Üstte ince bilgi satırı (süre, hamle); altında dört temel yığın, açılan kartlar ve çekme
@@ -101,6 +112,9 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
 
   const kazandi = kazandiMi(masa);
   const { saniye, sifirla: sureyiSifirla } = useSure(kazandi);
+  // Puan ve seri (6. paket; src/kart/puan.ts). El yarımken bırakmak seriyi bitirir.
+  const puan = usePuan('klasik', masa.cekme, klondikeOzeti(masa, saniye), kazandi);
+  const birakma = useElBirakma(masa.hamle > 0 && !kazandi, puan.seriyiBitir);
 
   // Uyarı, ipucu ve sallanma kendiliğinden kaybolur
   useEffect(() => {
@@ -210,6 +224,7 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
     setEl((e) => e + 1);
     setGecmis([]);
     geriAlHak.yeniEl(); // haklar her elde baştan
+    puan.yeniEl();
     setSurukleme(null);
     setUyari(null);
     sureyiSifirla();
@@ -326,11 +341,7 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
 
   return (
     <main className="masa">
-      <header className="masa-bilgi">
-        <span>{m('masa.sure', sureYazisi(saniye))}</span>
-        <span className="masa-bilgi-baslik">{m('masa.baslikKlasik', masa.cekme)}</span>
-        <span>{m('masa.hamle', masa.hamle)}</span>
-      </header>
+      <BilgiSatiri saniye={saniye} baslik={m('masa.baslikKlasik', masa.cekme)} hamle={masa.hamle} puan={puan.puan} asama={puan.asama} />
 
       <div className="oyun-alani" ref={alanRef} onPointerUp={alaniBirak}>
         {TEMEL_TAKIMLARI.map((t, no) => (
@@ -426,14 +437,16 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
         geriAlKapali={gecmis.length === 0}
         kalanHak={geriAlHak.hak.kalan}
         ipucu={ipucuBas}
-        yeniEl={yeniEl}
-        geri={geri}
+        yeniEl={() => birakma.sor(yeniEl)}
+        geri={() => birakma.sor(geri)}
       />
+
+      {birakma.soruAcik && <ElBirakmaSorusu evet={birakma.evet} hayir={birakma.hayir} />}
 
       {geriAlHak.kutu && <ReklamKutusu kapat={geriAlHak.kutuyuKapat} hakAl={geriAlHak.reklamlaAl} />}
 
       {kazandi && (
-        <OyunSonu altBaslik={m('masa.baslikKlasik', masa.cekme)} saniye={saniye} hamle={masa.hamle} yeniEl={yeniEl} geri={geri} />
+        <OyunSonu altBaslik={m('masa.baslikKlasik', masa.cekme)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={geri} />
       )}
     </main>
   );

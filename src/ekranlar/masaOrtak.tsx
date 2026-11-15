@@ -1,7 +1,20 @@
-import { useEffect, useState } from 'react';
-import { m } from '../metinler';
+import { useEffect, useRef, useState } from 'react';
+import { m, sayi } from '../metinler';
 import { geriAlHakkiAl } from '../reklam/geriAlHakki';
 import { hakBaslat, hakKullan, reklamHakkiEkle, yeniElHakki, type GeriAlHakki } from '../kart/geriAlHakki';
+import {
+  elKazanildi,
+  elPuani,
+  kayitOku,
+  kayitYaz,
+  puanAdayi,
+  puanAnahtari,
+  seriBitir,
+  seriOku,
+  type ElOzeti,
+  type KazancSonucu,
+  type Oyun,
+} from '../kart/puan';
 
 // İki masanın (Spider ve klasik solitaire) ortak parçaları: süre, geri al hakkı, alt şerit,
 // "reklam yerine" kutusu ve oyun sonu kutusu (belge 1.3 ve 2).
@@ -67,6 +80,100 @@ export function useGeriAlHakki() {
   };
 }
 
+// Puan ve seri (yol haritası 6; belge 8.3). Kurallar ve üç aday src/kart/puan.ts'te; aday adresten
+// seçilir (?puan=a|b|c). Seri ve en iyi puan telefonun tarayıcısında saklanır.
+export function usePuan(oyun: Oyun, zorluk: number, ozet: ElOzeti, kazandi: boolean) {
+  const [aday] = useState(() => puanAdayi(location.search));
+  const anahtar = puanAnahtari(oyun, zorluk);
+  const [kayit, setKayit] = useState(() => kayitOku(localStorage, aday));
+  const [sonuc, setSonuc] = useState<KazancSonucu | null>(null);
+  const yazildi = useRef(false); // bir el yalnız bir kez kazanılır
+
+  const kaydet = (k: typeof kayit) => {
+    setKayit(k);
+    kayitYaz(localStorage, aday, k);
+  };
+
+  useEffect(() => {
+    if (!kazandi || yazildi.current) return;
+    yazildi.current = true;
+    const s = elKazanildi(kayitOku(localStorage, aday), anahtar, aday, ozet);
+    kaydet(s.kayit);
+    setSonuc(s);
+  }, [kazandi]);
+
+  const seri = seriOku(kayit, anahtar);
+  return {
+    sonuc,
+    // Masada görünen: biriken seri puanı ve bu elin "şimdi bitse" puanı; el kazanılınca kesin puan
+    puan: sonuc ? sonuc.seriPuani : seri.puan + elPuani(aday, ozet, seri.asama, false),
+    asama: seri.asama,
+    // El yarımken bırakıldı (ya da kaybedildi): seri biter
+    seriyiBitir: () => kaydet(seriBitir(kayitOku(localStorage, aday), anahtar)),
+    // Yeni el: kazanılan elden sonra seri sürer
+    yeniEl: () => {
+      yazildi.current = false;
+      setSonuc(null);
+    },
+  };
+}
+
+// El yarımken "Yeni el" ya da "Oyun seçimi"ne basınca: önce soru (belge 2, "Eli bırakma").
+// Evet denirse el kaybedilmiş sayılır, seri biter. Hamle yapılmadıysa ya da el bittiyse soru yok.
+export function useElBirakma(yarim: boolean, seriyiBitir: () => void) {
+  const [bekleyen, setBekleyen] = useState<(() => void) | null>(null);
+  return {
+    soruAcik: bekleyen !== null,
+    sor: (is: () => void) => {
+      if (yarim) setBekleyen(() => is);
+      else is();
+    },
+    evet: () => {
+      seriyiBitir();
+      bekleyen?.();
+      setBekleyen(null);
+    },
+    hayir: () => setBekleyen(null),
+  };
+}
+
+export function ElBirakmaSorusu({ evet, hayir }: { evet: () => void; hayir: () => void }) {
+  return (
+    <div className="oyun-sonu hizli" onClick={hayir}>
+      <section
+        className="oyun-sonu-kutu"
+        role="alertdialog"
+        aria-label={m('masa.birak.soru')}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p className="birak-soru">{m('masa.birak.soru')}</p>
+        <div className="birak-dugmeler">
+          <button className="dugme ikincil" onClick={hayir}>
+            {m('masa.birak.hayir')}
+          </button>
+          <button className="dugme ana" onClick={evet}>
+            {m('masa.birak.evet')}
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// Üst bilgi satırı: süre, başlık, hamle, puan ve aşama (tek satır, kompakt). Ayarlardaki
+// "her hamlede puanı göster" (5. paket) gelene kadar puan hep görünür.
+export function BilgiSatiri(o: { saniye: number; baslik: string; hamle: number; puan: number; asama: number }) {
+  return (
+    <header className="masa-bilgi">
+      <span>{m('masa.sure', sureYazisi(o.saniye))}</span>
+      <span>{m('masa.hamle', o.hamle)}</span>
+      <span className="masa-bilgi-baslik">{o.baslik}</span>
+      <span>{m('masa.puan', sayi(o.puan))}</span>
+      <span>{m('masa.asama', o.asama)}</span>
+    </header>
+  );
+}
+
 // Alt şerit (yol haritası 4): geri al, ipucu, yeni el, oyun seçimi. Simgeler kodla çizilir.
 export function MasaDugmeleri(o: {
   geriAl: () => void;
@@ -123,8 +230,16 @@ export function ReklamKutusu({ kapat, hakAl }: { kapat: () => void; hakAl: () =>
   );
 }
 
-// Oyun sonu: süre, hamle, "Yeni el", "Oyun seçimi" (belge 2)
-export function OyunSonu(o: { altBaslik: string; saniye: number; hamle: number; yeniEl: () => void; geri: () => void }) {
+// Oyun sonu: süre, hamle, puan (bu el, seri, yeni aşama, yeni en iyi), "Yeni el", "Oyun seçimi"
+// (belge 2 ve 8.3). "Yeni el" serinin bir sonraki elidir.
+export function OyunSonu(o: {
+  altBaslik: string;
+  saniye: number;
+  hamle: number;
+  puan: KazancSonucu | null;
+  yeniEl: () => void;
+  geri: () => void;
+}) {
   return (
     <div className="oyun-sonu">
       <section className="oyun-sonu-kutu" role="dialog" aria-label={m('sonu.baslik')}>
@@ -140,6 +255,25 @@ export function OyunSonu(o: { altBaslik: string; saniye: number; hamle: number; 
             <dd>{o.hamle}</dd>
           </div>
         </dl>
+        {o.puan && (
+          <>
+            <dl className="puanlar">
+              <div>
+                <dt>{m('sonu.elPuani')}</dt>
+                <dd>+{sayi(o.puan.elPuani)}</dd>
+              </div>
+              <div>
+                <dt>{m('sonu.seriPuani')}</dt>
+                <dd>{sayi(o.puan.seriPuani)}</dd>
+              </div>
+              <div>
+                <dt>{m('sonu.asama')}</dt>
+                <dd>{o.puan.yeniAsama}</dd>
+              </div>
+            </dl>
+            {o.puan.yeniEnIyi && <p className="yeni-en-iyi">{m('sonu.yeniEnIyi')}</p>}
+          </>
+        )}
         <button className="dugme ana genis" onClick={o.yeniEl}>
           {m('sonu.yeniEl')}
         </button>
