@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
+import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
 import { ipucuHakkiAl } from '../reklam/ipucuHakki';
 import { KartYuzu } from '../kart/KartYuzu';
 import { ekranaGoreAralik, kartOlcusu, sutunKonumlari } from '../kart/duzen';
@@ -49,8 +50,12 @@ const CIFT_DOKUNMA = 350; // iki dokunuş arası bu kadar kısaysa çift dokunu�
 const UYARI_SURESI = 2600; // uyarı ekranda bu kadar kalır (milisaniye)
 const RED_SURESI = 380; // reddedilen kartın sallanma süresi (milisaniye)
 const IPUCU_SURESI = 1600; // ipucunun parlama süresi (milisaniye)
-const ACILAN_SUTUNU = 4; // açılan kartlar 5. ve 6. sütunun üstünde, deste 7.nin üstünde
-const DESTE_SUTUNU = 6;
+// Üst sıra: temel yığınlar 1-4. sütunun, açılan kartlar 5. ve 6.nın, deste 7.nin üstünde.
+// Sol el düzeninde (5. paket) ayna gibi: deste 1., açılanlar 2. ve 3., temeller 4-7. sütunun üstünde.
+const UST_SIRA = {
+  sag: { temel: 0, acilan: 4, deste: 6 },
+  sol: { temel: 3, acilan: 1, deste: 0 },
+};
 // Kemal, 15 Kasım: aralık ekran yüksekliğine göre (src/kart/duzen.ts); düzen ve kart boyu aynı.
 // Aralık bu uzunluktaki sütun sıkışmadan sığacak kadar açılır (6 kapalı, 8 açık), ama kartın bu
 // paylarından fazla açılmaz.
@@ -91,10 +96,12 @@ function icindeMi(a: Yer | null | undefined, b: Yer | null): boolean {
 interface Ozellik {
   cekme: CekmeSayisi;
   geri: () => void;
+  ayarlar: OyuncuAyarlari;
+  ayarAc: () => void;
   baslangic?: KlondikeMasasi; // yalnız geliştirmedeki deneme eli için
 }
 
-export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
+export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
   const [masa, setMasa] = useState<KlondikeMasasi>(() => baslangic ?? klondikeDagit(cekme));
   const [el, setEl] = useState(0); // yeni elde kartlar yeniden dağıtılarak gelsin diye
   const [secim, setSecim] = useState<Yer | null>(null);
@@ -167,21 +174,23 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
   });
   const yelpazeAdim = kartEn * 0.32; // 3 kart çekmede açılan son üç kart yan yana kayar
   const sutunX = (c: number) => c * (kartEn + ARALIK);
+  const ustSira = UST_SIRA[ayarlar.solEl ? 'sol' : 'sag'];
+  const temelX = (no: number) => sutunX(ustSira.temel + no);
 
   // Her kartın yeri ve konumu. Uzun sütun alana sığsın diye sıkışır.
   const cizimler: Cizim[] = [];
   masa.temeller.forEach((t, no) =>
     t.forEach((k, i) =>
-      cizimler.push({ k, yer: i === t.length - 1 ? { tur: 'temel', no } : null, x: sutunX(no), y: 0, z: i }),
+      cizimler.push({ k, yer: i === t.length - 1 ? { tur: 'temel', no } : null, x: temelX(no), y: 0, z: i }),
     ),
   );
   const yelpaze = masa.cekme === 3 ? Math.min(3, masa.acilan.length) : 1;
   masa.acilan.forEach((k, i) => {
     const kay = Math.max(0, i - (masa.acilan.length - yelpaze));
     const ust = i === masa.acilan.length - 1;
-    cizimler.push({ k, yer: ust ? { tur: 'acilan' } : null, x: sutunX(ACILAN_SUTUNU) + kay * yelpazeAdim, y: 0, z: i });
+    cizimler.push({ k, yer: ust ? { tur: 'acilan' } : null, x: sutunX(ustSira.acilan) + kay * yelpazeAdim, y: 0, z: i });
   });
-  masa.deste.forEach((k, i) => cizimler.push({ k, yer: null, x: sutunX(DESTE_SUTUNU), y: 0, z: i }));
+  masa.deste.forEach((k, i) => cizimler.push({ k, yer: null, x: sutunX(ustSira.deste), y: 0, z: i }));
   masa.sutunlar.forEach((s, no) => {
     const konum = sutunKonumlari(
       s.map((k) => k.acik),
@@ -199,7 +208,10 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
   const hedefBul = (istemciX: number, istemciY: number): Hedef | null => {
     const r = alanRef.current!.getBoundingClientRect();
     const c = Math.min(KLONDIKE_SUTUN_SAYISI - 1, Math.max(0, Math.floor((istemciX - r.left + ARALIK / 2) / (kartEn + ARALIK))));
-    if (istemciY - r.top < kartBoy + UST_ARALIK / 2) return c < TEMEL_TAKIMLARI.length ? { tur: 'temel' } : null;
+    if (istemciY - r.top < kartBoy + UST_ARALIK / 2) {
+      const t = c - ustSira.temel;
+      return t >= 0 && t < TEMEL_TAKIMLARI.length ? { tur: 'temel' } : null;
+    }
     return { tur: 'sutun', no: c };
   };
   const yerinHedefi = (yer: Yer): Hedef | null =>
@@ -355,7 +367,15 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
 
   return (
     <main className="masa">
-      <BilgiSatiri saniye={saniye} baslik={m('masa.baslikKlasik', masa.cekme)} hamle={masa.hamle} puan={puan.puan} asama={puan.asama} />
+      <BilgiSatiri
+        saniye={saniye}
+        baslik={m('masa.baslikKlasik', masa.cekme)}
+        hamle={masa.hamle}
+        puan={puan.puan}
+        asama={puan.asama}
+        ayarlar={ayarlar}
+        ayarAc={ayarAc}
+      />
 
       <div className="oyun-alani" ref={alanRef} onPointerUp={alaniBirak}>
         {TEMEL_TAKIMLARI.map((t, no) => (
@@ -364,7 +384,7 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
             className={`yuva temel ${secim && secim.tur !== 'temel' ? 'hedef' : ''} ${
               ipTemel === no && masa.temeller[no].length === 0 ? 'ipucu' : ''
             }`}
-            style={{ left: sutunX(no), width: kartEn, height: kartBoy, borderRadius: kose, fontSize: kartEn * 0.5 }}
+            style={{ left: temelX(no), width: kartEn, height: kartBoy, borderRadius: kose, fontSize: kartEn * 0.5 }}
             aria-label={m('masa.temel')}
           >
             {TAKIM_SIMGESI[t]}
@@ -379,7 +399,7 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
             style={{ left: sutunX(no), top: sutunUstu, width: kartEn, height: kartBoy, borderRadius: kose }}
           />
         ))}
-        <div className={`yuva deste-yuvasi ${desteDurumu === 'bos' ? 'bos' : ''}`} style={{ left: sutunX(DESTE_SUTUNU), width: kartEn, height: kartBoy, borderRadius: kose }}>
+        <div className={`yuva deste-yuvasi ${desteDurumu === 'bos' ? 'bos' : ''}`} style={{ left: sutunX(ustSira.deste), width: kartEn, height: kartBoy, borderRadius: kose }}>
           {desteDurumu === 'dondur' && (
             <svg className="simge buyuk" viewBox="0 0 16 16" aria-hidden="true">
               <path d="M13 8a5 5 0 1 1-1.5-3.6M13 2.5v2.5h-2.5" />
@@ -432,7 +452,7 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
         <button
           key={cekIpucu ? `deste-${ipucu?.sayi}` : 'deste'}
           className={`deste klasik ${cekIpucu ? 'ipucu' : ''}`}
-          style={{ left: sutunX(DESTE_SUTUNU), width: kartEn, height: kartBoy, borderRadius: kose }}
+          style={{ left: sutunX(ustSira.deste), width: kartEn, height: kartBoy, borderRadius: kose }}
           disabled={desteDurumu === 'bos'}
           onPointerUp={(e) => e.stopPropagation()}
           onClick={desteyeBas}
@@ -447,6 +467,7 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
       </div>
 
       <MasaDugmeleri
+        solEl={ayarlar.solEl}
         geriAl={geriAlBas}
         geriAlKapali={gecmis.length === 0}
         kalanHak={geriAlHak.hak.kalan}

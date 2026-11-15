@@ -1,12 +1,15 @@
 // Geri al hakkı (belge 1.3; Kemal, 15 Kasım soru turu): geri al sınırlı. Her elde birkaç ücretsiz
 // hak var; bitince telefon uygulamasında reklam izleyerek bir hak daha alınır. Web denemesinde
 // reklam yok: "reklam yerine" kutusu çıkar, düğmeye dokununca bir hak gelir (src/reklam/geriAlHakki.ts).
-// Kurallar ekrandan ayrı; testleri testler/yardimcilar.test.ts. Bu dosya hiçbir şey içe almaz.
+// Kurallar ekrandan ayrı; testleri testler/yardimcilar.test.ts.
 
-// Bir eldeki ücretsiz hak sayısının tek tanımlı olduğu yer.
-// DENEME VARSAYILANI, KEMAL SEÇECEK: bu sayı karar değildir; kod çalışsın diye konuldu.
-// Web denemesinde adres sonuna ?geriAlHak=5 gibi yazılarak değiştirilir.
-export const GERI_AL_HAK_DENEME_VARSAYILANI = 3;
+import { ayarSayisi } from '../oyun/ayarOku.ts';
+
+// Bir eldeki ücretsiz hak sayısı src/oyun/ayarlar.json'dan gelir (yardimcilar → geriAlHak; KKM'den
+// değişir). DENEME VARSAYILANI, KEMAL SEÇECEK: bu sayı karar değildir; kod çalışsın diye konuldu.
+// Web denemesinde adres sonuna ?geriAlHak=5 gibi yazılarak o açılış için değiştirilir.
+const ham = Math.floor(ayarSayisi('yardimcilar', 'geriAlHak', 3));
+export const GERI_AL_HAK_DENEME_VARSAYILANI = ham >= 0 ? ham : 3;
 const ADRES_ANAHTARI = 'geriAlHak';
 
 // Adresteki ?geriAlHak= değerini okur (0 ya da daha büyük tam sayı); yoksa ya da bozuksa

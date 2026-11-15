@@ -1,0 +1,61 @@
+{
+  "_aciklama": "Kart oyunu ayar dosyası. Oyundaki ayarlanabilir sayılar burada; oyun bu dosyayı okur. Yalnız 'deger' alanları değiştirilir; 'ad', 'birim' ve 'not' KKM'deki Ayarlar sekmesinde görünür. Bütün sayılar deneme varsayılanı ya da aday: Kemal seçecek. Deneme için adres sonuna ?geriAlHak=5 ya da ?puan=b yazılınca bu dosyadaki değer o açılışta geçersiz kalır.",
+  "bolumler": {
+    "yardimcilar": {
+      "ad": "Yardımcılar",
+      "aciklama": "Geri al hakkı (belge 1.3)",
+      "ayarlar": {
+        "geriAlHak": {
+          "ad": "Bir elde ücretsiz geri al hakkı",
+          "deger": 3,
+          "birim": "hak",
+          "not": "Deneme varsayılanı, Kemal seçecek. Haklar bitince telefon uygulamasında reklamla bir hak daha gelir; web'de 'reklam yerine' kutusu verir."
+        }
+      }
+    },
+    "puan": {
+      "ad": "Puan formülü",
+      "aciklama": "Hangi puan adayı oyunda çalışır (belge 8.3)",
+      "ayarlar": {
+        "aday": {
+          "ad": "Puan adayı",
+          "deger": 1,
+          "not": "1 = a · çarpanlı taban, 2 = b · hamle başı puan, 3 = c · bonuslu sabit puan. ADAY, Kemal seçecek. Başka sayı yazılırsa 1 (a) çalışır."
+        }
+      }
+    },
+    "puanA": {
+      "ad": "Aday a · çarpanlı taban",
+      "aciklama": "Her el sabit tabanla başlar; hamle ve süre tabandan düşer; sonuç aşamayla çarpılır",
+      "ayarlar": {
+        "taban": { "ad": "Taban puan", "deger": 2000, "birim": "puan", "not": "ADAY, Kemal seçecek" },
+        "hamleBasi": { "ad": "Her hamlede düşen", "deger": 2, "birim": "puan", "not": "ADAY, Kemal seçecek" },
+        "saniyeBasi": { "ad": "Her saniyede düşen", "deger": 0.5, "birim": "puan", "not": "ADAY, Kemal seçecek. 0,5 = dakikada 30 puan" },
+        "enAz": { "ad": "Kazanılan elin en az puanı", "deger": 200, "birim": "puan", "not": "ADAY, Kemal seçecek" }
+      }
+    },
+    "puanB": {
+      "ad": "Aday b · hamle başı puan",
+      "aciklama": "Puan oynarken toplanır; kazanınca süre bonusu; aşama başına çarpan büyür",
+      "ayarlar": {
+        "dizi": { "ad": "Spider'da tamamlanan her dizi", "deger": 100, "birim": "puan", "not": "ADAY, Kemal seçecek" },
+        "temelKarti": { "ad": "Klasikte temele giden her kart", "deger": 15, "birim": "puan", "not": "ADAY, Kemal seçecek" },
+        "acilanKart": { "ad": "Açılan her kapalı kart", "deger": 5, "birim": "puan", "not": "ADAY, Kemal seçecek" },
+        "hamleBasi": { "ad": "Her hamlede düşen", "deger": 1, "birim": "puan", "not": "ADAY, Kemal seçecek" },
+        "sureTavani": { "ad": "Süre bonusu sınırı (bundan önce biten ele kalan her saniye bir puan)", "deger": 1200, "birim": "saniye", "not": "ADAY, Kemal seçecek. 1200 saniye = 20 dakika" },
+        "asamaArtisi": { "ad": "Aşama başına çarpana eklenen", "deger": 0.5, "not": "ADAY, Kemal seçecek. 0,5: Aşama 2'de 1,5 katı" }
+      }
+    },
+    "puanC": {
+      "ad": "Aday c · bonuslu sabit puan",
+      "aciklama": "Kazanılan her el sabit puan; üstüne süre ve hamle bonusu; her aşama sabit ek",
+      "ayarlar": {
+        "taban": { "ad": "Kazanılan her elin puanı", "deger": 1000, "birim": "puan", "not": "ADAY, Kemal seçecek" },
+        "sureTavani": { "ad": "Süre bonusu sınırı (bundan önce biten ele kalan her saniye bir puan)", "deger": 1200, "birim": "saniye", "not": "ADAY, Kemal seçecek. 1200 saniye = 20 dakika" },
+        "hamleTavani": { "ad": "Hamle bonusu sınırı", "deger": 300, "birim": "hamle", "not": "ADAY, Kemal seçecek" },
+        "hamleBonusu": { "ad": "Sınırın altında kalan her hamle için", "deger": 2, "birim": "puan", "not": "ADAY, Kemal seçecek" },
+        "asamaEki": { "ad": "Aşama 1'in üstündeki her aşama için ek", "deger": 250, "birim": "puan", "not": "ADAY, Kemal seçecek" }
+      }
+    }
+  }
+}

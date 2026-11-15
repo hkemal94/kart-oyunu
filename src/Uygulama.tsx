@@ -5,6 +5,9 @@ import { Masa } from './ekranlar/Masa';
 import { KlondikeMasa } from './ekranlar/KlondikeMasa';
 import type { RenkSayisi } from './kart/kart';
 import type { CekmeSayisi } from './kart/klondike';
+import { Ayarlar } from './ekranlar/Ayarlar';
+import { dilSec } from './metinler';
+import { ayarlariOku, ayarlariYaz, ilkDil, type OyuncuAyarlari } from './oyun/oyuncuAyarlari';
 import { denemeMasasi, klondikeDenemesi, type DenemeTuru, type KlondikeDenemeTuru } from './kart/deneme';
 
 type Ekran = 'acilis' | 'secim' | 'spider' | 'klasik';
@@ -22,8 +25,26 @@ function denemeOku() {
   return null;
 }
 
+// Açılışta ayarlar okunur ve dil seçilir (ilk çizimden önce)
+function ilkAyarlar(): OyuncuAyarlari {
+  const a = ayarlariOku(localStorage);
+  dilSec(ilkDil(location.search, a.dil, navigator.language));
+  return a;
+}
+
 // Ekranlar arası geçiş (belge 2): açılış → oyun seçimi → masa (Spider ya da klasik solitaire).
+// Ayarlar (5. paket) her ekranın üstüne açılır; kapanınca altta kalan ekran olduğu gibi sürer.
 export function Uygulama() {
+  const [ayarlar, setAyarlar] = useState(ilkAyarlar);
+  const [ayarAcik, setAyarAcik] = useState(false);
+  const ayarDegistir = (yeni: Partial<OyuncuAyarlari>) => {
+    const a = { ...ayarlar, ...yeni };
+    if (yeni.dil) dilSec(yeni.dil); // bütün yazılar anında değişir
+    ayarlariYaz(localStorage, a);
+    setAyarlar(a);
+  };
+  const ayarAc = () => setAyarAcik(true);
+
   const [deneme] = useState(denemeOku);
   const [ekran, setEkran] = useState<Ekran>(deneme ? deneme.oyun : 'acilis');
   const [renk, setRenk] = useState<RenkSayisi>(deneme?.oyun === 'spider' ? deneme.renk : 1);
@@ -40,12 +61,15 @@ export function Uygulama() {
           cekme={cekme}
           cekmeSec={setCekme}
           klasikBasla={() => setEkran('klasik')}
+          ayarAc={ayarAc}
         />
       )}
       {ekran === 'spider' && (
         <Masa
           renk={renk}
           geri={() => setEkran('secim')}
+          ayarlar={ayarlar}
+          ayarAc={ayarAc}
           baslangic={deneme?.oyun === 'spider' ? deneme.masa : undefined}
         />
       )}
@@ -53,9 +77,12 @@ export function Uygulama() {
         <KlondikeMasa
           cekme={cekme}
           geri={() => setEkran('secim')}
+          ayarlar={ayarlar}
+          ayarAc={ayarAc}
           baslangic={deneme?.oyun === 'klasik' ? deneme.masa : undefined}
         />
       )}
+      {ayarAcik && <Ayarlar ayarlar={ayarlar} degistir={ayarDegistir} kapat={() => setAyarAcik(false)} />}
     </div>
   );
 }

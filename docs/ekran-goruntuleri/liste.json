@@ -1,0 +1,206 @@
+{
+  "oyun": "[Kemal]",
+  "kaynak": "https://hkemal94.github.io/kart-oyunu/",
+  "not": "Oyunun adı Kemal'in; 'kart-oyunu' geçici çalışma adı. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ayarlar ve düzen görüntüleri öneri dallarından (ajans/spider-duzen, ajans/ayarlar-dil); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor.",
+  "goruntuler": [
+    {
+      "dosya": "ayar-5-spider-masa.png",
+      "baslik": "Spider masası (yeni düzen, üstte ayar düğmesi)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)",
+      "kapak": true
+    },
+    {
+      "dosya": "ayar-1-ayarlar-tr.png",
+      "baslik": "Ayarlar (Türkçe)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ayar-2-ayarlar-en.png",
+      "baslik": "Ayarlar (İngilizce)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ayar-3-sol-el-spider.png",
+      "baslik": "Sol el düzeninde Spider masası",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ayar-4-sol-el-klasik.png",
+      "baslik": "Sol el düzeninde klasik solitaire",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "duzen-spider-dagitim-390x844.png",
+      "baslik": "Spider dağıtım (yeni düzen)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "duzen-spider-dagitim-320x640.png",
+      "baslik": "Spider dağıtım (yeni düzen)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 320x640)"
+    },
+    {
+      "dosya": "duzen-spider-dagitim-430x932.png",
+      "baslik": "Spider dağıtım (yeni düzen)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 430x932)"
+    },
+    {
+      "dosya": "duzen-spider-ileri-390x844.png",
+      "baslik": "Spider ileri el, uzun sütunlar (yeni düzen)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "duzen-spider-ileri-320x640.png",
+      "baslik": "Spider ileri el, uzun sütunlar (yeni düzen)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 320x640)"
+    },
+    {
+      "dosya": "duzen-spider-ileri-430x932.png",
+      "baslik": "Spider ileri el, uzun sütunlar (yeni düzen)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 430x932)"
+    },
+    {
+      "dosya": "duzen-klasik-dagitim-390x844.png",
+      "baslik": "Klasik solitaire dağıtım (ekrana göre aralık)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "duzen-klasik-dagitim-320x640.png",
+      "baslik": "Klasik solitaire dağıtım (ekrana göre aralık)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 320x640)"
+    },
+    {
+      "dosya": "duzen-klasik-dagitim-430x932.png",
+      "baslik": "Klasik solitaire dağıtım (ekrana göre aralık)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 430x932)"
+    },
+    {
+      "dosya": "duzen-klasik-orta-390x844.png",
+      "baslik": "Klasik solitaire oyun ortası (ekrana göre aralık)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "duzen-klasik-orta-320x640.png",
+      "baslik": "Klasik solitaire oyun ortası (ekrana göre aralık)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 320x640)"
+    },
+    {
+      "dosya": "duzen-klasik-orta-430x932.png",
+      "baslik": "Klasik solitaire oyun ortası (ekrana göre aralık)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 430x932)"
+    },
+    {
+      "dosya": "puan-1-masa.png",
+      "baslik": "Masada puan ve aşama",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "puan-2-oyun-sonu.png",
+      "baslik": "Oyun sonu: puan, seri, yeni en iyi",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "puan-3-eli-birakma.png",
+      "baslik": "Eli bırakma sorusu",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "puan-4-oyun-secimi.png",
+      "baslik": "Oyun seçiminde en iyi puan",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "klondike-1-oyun-secimi.png",
+      "baslik": "Oyun seçimi: klasik solitaire açıldı",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "klondike-2-dagitim.png",
+      "baslik": "Klasik solitaire dağıtım",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "klondike-3-oyun-ortasi.png",
+      "baslik": "Klasik solitaire oyun ortası (3 kart çekme)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "yardim-1-ipucu.png",
+      "baslik": "İpucu: taşınacak kart parlıyor",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "yardim-2-geri-al.png",
+      "baslik": "Geri al ve kalan hak",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "yardim-3-hak-bitti.png",
+      "baslik": "Geri al hakları bitti: \"reklam yerine\" kutusu",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "spider-1-dagitim.png",
+      "baslik": "Spider dağıtım (ilk düzen)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "spider-2-oyun-ortasi.png",
+      "baslik": "Spider oyun ortası (ilk düzen)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "spider-3-oyun-sonu.png",
+      "baslik": "Spider oyun sonu",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "1-acilis.png",
+      "baslik": "Açılış",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "2-oyun-secimi.png",
+      "baslik": "Oyun seçimi (ilk sürüm)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "3-masa.png",
+      "baslik": "Masa (ilk sürüm)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    }
+  ]
+}

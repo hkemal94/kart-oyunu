@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { m, sayi } from '../metinler';
 import { geriAlHakkiAl } from '../reklam/geriAlHakki';
+import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
 import { hakBaslat, hakKullan, reklamHakkiEkle, yeniElHakki, type GeriAlHakki } from '../kart/geriAlHakki';
 import {
   elKazanildi,
@@ -160,22 +161,42 @@ export function ElBirakmaSorusu({ evet, hayir }: { evet: () => void; hayir: () =
   );
 }
 
-// Üst bilgi satırı: süre, başlık, hamle, puan ve aşama (tek satır, kompakt). Ayarlardaki
-// "her hamlede puanı göster" (5. paket) gelene kadar puan hep görünür.
-export function BilgiSatiri(o: { saniye: number; baslik: string; hamle: number; puan: number; asama: number }) {
+// Üst bilgi satırı: süre, hamle, başlık, puan ve aşama (tek satır, kompakt), sonda küçük ayar
+// düğmesi. Ayarlarda "sayaçları gizle" açıksa süre ve hamle, "her hamlede puanı göster" kapalıysa
+// puan ve aşama görünmez (5. paket).
+export function BilgiSatiri(o: {
+  saniye: number;
+  baslik: string;
+  hamle: number;
+  puan: number;
+  asama: number;
+  ayarlar: OyuncuAyarlari;
+  ayarAc: () => void;
+}) {
+  const sayac = !o.ayarlar.sayaclariGizle;
+  const puan = o.ayarlar.puaniGoster;
   return (
     <header className="masa-bilgi">
-      <span>{m('masa.sure', sureYazisi(o.saniye))}</span>
-      <span>{m('masa.hamle', o.hamle)}</span>
+      {sayac && <span>{m('masa.sure', sureYazisi(o.saniye))}</span>}
+      {sayac && <span>{m('masa.hamle', o.hamle)}</span>}
       <span className="masa-bilgi-baslik">{o.baslik}</span>
-      <span>{m('masa.puan', sayi(o.puan))}</span>
-      <span>{m('masa.asama', o.asama)}</span>
+      {puan && <span>{m('masa.puan', sayi(o.puan))}</span>}
+      {puan && <span>{m('masa.asama', o.asama)}</span>}
+      <button className="ayar-dugmesi" onClick={o.ayarAc} aria-label={m('masa.ayarlar')}>
+        <svg className="simge" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M2.5 4.5h7M12.5 4.5h1M2.5 11.5h1M6.5 11.5h7" />
+          <circle cx="11" cy="4.5" r="1.5" />
+          <circle cx="5" cy="11.5" r="1.5" />
+        </svg>
+      </button>
     </header>
   );
 }
 
 // Alt şerit (yol haritası 4): geri al, ipucu, yeni el, oyun seçimi. Simgeler kodla çizilir.
+// Sol el düzeninde (5. paket) sıra ayna gibi ters döner; deste de öbür yana geçer.
 export function MasaDugmeleri(o: {
+  solEl: boolean;
   geriAl: () => void;
   geriAlKapali: boolean;
   kalanHak: number;
@@ -184,7 +205,7 @@ export function MasaDugmeleri(o: {
   geri: () => void;
 }) {
   return (
-    <nav className="masa-dugmeler">
+    <nav className={`masa-dugmeler ${o.solEl ? 'sol-el' : ''}`}>
       <button className="dugme ince" onClick={o.geriAl} disabled={o.geriAlKapali}>
         <svg className="simge" viewBox="0 0 16 16" aria-hidden="true">
           <path d="M5.5 3.5 2.5 6.5l3 3M3 6.5h6.5a4 4 0 0 1 0 8H7" />
