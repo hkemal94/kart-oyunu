@@ -114,7 +114,11 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   12 paket deste (beş mahallenin her biri için ikişer, 2 renk destesi; ikişerli seriler), bir süre
   yalnız arka yüzler (günlük görsel işine de girer), masa ve deste ayrı paketler, web denemesinde
   hepsi açık. Oyunda değişen bir şey yok.
-- Sırada: 9. paket (kartpostal etkinliği).
+- 15 Kasım 2026 (öneri; `ajans/pul-koleksiyonu-karari`): yalnız belge. Kemal: aylık rozet yerine
+  pul koleksiyonu. Her ay bir pul; çeyreğin üç pulu toplanınca büyük bir 4. pul ("3+1"). Her pul
+  ayrı tasarlanır, yazısız; Ben → Ödüller'de kart ve ayrı sayfa. Oyunda değişen bir şey yok; kodu
+  sonraki pakette (pullar tasarlanınca görseller girer, o zamana kadar yer tutucu).
+- Sırada: pul koleksiyonu paketi (rozetin yerine; yer tutucu pullarla), sonra 9. paket (kartpostal etkinliği).
 
 ## Paketler
 
@@ -290,7 +294,7 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ### 8. Günlük mücadele (Kemal, 15 Kasım; örnek oyun) · bitti (ödül görseli Kemal'de; `ajans/gunluk-mucadele`)
 
-- Her gün bir el; kazanınca takvimde o güne yıldız; ay dolunca aylık ödül (belge 8.1). Takvim
+- Her gün bir el; kazanınca takvimde o güne yıldız; ay dolunca aylık ödül (belge 8.1; 15 Kasım akşam kararıyla pul koleksiyonuna dönüşecek). Takvim
   Mücadeleler sekmesinde.
 - Ödülün görseli [Kemal] (örnekteki kupa kopyalanmaz); ajans 18 adaylık bir liste getirdi, Kemal
   seçecek (15 Kasım soru turu 2. set). O zamana kadar yer tutucu.
