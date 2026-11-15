@@ -1,0 +1,92 @@
+/* Renkler marka kitinden (KKM docs/02-marka-kiti.md): lacivert, krem, kiremit.
+   Kart kırmızısı kiremidin koyusudur: kiremidin kendisi krem kartta küçük
+   köşede okunmuyor (öneri; Kemal'e soru). Kart siyahı nötr koyu. */
+:root {
+  --lacivert: #0e1c4f;
+  --lacivert-acik: #1a2a63;
+  --krem: #f3efe8;
+  --kiremit: #f26b6f;
+  --kart-kirmizi: #b8383d;
+  --kart-siyah: #1b1b1f;
+  font-family: 'Poppins', system-ui, sans-serif;
+  color: var(--lacivert);
+  -webkit-tap-highlight-color: transparent;
+}
+* { box-sizing: border-box; }
+html, body, #kok { margin: 0; height: 100%; background: var(--lacivert); }
+body { overscroll-behavior: none; user-select: none; -webkit-user-select: none; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:disabled { cursor: default; }
+
+/* Dikey ekran: bilgisayarda da telefon genişliğinde ortada durur */
+.cerceve { max-width: 480px; height: 100dvh; margin: 0 auto; position: relative; overflow: hidden; }
+
+.dugme { border: none; border-radius: 999px; font-weight: 600; }
+.dugme.ana { background: var(--kiremit); color: var(--krem); padding: 12px 36px; font-size: 16px; }
+.dugme.genis { width: 100%; }
+.dugme.ince { background: transparent; color: var(--krem); padding: 6px 10px; font-size: 13px; border: 1px solid rgba(243, 239, 232, 0.35); }
+
+/* Kart */
+.kart { position: relative; flex: none; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); overflow: hidden; }
+.kart.yuz { background: var(--krem); border: 1px solid rgba(14, 28, 79, 0.25); }
+.kart.kirmizi { color: var(--kart-kirmizi); }
+.kart.siyah { color: var(--kart-siyah); }
+.kart.arka { background: var(--kiremit); border: 2px solid var(--krem); }
+.kose { position: absolute; top: 0; left: 0; display: flex; align-items: baseline; gap: 1px; font-weight: 600; line-height: 1; letter-spacing: -0.04em; }
+.orta-simge { position: absolute; left: 0; right: 0; bottom: 8%; text-align: center; line-height: 1; }
+
+/* Açılış */
+.acilis { height: 100%; display: flex; flex-direction: column; justify-content: center; color: var(--krem); padding: 24px 20px calc(20px + env(safe-area-inset-bottom)); }
+.acilis-orta { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+.yelpaze { display: flex; justify-content: center; margin-bottom: 18px; }
+.yelpaze .kart { margin: 0 -20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35); }
+.oyun-adi { font-size: 34px; font-weight: 600; margin: 8px 0 0; letter-spacing: 0.02em; }
+.alt-yazi { margin: 0 0 10px; opacity: 0.75; font-size: 14px; }
+.acilis-alt { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 12px; opacity: 0.7; }
+.acilis-alt .sirket { font-weight: 600; letter-spacing: 0.08em; }
+
+/* Oyun seçimi */
+.secim { height: 100%; background: var(--krem); display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 18px 16px calc(14px + env(safe-area-inset-bottom)); overflow-y: auto; }
+.secim-ust { display: flex; flex-direction: column; }
+.secim-oyun-adi { font-size: 12px; opacity: 0.6; letter-spacing: 0.05em; }
+.secim-ust h1 { margin: 0; font-size: 24px; font-weight: 600; }
+.oyun-karti { background: var(--lacivert); color: var(--krem); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.oyun-karti.kapali { background: var(--lacivert-acik); opacity: 0.6; }
+.oyun-karti-ust { display: flex; justify-content: space-between; gap: 12px; }
+.oyun-karti h2 { margin: 0 0 4px; font-size: 20px; font-weight: 600; }
+.oyun-karti p { margin: 0; font-size: 13px; opacity: 0.75; }
+.mini-kartlar { display: flex; flex: none; padding-right: 18px; }
+.mini-kartlar .kart { margin-right: -18px; }
+.rozet { font-size: 11px; font-weight: 600; background: rgba(243, 239, 232, 0.18); padding: 2px 8px; border-radius: 999px; vertical-align: middle; }
+.zorluk { display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+.zorluk > span { opacity: 0.7; }
+.secenekler { display: flex; gap: 6px; }
+.secenekler button { flex: 1; border: 1px solid rgba(243, 239, 232, 0.35); background: transparent; color: var(--krem); border-radius: 10px; padding: 9px 4px; font-size: 14px; }
+.secenekler button.secili { background: var(--krem); color: var(--lacivert); font-weight: 600; border-color: var(--krem); }
+.secim-alt { display: flex; gap: 8px; }
+.secim-alt button { flex: 1; display: flex; flex-direction: column; align-items: center; border: 1px solid rgba(14, 28, 79, 0.2); background: transparent; border-radius: 12px; padding: 10px 4px; color: var(--lacivert); opacity: 0.55; font-size: 13px; }
+.secim-alt small { font-size: 10px; }
+
+/* Masa: düz renkli yer tutucu (kulüp evi görseli 6. pakette) */
+.masa { height: 100%; display: flex; flex-direction: column; background: var(--lacivert); color: var(--krem); padding: 10px 6px calc(8px + env(safe-area-inset-bottom)); touch-action: none; }
+.masa-ust { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 0 2px; }
+.masa-ust h1 { margin: 0; font-size: 14px; font-weight: 600; }
+.masa-not { margin: 6px 2px 8px; font-size: 11px; opacity: 0.6; text-align: center; }
+.oyun-alani { position: relative; flex: 1; min-height: 0; }
+.kart-katmani { position: absolute; inset: 0; }
+.yuva { position: absolute; top: 0; border: 1px dashed rgba(243, 239, 232, 0.3); }
+.yuva.hedef { border-color: var(--kiremit); }
+.kart-yeri { position: absolute; transition: left 0.18s ease, top 0.18s ease; animation: dagit 0.32s ease-out both; touch-action: none; }
+.kart-yeri.tasiniyor { transition: none; }
+.kart-yeri.tasiniyor .kart { box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45); }
+.kart-yeri.secili .kart { outline: 2px solid var(--kiremit); outline-offset: -1px; }
+.kart-yeri.secili .kart { transform: translateY(-3px); }
+@keyframes dagit { from { opacity: 0; transform: translateY(60vh); } to { opacity: 1; transform: none; } }
+.masa-alt { display: flex; flex-direction: column; gap: 4px; padding-top: 8px; }
+.masa-alt-etiket { font-size: 11px; opacity: 0.6; padding-left: 2px; }
+.masa-alt-sira { display: flex; gap: 3px; align-items: flex-end; }
+.masa-alt-sira .yuva { position: static; flex: none; }
+.deste { position: relative; flex: none; border: none; background: transparent; padding: 0; display: flex; align-items: center; gap: 4px; color: var(--krem); }
+.deste-yigin { position: relative; flex: none; }
+.deste-yazi { font-size: 11px; font-weight: 600; line-height: 1.1; text-align: left; }
+.deste:disabled .deste-yazi { opacity: 0.5; }
