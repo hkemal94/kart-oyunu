@@ -5,7 +5,7 @@
 // - Her gün bir el. Kazanınca takvimde o güne yıldız konur.
 // - Oyunu ve zorluğu oyuncu seçer (Spider 1/2/4 renk, klasik solitaire 1/3 kart).
 // - Geçmiş günler sonradan oynanabilir; kazanılınca o güne de yıldız gelir. Gelecek günler kilitli.
-// - Ayın bütün günleri yıldızlanınca o ayın ödülü gelir (görseli [Kemal]).
+// - Ayın bütün günleri yıldızlanınca o ayın pulu gelir (pul koleksiyonu, src/pul; 15 Kasım akşam).
 // - Günlük el puan serisine sayılır: puan anahtarı normal elinkiyle aynıdır (src/kart/puan.ts).
 //
 // Belgedeki öneri (Kemal "bunu yap" dedi): aynı gün, aynı oyun ve zorlukta herkese aynı dağıtım.
@@ -141,7 +141,7 @@ export const aydakiYildizlar = (k: GunlukKaydi, yil: number, ay: number) =>
 export const ayTamamMi = (k: GunlukKaydi, yil: number, ay: number) =>
   aydakiYildizlar(k, yil, ay) === ayinGunSayisi(yil, ay);
 
-// Bütün günleri yıldızlanan aylar ("2026-11" biçiminde, eskiden yeniye): her biri bir aylık ödül
+// Bütün günleri yıldızlanan aylar ("2026-11" biçiminde, eskiden yeniye): her biri bir pul (src/pul girdisi)
 export function tamamlananAylar(k: GunlukKaydi): string[] {
   const aylar = [...new Set(k.yildizlar.map((t) => t.slice(0, 7)))].sort();
   return aylar.filter((a) => {
@@ -153,7 +153,7 @@ export function tamamlananAylar(k: GunlukKaydi): string[] {
 export interface YildizSonucu {
   kayit: GunlukKaydi;
   yeniYildiz: boolean; // bu kazançla ilk kez yıldız geldi
-  ayTamam: boolean; // bu yıldızla ay tamamlandı (ayın ödülü geldi)
+  ayTamam: boolean; // bu yıldızla ay tamamlandı (ayın pulu geldi)
 }
 
 // Günün eli kazanıldı: o güne yıldız konur. Gelecek bir güne yıldız konmaz.

@@ -14,6 +14,7 @@ import {
   oncekiAyaGidilirMi,
   sonrakiAy,
   takvimHucreleri,
+  TAKVIM_ILK_AY,
   tamamlananAylar,
   tarihOku,
   tarihtenBugun,
@@ -23,10 +24,12 @@ import {
   type GunlukEl,
 } from '../oyun/gunluk';
 import type { SonSecim } from '../oyun/sonSecim';
+import { ceyrekTamamMi, type PulDurumu } from '../pul/seri';
+import { KoleksiyonKarti, KoleksiyonSayfasi, type PulYazilari } from '../pul/KoleksiyonSayfasi';
 
 // Günlük mücadele ekranları (yol haritası 8; belge 8.1; Kemal, 15 Kasım). Kurallar
 // src/oyun/gunluk.ts'te. Burada: tarih yazısı, kazanınca yıldız, Mücadeleler sekmesindeki takvim,
-// ana ekrandaki günün kartı ve Ben → Ödüller → Aylık ödüller. Ay ve gün adları metin dosyasından,
+// ana ekrandaki günün kartı ve Ben → Ödüller → Pul koleksiyonu (pullar src/pul'da, oyundan bağımsız). Ay ve gün adları metin dosyasından,
 // dile göre. Yıldız kodla çizilir; örnek oyunun kupası ve görseli kopyalanmaz.
 
 const ayAdi = (ay: number) => m(`ay.${ay}` as MetinAnahtari);
@@ -37,10 +40,16 @@ export function tarihYazisi(tarih: string, kisa = false): string {
   return kisa ? m('tarih.kisa', gun, ayAdi(ay)) : m('tarih.uzun', gun, ayAdi(ay), yil);
 }
 
-// Günlük el kazanılınca o güne yıldız konur (bir el bir kez). Oyun sonu kutusu için tarih ve
-// ayın tamamlanıp tamamlanmadığı döner.
+// Günlük el kazanılınca o güne yıldız konur (bir el bir kez). Oyun sonu kutusu için tarih,
+// ayın tamamlanıp tamamlanmadığı (ayın pulu) ve çeyreğin tamamlanıp tamamlanmadığı (büyük pul) döner.
+export interface GunlukSonucu {
+  tarih: string;
+  ayTamam: boolean;
+  ceyrekTamam: boolean;
+}
+
 export function useGunlukYildiz(gunluk: GunlukEl | undefined, kazandi: boolean) {
-  const [sonuc, setSonuc] = useState<{ tarih: string; ayTamam: boolean } | null>(null);
+  const [sonuc, setSonuc] = useState<GunlukSonucu | null>(null);
   const yazildi = useRef(false);
   useEffect(() => {
     if (!gunluk) return;
@@ -54,7 +63,8 @@ export function useGunlukYildiz(gunluk: GunlukEl | undefined, kazandi: boolean) 
     yazildi.current = true;
     const s = yildizEkle(gunlukOku(localStorage), gunluk.tarih, tarihtenBugun());
     if (s.yeniYildiz) gunlukYaz(localStorage, s.kayit);
-    setSonuc({ tarih: tarihYazisi(gunluk.tarih, true), ayTamam: s.ayTamam });
+    const ceyrekTamam = s.ayTamam && ceyrekTamamMi(tamamlananAylar(s.kayit), gunluk.tarih.slice(0, 7));
+    setSonuc({ tarih: tarihYazisi(gunluk.tarih, true), ayTamam: s.ayTamam, ceyrekTamam });
   }, [kazandi]);
   return sonuc;
 }
@@ -158,7 +168,13 @@ export function Mucadeleler({ gorulenAy, ayDegistir, seciliGun, gunSec, secim, s
         </div>
         {ayTamamMi(kayit, yil, ay) && (
           <p className="takvim-odul">
-            {m('gunluk.ayTamam')} · {m('gunluk.ayinOdulu')}
+            {m('gunluk.ayTamam')} · {m('gunluk.ayinPulu')}
+            {ceyrekTamamMi(tamamlananAylar(kayit), tarihYaz(yil, ay, 1).slice(0, 7)) && (
+              <>
+                <br />
+                {m('gunluk.buyukPul')}
+              </>
+            )}
           </p>
         )}
       </section>
@@ -227,24 +243,35 @@ export function GununKarti({ oyna, takvim }: { oyna: () => void; takvim: () => v
 }
 
 // ---------------------------------------------------------------------------------------------
-// Ben → Ödüller → Aylık ödüller: bütün günleri yıldızlanan her ay için bir rozet. Ödülün görseli
-// Kemal'in seçimini bekliyor (18 aday, Onay bekleyenler); o zamana kadar yer tutucu.
+// Ben → Ödüller → Pul koleksiyonu (Kemal, 15 Kasım akşam; aylık rozetin yerine). Pullar ortak pul
+// klasöründen (src/pul); bu oyuna özgü tek girdi kazanılan aylar: bütün günleri yıldızlanan aylar.
+// Ayrı bir kayıt yok: eski aylık rozetler de bu listeden geldiği için hiçbiri kaybolmaz.
+// Koleksiyon takvimle aynı yıldan başlar (Ocak 2026).
 
-export function AylikOduller() {
-  const aylar = tamamlananAylar(gunlukOku(localStorage));
-  if (aylar.length === 0) return <small>{m('ben.aylikBos')}</small>;
-  return (
-    <div className="aylik-oduller">
-      {aylar.map((a) => {
-        const [yil, ay] = a.split('-').map(Number);
-        return (
-          <span key={a} className="aylik-rozet">
-            <YildizSimgesi />
-            <b>{m('takvim.ay', ayAdi(ay), yil)}</b>
-            <small>{m('gunluk.ayinOdulu')}</small>
-          </span>
-        );
-      })}
-    </div>
-  );
+const durumYazisi = (d: PulDurumu) => m(d === 'kazanildi' ? 'pul.kazanildi' : d === 'eksik' ? 'pul.eksik' : 'pul.gelecek');
+const ceyrekYazisi = (yil: number, ilk: number, son: number) => m('pul.ceyrek', ayAdi(ilk), ayAdi(son), yil);
+
+function pulYazilari(): PulYazilari {
+  return {
+    yil: (yil) => m('pul.yil', yil),
+    ceyrek: ceyrekYazisi,
+    ayEtiketi: (yil, ay, d) => m('pul.ayEtiketi', ayAdi(ay), yil, durumYazisi(d)),
+    buyukEtiketi: (yil, c, d) => m('pul.buyukEtiketi', ceyrekYazisi(yil, c * 3 - 2, c * 3), durumYazisi(d)),
+    sayac: (a, b) => m('pul.sayac', a, b),
+    bos: m('pul.bos'),
+    not: m('pul.not'),
+  };
 }
+
+const pulGirdisi = () => ({
+  kazanilanAylar: tamamlananAylar(gunlukOku(localStorage)),
+  bugun: tarihtenBugun(),
+  ilkYil: TAKVIM_ILK_AY.yil,
+  yazilar: pulYazilari(),
+});
+
+export const PulKoleksiyonuKarti = ({ ac }: { ac: () => void }) => (
+  <KoleksiyonKarti baslik={m('ben.pullar')} ac={ac} {...pulGirdisi()} />
+);
+
+export const PulKoleksiyonu = () => <KoleksiyonSayfasi {...pulGirdisi()} />;

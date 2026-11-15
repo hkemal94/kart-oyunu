@@ -507,7 +507,8 @@ export function YildizSimgesi({ dolu = true }: { dolu?: boolean }) {
 
 // Oyun sonu: süre, hamle, puan (bu el, seri, yeni aşama, yeni en iyi), "Yeni el", "Oyun seçimi"
 // (belge 2 ve 8.3). "Yeni el" serinin bir sonraki elidir.
-// Günlük mücadele elinde (8. paket): "Günün yıldızı" satırı (ay tamamlandıysa ayın ödülü de) ve
+// Günlük mücadele elinde (8. paket): "Günün yıldızı" satırı (ay tamamlandıysa ayın pulu, çeyrek de
+// tamamlandıysa büyük pul) ve
 // tek düğme "Takvime dön"; seri sürer, sıradaki el takvimden seçilir.
 export function OyunSonu(o: {
   altBaslik: string;
@@ -516,7 +517,7 @@ export function OyunSonu(o: {
   puan: KazancSonucu | null;
   yeniEl: () => void;
   geri: () => void;
-  gunluk?: { tarih: string; ayTamam: boolean } | null;
+  gunluk?: { tarih: string; ayTamam: boolean; ceyrekTamam?: boolean } | null;
 }) {
   return (
     <div className="oyun-sonu">
@@ -559,7 +560,8 @@ export function OyunSonu(o: {
             <small>{o.gunluk.tarih}</small>
           </p>
         )}
-        {o.gunluk?.ayTamam && <p className="ayin-odulu-sonu">{m('sonu.ayinOdulu')}</p>}
+        {o.gunluk?.ayTamam && <p className="ayin-odulu-sonu">{m('sonu.ayinPulu')}</p>}
+        {o.gunluk?.ceyrekTamam && <p className="ayin-odulu-sonu">{m('gunluk.buyukPul')}</p>}
         {o.gunluk ? (
           <button className="dugme ana genis" onClick={o.geri}>
             {m('sonu.takvim')}

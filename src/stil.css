@@ -337,7 +337,30 @@ button:disabled { cursor: default; }
 .gunun-yildizi small { font-weight: 400; opacity: 0.6; font-size: 12px; }
 .ayin-odulu-sonu { margin: -4px 0 4px; font-size: 12px; opacity: 0.75; }
 
-.aylik-oduller { display: flex; flex-wrap: wrap; gap: 6px; }
-.aylik-rozet { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 6px 8px; border-radius: 10px; background: rgba(243, 239, 232, 0.12); font-size: 11px; }
-.aylik-rozet b { font-weight: 600; }
-.aylik-rozet small { font-size: 9px; opacity: 0.7; }
+/* Pul koleksiyonu (src/pul; Kemal 15 Kasım akşam): krem zemin, lacivert ince çizgi, tırtıklı kenar.
+   Kazanılmamış pul soluk; gelecek ayın pulu çok soluk ve kilitli. Başka oyuna src/pul ile taşınır. */
+.pul { display: block; flex: none; width: 50px; height: auto; overflow: visible; }
+.pul.buyuk { width: 66px; }
+.pul-zemin { fill: var(--krem); }
+.pul-cizgi { fill: none; stroke: var(--lacivert); stroke-width: 0.7; }
+.pul-sus { fill: var(--lacivert); }
+.pul.kazanildi { filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.35)); }
+.pul.eksik .pul-zemin { fill: rgba(243, 239, 232, 0.28); }
+.pul.eksik .pul-cizgi, .pul.eksik .pul-sus { stroke: rgba(14, 28, 79, 0.45); }
+.pul.eksik .pul-sus { fill: rgba(14, 28, 79, 0.45); stroke: none; }
+.pul.gelecek .pul-zemin { fill: rgba(243, 239, 232, 0.09); }
+.pul.gelecek .pul-cizgi { stroke: rgba(243, 239, 232, 0.22); }
+.pul.gelecek .pul-sus { fill: rgba(243, 239, 232, 0.22); }
+.pul-kilit { fill: none; stroke: rgba(243, 239, 232, 0.4); stroke-width: 0.9; }
+.pul-karti { background: none; color: inherit; text-align: left; align-items: flex-start; }
+.pul-karti-seri { display: flex; gap: 4px; }
+.pul-karti-seri .pul { width: 24px; }
+.pul-koleksiyonu { display: flex; flex-direction: column; gap: 10px; }
+.pul-sayac { margin: 0; font-size: 13px; font-weight: 600; }
+.pul-yil { background: var(--lacivert); color: var(--krem); border-radius: 14px; padding: 10px 14px 12px; display: flex; flex-direction: column; gap: 10px; }
+.pul-yil h2 { margin: 0; font-size: 12px; font-weight: 600; opacity: 0.6; letter-spacing: 0.04em; }
+.pul-ceyrek { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.pul-seri { display: flex; align-items: center; gap: 8px; }
+.pul-seri .pul.buyuk { margin-left: 6px; }
+.pul-ceyrek figcaption { font-size: 11px; opacity: 0.7; }
+.pul-not { margin: 0; font-size: 11px; opacity: 0.6; }

@@ -1,14 +1,26 @@
 {
   "oyun": "[Kemal]",
   "kaynak": "https://hkemal94.github.io/kart-oyunu/",
-  "not": "Oyunun adı Kemal'in; 'kart-oyunu' geçici çalışma adı. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ana ekran, Ben sekmesi ve ince kenarlı masa görüntüleri öneri dalından (ajans/ana-ekran); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor. Günlük mücadele görüntüleri (gunluk-*.png) öneri dalından (ajans/gunluk-mucadele); saat 15 Kasım 2026'ya sabitlendi, takvimdeki yıldızlar yalnız geliştirmede çalışan hazır veriden (?deneme=takvim). Telefon yorumları görüntüleri (yorum-*.png) öneri dalından (ajans/telefon-yorumlari-1); koyu kartlar hazır deneme ellerinde (?deneme=cift, ?deneme=klasik-orta). Kendiliğinden bitirme görüntüleri (bitir-*.png) öneri dalından (ajans/kendiliginden-bitirme); bitmeye yakın el yalnız geliştirmede çalışan hazır veriden (?deneme=klasik-bitir). Hareketler (dağıtma, kayma, akış) yalnız videoda görünür; videolar depoya konmadı.",
+  "not": "Oyunun adı Kemal'in; 'kart-oyunu' geçici çalışma adı. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ana ekran, Ben sekmesi ve ince kenarlı masa görüntüleri öneri dalından (ajans/ana-ekran); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor. Günlük mücadele görüntüleri (gunluk-*.png) öneri dalından (ajans/gunluk-mucadele); saat 15 Kasım 2026'ya sabitlendi, takvimdeki yıldızlar yalnız geliştirmede çalışan hazır veriden (?deneme=takvim). Telefon yorumları görüntüleri (yorum-*.png) öneri dalından (ajans/telefon-yorumlari-1); koyu kartlar hazır deneme ellerinde (?deneme=cift, ?deneme=klasik-orta). Kendiliğinden bitirme görüntüleri (bitir-*.png) öneri dalından (ajans/kendiliginden-bitirme); bitmeye yakın el yalnız geliştirmede çalışan hazır veriden (?deneme=klasik-bitir). Hareketler (dağıtma, kayma, akış) yalnız videoda görünür; videolar depoya konmadı. Pul koleksiyonu görüntüleri (pul-*.png) öneri dalından (ajans/pul-koleksiyonu); saat 15 Kasım 2026'ya sabitlendi, kazanılmış pullar yalnız geliştirmede çalışan hazır veriden (?deneme=pullar).",
   "goruntuler": [
+    {
+      "dosya": "pul-1-ben-oduller.png",
+      "baslik": "Ben → Ödüller: 'Pul koleksiyonu' kartı (son üç pul, kaç pul toplandığı); pullar yer tutucu",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)",
+      "kapak": true
+    },
+    {
+      "dosya": "pul-2-koleksiyon.png",
+      "baslik": "Pul koleksiyonu sayfası: çeyrek başına üç aylık pul ve büyük pul; Ocak–Mart tamam (büyük pul kazanıldı), kazanılmamışlar soluk, gelecek aylar kilitli",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
     {
       "dosya": "bitir-1-dugme.png",
       "baslik": "Klasik solitaire: bütün kartlar açık, deste boş; masada 'Bitir' düğmesi (kendiliğinden bitirme)",
       "tarih": "2026-11-15",
-      "cihaz": "telefon (dikey, 390x844)",
-      "kapak": true
+      "cihaz": "telefon (dikey, 390x844)"
     },
     {
       "dosya": "bitir-2-oyun-sonu.png",

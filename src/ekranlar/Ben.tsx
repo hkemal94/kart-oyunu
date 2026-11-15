@@ -3,14 +3,14 @@ import { sureYazisi } from './masaOrtak';
 import { istatistikOku, istatistikYukle } from '../oyun/istatistik';
 import { puanAnahtari } from '../kart/puan';
 import { oyunAdi } from './AnaEkran';
-import { AylikOduller } from './Gunluk';
+import { PulKoleksiyonu, PulKoleksiyonuKarti } from './Gunluk';
 
 // Ben sekmesi (yol haritası 7; belge 2 ve 8.4; Kemal, 15 Kasım):
-// ödüller (aylık ödüller, 8. paketle; kartpostal koleksiyonu şimdilik boş yer tutucu), istatistik, ayarlar
+// ödüller (pul koleksiyonu, 15 Kasım akşam; dokununca ayrı sayfa; kartpostal koleksiyonu şimdilik boş yer tutucu), istatistik, ayarlar
 // (mevcut ayarlar ekranı üstüne açılır), nasıl oynanır, yardım, oyun hakkında, gizlilik (son üçü
 // yer tutucu). Satıra dokununca alt sayfa açılır; "Geri" listeye döner.
 
-export type BenSayfasi = 'istatistik' | 'nasil' | 'yardim' | 'hakkinda' | 'gizlilik';
+export type BenSayfasi = 'pullar' | 'istatistik' | 'nasil' | 'yardim' | 'hakkinda' | 'gizlilik';
 
 interface Ozellik {
   sayfa: BenSayfasi | null;
@@ -40,11 +40,8 @@ export function Ben({ sayfa, sayfaAc, ayarAc }: Ozellik) {
       <section className="ben-bolum">
         <h2>{m('ben.oduller')}</h2>
         <div className="odul-kartlari">
-          {/* Aylık ödüller (8. paket): bütün günleri yıldızlanan aylar; görsel [Kemal] */}
-          <div className="odul-karti">
-            <span>{m('ben.aylik')}</span>
-            <AylikOduller />
-          </div>
+          {/* Pul koleksiyonu: bütün günleri yıldızlanan her ay bir pul, çeyreğin üçü bir büyük pul */}
+          <PulKoleksiyonuKarti ac={() => sayfaAc('pullar')} />
           <div className="odul-karti">
             <span>{m('ben.koleksiyon')}</span>
             <small>{m('ben.bos')}</small>
@@ -68,6 +65,7 @@ export function Ben({ sayfa, sayfaAc, ayarAc }: Ozellik) {
 }
 
 const BASLIK: Record<BenSayfasi, MetinAnahtari> = {
+  pullar: 'ben.pullar',
   istatistik: 'ben.istatistik',
   nasil: 'ben.nasil',
   yardim: 'ben.yardim',
@@ -87,6 +85,7 @@ function AltSayfa({ sayfa, geri }: { sayfa: BenSayfasi; geri: () => void }) {
         </button>
         <h1 className="sekme-baslik">{m(BASLIK[sayfa])}</h1>
       </header>
+      {sayfa === 'pullar' && <PulKoleksiyonu />}
       {sayfa === 'istatistik' && <Istatistik />}
       {sayfa === 'nasil' && <NasilOynanir />}
       {sayfa === 'yardim' && <p className="yer-tutucu-yazi">{m('ben.yardim.yerTutucu')}</p>}

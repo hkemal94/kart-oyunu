@@ -118,7 +118,18 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   pul koleksiyonu. Her ay bir pul; çeyreğin üç pulu toplanınca büyük bir 4. pul ("3+1"). Her pul
   ayrı tasarlanır, yazısız; Ben → Ödüller'de kart ve ayrı sayfa. Oyunda değişen bir şey yok; kodu
   sonraki pakette (pullar tasarlanınca görseller girer, o zamana kadar yer tutucu).
-- Sırada: pul koleksiyonu paketi (rozetin yerine; yer tutucu pullarla), sonra 9. paket (kartpostal etkinliği).
+- 15 Kasım 2026 (öneri; `ajans/pul-koleksiyonu`; Kemal: "başla"): pul koleksiyonu paketi. Ben →
+  Ödüller'de "Aylık ödüller" yerine "Pul koleksiyonu" kartı (son üç pul ve kaç pul toplandığı);
+  dokununca ayrı sayfa: yıl başına bir bölüm, her çeyrekte üç aylık pul ve yanında büyük 4. pul,
+  altında çeyrek ve yıl ("Ocak–Mart 2026"). Pullar kodla çizilmiş yer tutucu: tırtıklı kenar, krem
+  zemin, lacivert ince çizgi, yazısız; büyük pul çift çerçeveli. Kazanılmamış pul soluk, gelecek
+  aylar kilitli. Takvimde ve oyun sonunda "Bu ayın pulu kazanıldı", çeyrek de tamamsa "Çeyreğin büyük
+  pulu kazanıldı". Ayrı kayıt yok: pullar yıldızlı günlerden hesaplanır, eski rozetler kaybolmaz.
+  Pul bütün oyunların ortak ödül sistemi olduğu için (Kemal, 15 Kasım) pul kodu oyundan bağımsız
+  `src/pul/` klasöründe; görseller `src/pul/pullar.ts`'e tek tek eklenir. Bilgisayarda telefon
+  boyutunda (390x844) denendi; gerçek telefonda denenmedi. Ekran görüntüleri:
+  `docs/ekran-goruntuleri/pul-*.png`.
+- Sırada: 9. paket (kartpostal etkinliği); pul görselleri tasarlandıkça tek tek.
 
 ## Paketler
 
@@ -294,7 +305,7 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ### 8. Günlük mücadele (Kemal, 15 Kasım; örnek oyun) · bitti (ödül görseli Kemal'de; `ajans/gunluk-mucadele`)
 
-- Her gün bir el; kazanınca takvimde o güne yıldız; ay dolunca aylık ödül (belge 8.1; 15 Kasım akşam kararıyla pul koleksiyonuna dönüşecek). Takvim
+- Her gün bir el; kazanınca takvimde o güne yıldız; ay dolunca o ayın pulu, çeyrek dolunca büyük pul (belge 8.1; pul koleksiyonu, `ajans/pul-koleksiyonu`). Takvim
   Mücadeleler sekmesinde.
 - Ödülün görseli [Kemal] (örnekteki kupa kopyalanmaz); ajans 18 adaylık bir liste getirdi, Kemal
   seçecek (15 Kasım soru turu 2. set). O zamana kadar yer tutucu.
@@ -385,6 +396,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ## Bitenler
 
+- Pul koleksiyonu, yer tutucu pullarla (`ajans/pul-koleksiyonu`, 15 Kasım 2026; pul görselleri
+  sonra tek tek; Kemal birleştirince kesinleşir).
 - 4. Yardımcılar: kendiliğinden bitirme, klasik solitaire (`ajans/kendiliginden-bitirme`, 15 Kasım
   2026; Kemal birleştirince kesinleşir). 4. paketin bütün maddeleri bitti.
 - Kemal'in telefon yorumları (15 Kasım): çift dokunuşla hızlı yerleştirme, teker teker dağıtma,

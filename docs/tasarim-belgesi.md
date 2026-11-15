@@ -740,6 +740,20 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
     hesaplanır; tamamlanmış her ay kendi pulu olur, kazanılan hiçbir şey kaybolmaz (öneri, Oyun
     Tasarımcısı 15 Kasım).
   - Eski öneri ("her ay bir Düzada nesnesi", 18 adaylık liste) düştü.
+  - **Pul koleksiyonu bütün oyunların ortak ödül sistemi** (Kemal, 15 Kasım): tasarım dili, 3+1 seri
+    ve koleksiyon sayfası oyunlar arasında aynı. Ortak kurallar Kems Ajans deposunda
+    `docs/pul-koleksiyonu.md`. Bu oyunda bir ay, ayın bütün günleri yıldızlanınca kazanılır.
+  - **Yapılan (`ajans/pul-koleksiyonu`, 15 Kasım):** Ben → Ödüller'de "Pul koleksiyonu" kartı (son
+    üç pul, kaç pul ve büyük pul toplandığı); dokununca sayfa: yıl başına bir bölüm (koleksiyon Ocak
+    2026'dan başlar, takvimle aynı), her çeyrekte üç aylık pul ve yanında büyük pul, altında çeyrek
+    ve yıl (ay adları dile göre). Pullar kodla çizilmiş yer tutucu: tırtıklı kenar, krem zemin,
+    lacivert ince çizgi, yazısız; büyük pul daha büyük, çift çerçeveli, köşeleri süslü. Kazanılmamış
+    pul soluk; gelecek ayların pulu çok soluk ve kilitli. Takvimin altında ve günlük elin oyun
+    sonunda "Bu ayın pulu kazanıldı", çeyrek de tamamsa "Çeyreğin büyük pulu kazanıldı". Pul kodu
+    oyundan bağımsız `src/pul/` klasöründe (başka oyuna kopyalanabilir; `src/pul/BENIOKU.md`); bu
+    oyuna özgü tek girdi kazanılan aylar (`src/oyun/gunluk.ts` → `tamamlananAylar`). Pul görselleri
+    `src/pul/pullar.ts`'e anahtarla eklenir: `"2026-01"` aylık pul, `"2026-Q1"` çeyreğin büyük pulu;
+    görseli olmayan pul yer tutucuyla çizilir.
 - **Günlük mücadele eli puan serisine sayılır** (Kemal, 15 Kasım soru turu): kazanınca serinin
   aşaması artar, kaybedince seri biter (8.3). Önceki öneri ("ayrı tutulsun") düştü.
 - Takvim Mücadeleler sekmesinde; ana ekranın üstünde günün kartı.
@@ -754,8 +768,8 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
   - Masada başlığın yanında küçük yıldızlı tarih işareti; kazanınca oyun sonunda "Günün yıldızı"
     ve "Takvime dön".
   - Aylık ödül: ayın bütün günleri yıldızlanınca Ben → Ödüller → Aylık ödüller'de
-    "[YER TUTUCU: ayın ödülü]" rozeti. 15 Kasım akşam kararıyla pul koleksiyonuna dönüşecek
-    (sonraki paket; yukarıda).
+    "[YER TUTUCU: ayın ödülü]" rozeti. 15 Kasım akşam kararıyla pul koleksiyonuna dönüştü
+    (`ajans/pul-koleksiyonu`; yukarıda).
   - Günlük yarım el kaldığı yerden devam eder, normal yarım elden ayrı saklanır.
   - Seri: günlük el normal elle aynı seriye (oyun ve zorluk başına) sayılır; kazanınca aşama
     artar, bırakınca seri biter.
