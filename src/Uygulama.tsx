@@ -24,18 +24,20 @@ import { yarimElOku, yarimElSil, type YarimEl } from './oyun/yarimEl';
 import { Ayarlar } from './ekranlar/Ayarlar';
 import { dilSec } from './metinler';
 import { ayarlariOku, ayarlariYaz, ilkDil, type OyuncuAyarlari } from './oyun/oyuncuAyarlari';
-import { denemeMasasi, gunlukDenemesi, klondikeDenemesi, type DenemeTuru, type KlondikeDenemeTuru } from './kart/deneme';
+import { denemeMasasi, gunlukDenemesi, klondikeDenemesi, pulDenemesi, type DenemeTuru, type KlondikeDenemeTuru } from './kart/deneme';
 
 type Ekran = 'acilis' | 'sekmeler' | 'secim' | 'spider' | 'klasik';
 
 // Yalnız geliştirmede: adres sonuna ?deneme=kazan, ?deneme=dizi, ?deneme=uzun, ?deneme=cift, ?deneme=klasik-kazan ya da
 // ?deneme=klasik-orta (ya da ?deneme=klasik-bitir: bitmeye yakın el, 4. paket) yazılınca hazır bir el doğrudan masada açılır (ekran görüntüsü ve elle
 // deneme için). ?deneme=gunluk-kazan bugünün günlük eli olarak bir hamlede biten Spider'ı açar;
-// ?deneme=takvim takvime hazır yıldızlar koyar (8. paket). Yayındaki oyunda çalışmaz.
+// ?deneme=takvim takvime hazır yıldızlar koyar (8. paket); ?deneme=pullar pul koleksiyonu için
+// hazır yıldızlar koyar (Ben → Ödüller → Pul koleksiyonu). Yayındaki oyunda çalışmaz.
 function denemeOku() {
   if (!import.meta.env.DEV) return null;
   const tur = new URLSearchParams(location.search).get('deneme');
   if (tur === 'takvim' || tur === 'gunluk-kazan') gunlukYaz(localStorage, gunlukDenemesi(tarihtenBugun()));
+  if (tur === 'pullar') gunlukYaz(localStorage, pulDenemesi(tarihtenBugun()));
   if (tur === 'gunluk-kazan') return { oyun: 'spider' as const, gunluk: true, ...denemeMasasi('kazan') };
   if (tur === 'kazan' || tur === 'dizi' || tur === 'uzun' || tur === 'cift') return { oyun: 'spider' as const, ...denemeMasasi(tur as DenemeTuru) };
   if (tur === 'klasik-kazan' || tur === 'klasik-orta' || tur === 'klasik-bitir') {

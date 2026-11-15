@@ -14,6 +14,7 @@
 // - klasik-bitir: klasik solitaire, bitmeye yakın el (4. paket, kendiliğinden bitirme): deste ve açılan
 //   kartlar boş, sütunlardaki 30 kartın hepsi açık; masada "Bitir" düğmesi görünür.
 // - takvim, gunluk-kazan: günlük mücadele için hazır yıldızlar (aşağıda gunlukDenemesi).
+// - pullar: pul koleksiyonu için hazır yıldızlar (aşağıda pulDenemesi).
 
 import type { Kart, RenkSayisi } from './kart';
 import { karistir, spiderKartlari, type SpiderMasasi } from './spider';
@@ -133,8 +134,8 @@ export function klondikeDenemesi(tur: KlondikeDenemeTuru): { masa: KlondikeMasas
 }
 
 // Günlük mücadele (8. paket): takvimde gerçekçi görünsün diye hazır yıldızlar. Yalnız geliştirmede
-// (?deneme=takvim, ?deneme=gunluk-kazan). Geçen ayın bütün günleri yıldızlı (Ben → Aylık ödüller'de
-// bir rozet), bu ayda bugünden önceki günlerin çoğu yıldızlı, birkaçı boş; bugün boş.
+// (?deneme=takvim, ?deneme=gunluk-kazan). Geçen ayın bütün günleri yıldızlı (Ben → Pul koleksiyonu'nda
+// bir pul), bu ayda bugünden önceki günlerin çoğu yıldızlı, birkaçı boş; bugün boş.
 export function gunlukDenemesi(bugun: string): GunlukKaydi {
   const { yil, ay, gun } = tarihOku(bugun);
   const once = oncekiAy(yil, ay);
@@ -142,4 +143,17 @@ export function gunlukDenemesi(bugun: string): GunlukKaydi {
   for (let g = 1; g <= ayinGunSayisi(once.yil, once.ay); g++) yildizlar.push(tarihYaz(once.yil, once.ay, g));
   for (let g = 1; g < gun; g++) if (g % 5 !== 3) yildizlar.push(tarihYaz(yil, ay, g));
   return { yildizlar };
+}
+
+// Pul koleksiyonu (?deneme=pullar): Ocak, Şubat ve Mart 2026'nın bütün günleri yıldızlı (üç pul ve
+// çeyreğin büyük pulu), Mayıs ve Ağustos 2026 da tamam (iki pul daha); Haziran'da birkaç gün eksik.
+// Bugünden sonraki aylar yazılmaz. Yalnız geliştirmede.
+export function pulDenemesi(bugun: string): GunlukKaydi {
+  const yildizlar: string[] = [];
+  for (const ay of [1, 2, 3, 5, 6, 8]) {
+    const tarih = tarihYaz(2026, ay, 1);
+    if (tarih.slice(0, 7) > bugun.slice(0, 7)) continue;
+    for (let g = 1; g <= ayinGunSayisi(2026, ay); g++) if (ay !== 6 || g % 7 !== 2) yildizlar.push(tarihYaz(2026, ay, g));
+  }
+  return { yildizlar: yildizlar.filter((t) => t <= bugun) };
 }
