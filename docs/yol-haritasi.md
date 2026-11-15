@@ -56,7 +56,25 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   `docs/ekran-goruntuleri/liste.json` ve `src/oyun/ayarlar.json` (geri al hakkı, puan adayı ve
   adayların sayıları; oyun bu dosyadan okur). Bilgisayarda telefon boyutunda denendi; gerçek
   telefonda denenmedi.
-- Sırada: 4. paketin kalan maddeleri (kendiliğinden bitirme, kaldığı yerden devam, istatistik).
+- 15 Kasım 2026 (öneri; `ajans/ana-ekran`): 7. paket, ana ekran ve Ben sekmesi (Kemal: "Ana
+  ekran ve Ben sekmesiyle devam et"); 4. paketten kaldığı yerden devam ve basit istatistik de geldi.
+  Altta üç sekme (Ana ekran · Mücadeleler · Ben); masada sekmeler gizli. Ana ekranda "Yakında"
+  kartları (günlük mücadele, kartpostal etkinliği), oyunun adı [Kemal], en iyi puan, "Oyuna devam
+  et" ve "Yeni oyun". Yarım el sayfa kapansa da saklanıyor. Ben sekmesinde ödüller (boş), istatistik,
+  ayarlar, nasıl oynanır (taslak), yardım, oyun hakkında, gizlilik (yer tutucu). Masadaki dördüncü
+  düğme "Ana ekran" oldu. Bilgisayarda telefon boyutunda denendi; gerçek telefonda denenmedi.
+  Ekran görüntüleri: `docs/ekran-goruntuleri/ana-*.png`.
+- 15 Kasım 2026 (aynı öneri, `ajans/ana-ekran`; Kemal: "Çerçeve + içerik ortada toplansın"): bütün
+  ekranlarda ortak kenar payı; menü ekranlarında içerik ortada; masa ince çerçeveli tek blok, dikeyde
+  ortada, sütunlar uzayınca büyür. Kart boyu değişmedi. 320x640, 390x844 ve 430x932'de denendi
+  (taşma yok); gerçek telefonda denenmedi. Ekran görüntüleri: `ana-8-spider-dagitim.png`,
+  `ana-9-klasik-dagitim.png`.
+- 15 Kasım 2026 (aynı öneri, `ajans/ana-ekran`; Kemal: "İnce kenar, masa ekranı doldursun", örnek
+  ekran için "Bu uygun işte"): çerçeve kalktı, kenar payı inceldi (8-12 piksel); masa ekranın tamamını
+  kaplar, kartlar ekran enini doldurur, kapalı kartlar sık; bilgi satırı iki satır ve büyük yazı;
+  düğmeler başparmak boyunda. 320x640, 390x844 ve 430x932'de denendi (taşma yok); gerçek telefonda
+  denenmedi. Ekran görüntüleri: `ana-*.png` yenilendi.
+- Sırada: 4. paketten kalan kendiliğinden bitirme; sonra 8. paket (günlük mücadele).
 
 ## Paketler
 
@@ -122,7 +140,7 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 - Bu pakette yok: kendiliğinden bitirme (4. paket), puan (6. paket).
 - Neye bağlı: 2. paket.
 
-### 4. Yardımcılar · geri al (hakla) ve ipucu bitti (`ajans/geri-al-ipucu`), kalanlar bekliyor
+### 4. Yardımcılar · geri al, ipucu, kaldığı yerden devam ve istatistik bitti; kendiliğinden bitirme bekliyor
 
 - Geri al, ipucu, kendiliğinden bitirme, kaldığı yerden devam (telefonun tarayıcısında saklanır),
   süre ve hamle sayacı, basit istatistik. Alt şeritte geri al, ipucu, yeni el, menü; üstte ince
@@ -147,10 +165,16 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   parlar; o da yoksa kısa uyarı. Reklamın takılacağı yer ayrıldı (`src/reklam/ipucuHakki.ts`);
   web'de hep serbest. Kurallar `src/kart/spider.ts`'te, testleri `testler/yardimcilar.test.ts`.
   Ekran görüntüleri: `docs/ekran-goruntuleri/yardim-*.png`.
-- Alt şerit: Geri al, İpucu, Yeni el, Oyun seçimi (tek satır; "menü" 7. pakette ana ekranla gelir).
+- Alt şerit: Geri al, İpucu, Yeni el, Ana ekran (tek satır; 7. pakette "Oyun seçimi" yerine "Ana ekran").
 - **Klasik solitaire için geri al ve ipucu · bitti** (3. paketle, `ajans/klasik-solitaire`).
-- **Bekliyor:** kendiliğinden bitirme, kaldığı yerden devam, basit istatistik. Süre ve hamle sayacı 2. pakette geldi; ayardan kapatma
-  5. pakette.
+- **Kaldığı yerden devam · bitti** (7. paketle, `ajans/ana-ekran`). En az bir hamle yapılmış el
+  telefonun tarayıcısında saklanır (her hamlede, uygulamadan çıkınca, masadan çıkınca); ana ekrandaki
+  "Oyuna devam et" açar. Spider ve klasik solitaire. Süre ve kalan geri al hakkı sürer; geri al
+  geçmişi saklanmaz (öneri). Kurallar `src/oyun/yarimEl.ts`, testleri `testler/devam.test.ts`.
+- **Basit istatistik · bitti** (7. paketle). Oyun ve zorluk başına oynanan, kazanılan, en iyi süre;
+  Ben sekmesinde. `src/oyun/istatistik.ts`, testleri `testler/istatistik.test.ts`.
+- **Bekliyor:** kendiliğinden bitirme; oyun sonu ekranında istatistik (öneri). Süre ve hamle sayacı
+  2. pakette geldi; ayardan kapatma 5. pakette.
 - Neye bağlı: 2. ve 3. paket.
 
 ### 5. Ayarlar ve iki dil · bitti (`ajans/ayarlar-dil`; Kemal birleştirince kesinleşir)
@@ -195,13 +219,24 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   Kemal'e soru), ayardaki "her hamlede puanı göster" (5. paket).
 - Neye bağlı: 4. paket (süre ve hamle sayacı), Kemal'in formül kararı.
 
-### 7. Ana ekran ve Ben sekmesi (Kemal, 15 Kasım; örnek oyun)
+### 7. Ana ekran ve Ben sekmesi (Kemal, 15 Kasım; örnek oyun) · bitti (`ajans/ana-ekran`; Kemal birleştirince kesinleşir)
 
 - Altta üç sekme: ana ekran, mücadeleler, ben. Ana ekranda üstte günlük mücadele ve etkinlik
   kartları (yer tutucu), ortada oyunun adı [Kemal] ve en iyi puan, altta "devam et" ve "yeni oyun"
   (belge 2).
 - Ben sekmesi: ödüller, ayarlar (5. paket buraya taşınır), nasıl oynanır, yardım, oyun hakkında,
   gizlilik; metinler yer tutucu.
+- Yapılan: ekranlar `src/ekranlar/AnaEkran.tsx`, `Ben.tsx`, `Sekmeler.tsx`; geçişler
+  `src/Uygulama.tsx`. Ana ekran: üstte "Günlük mücadele" ve "Kartpostal etkinliği" (Yakında), ortada
+  oyunun adı [Kemal] ve en iyi puan (yarım el varsa onun, yoksa son seçilen oyun ve zorluk), altta
+  "Oyuna devam et" (yarım el yoksa soluk) ve "Yeni oyun" (oyun seçimine; yarım el varken eli bırakma
+  sorusu). Mücadeleler: yer tutucu. Ben: Ödüller (aylık ödüller, kartpostal koleksiyonu; boş),
+  İstatistik, Ayarlar, Nasıl oynanır (standart kuralların kısa özeti; taslak, Kemal onaylayacak),
+  Yardım, Oyun hakkında, Gizlilik (yer tutucu). Oyun seçimindeki "İstatistik" açıldı, "Paketler"
+  yakında. Masada sekmeler gizli; masadaki "Ana ekran" eli bırakmadan çıkar. Son seçilen oyun ve
+  zorluk saklanır (`src/oyun/sonSecim.ts`). Bütün yazılar `tr.json` ve `en.json`'da.
+- Bu pakette yok: günlük mücadele (8), kartpostal etkinliği (9), ödüllerin içi, Paketler (13),
+  yardım, oyun hakkında ve gizlilik metinleri (Kemal'in).
 - Neye bağlı: 5. ve 6. paket.
 
 ### 8. Günlük mücadele (Kemal, 15 Kasım; örnek oyun)
@@ -271,6 +306,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ## Bitenler
 
+- 7. Ana ekran ve Ben sekmesi; 4. paketten kaldığı yerden devam ve basit istatistik
+  (`ajans/ana-ekran`, 15 Kasım 2026; Kemal birleştirince kesinleşir).
 - 5. Ayarlar ve iki dil, KKM ayar dosyası ve ekran görüntüsü listesiyle (`ajans/ayarlar-dil`,
   15 Kasım 2026; önce `ajans/spider-duzen`, sonra bu birleşince kesinleşir).
 - Spider düzeni (Kemal 15 Kasım): büyüyen kartlar, ekrana göre aralık, dar yelpaze alt şerit;

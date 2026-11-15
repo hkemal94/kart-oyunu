@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { m, sayi } from '../metinler';
 import { geriAlHakkiAl } from '../reklam/geriAlHakki';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
+import { yarimElSil, yarimElYaz, yarimMi, type YarimEl } from '../oyun/yarimEl';
+import { elBasladi, elKazanildi as istatistikKazanildi, istatistikGuncelle } from '../oyun/istatistik';
 import { hakBaslat, hakKullan, reklamHakkiEkle, yeniElHakki, type GeriAlHakki } from '../kart/geriAlHakki';
 import {
   elKazanildi,
@@ -28,9 +30,36 @@ export function sureYazisi(saniye: number): string {
   return sa > 0 ? `${sa}:${iki(dk)}:${iki(s)}` : `${dk}:${iki(s)}`;
 }
 
-// Süre: el başında başlar, el bitince durur; yeni elde sıfırlanır.
-export function useSure(bitti: boolean) {
-  const [basladi, setBasladi] = useState(() => Date.now());
+// Masa (Kemal, 15 Kasım: "İnce kenar, masa ekranı doldursun"; örnek ekran için "Bu uygun işte").
+// Çerçeve yok; masa ekranın tamamını kaplar: üstte bilgi satırı, hemen altında kartlar, en altta
+// alt şerit ve düğmeler. Kartların alanı aradaki bütün yükseklik; kart boyu ve aralık
+// (src/kart/duzen.ts) bu alana göre hesaplanır. Kartlar üstten başlar, elin başında alt boş kalır.
+export function useMasaBlogu() {
+  const masaRef = useRef<HTMLElement>(null);
+  const blokRef = useRef<HTMLDivElement>(null);
+  const alanRef = useRef<HTMLDivElement>(null);
+  const [alan, setAlan] = useState({ en: 360, boy: 500 });
+
+  useLayoutEffect(() => {
+    const a = alanRef.current;
+    if (!a) return;
+    const olc = () => {
+      const yeni = { en: a.clientWidth, boy: Math.max(120, a.clientHeight) };
+      setAlan((o) => (o.en === yeni.en && o.boy === yeni.boy ? o : yeni));
+    };
+    olc();
+    const g = new ResizeObserver(olc);
+    g.observe(a);
+    return () => g.disconnect();
+  }, []);
+
+  return { masaRef, blokRef, alanRef, alan };
+}
+
+// Süre: el başında başlar, el bitince durur; yeni elde sıfırlanır. Kaldığı yerden açılan elde
+// saklanan süreden sürer (7. paket).
+export function useSure(bitti: boolean, baslangicSaniye = 0) {
+  const [basladi, setBasladi] = useState(() => Date.now() - baslangicSaniye * 1000);
   const [simdi, setSimdi] = useState(() => Date.now());
   const [bitis, setBitis] = useState<number | null>(null);
   useEffect(() => {
@@ -51,8 +80,9 @@ export function useSure(bitti: boolean) {
 
 // Geri al hakkı (Kemal, 15 Kasım soru turu): her elde sınırlı hak; bitince "reklam yerine" kutusu
 // bir hak daha verir (src/kart/geriAlHakki.ts). Deneme için adresten değişir (?geriAlHak=).
-export function useGeriAlHakki() {
-  const [hak, setHak] = useState<GeriAlHakki>(() => hakBaslat(location.search));
+// Kaldığı yerden açılan elde saklanan hak sürer (7. paket).
+export function useGeriAlHakki(baslangic?: GeriAlHakki) {
+  const [hak, setHak] = useState<GeriAlHakki>(() => baslangic ?? hakBaslat(location.search));
   const [kutu, setKutu] = useState(false);
   return {
     hak,
@@ -115,6 +145,70 @@ export function usePuan(oyun: Oyun, zorluk: number, ozet: ElOzeti, kazandi: bool
     yeniEl: () => {
       yazildi.current = false;
       setSonuc(null);
+    },
+  };
+}
+
+// Elin kaydı (7. paket): kaldığı yerden devam ve istatistik.
+// - Yarım el (en az bir hamle, kazanılmamış) her hamlede, sayfa gizlenince ve masadan çıkınca
+//   telefonun tarayıcısına yazılır (src/oyun/yarimEl.ts). Kazanınca ya da bırakınca silinir.
+// - İstatistik: ilk hamlede "oynanan", kazanınca "kazanılan" ve en iyi süre (src/oyun/istatistik.ts).
+//   Kaldığı yerden açılan el yeniden sayılmaz.
+type ElBilgisi = Omit<YarimEl, 'saniye' | 'hak'>;
+export function useElKaydi(el: ElBilgisi, saniye: number, hak: GeriAlHakki, kazandi: boolean, devam: boolean) {
+  const anahtar = puanAnahtari(el.oyun, el.zorluk);
+  const sayildi = useRef(devam); // bu elin "oynanan"ı sayıldı mı
+  const kazancSayildi = useRef(false);
+  const birakildi = useRef(false); // el bırakıldıysa bir daha yazılmaz
+  const son = useRef({ el, saniye, hak, kazandi });
+  son.current = { el, saniye, hak, kazandi };
+
+  const yaz = () => {
+    const s = son.current;
+    if (birakildi.current || !yarimMi(s.el.masa.hamle, s.kazandi)) return;
+    yarimElYaz(localStorage, { ...s.el, saniye: s.saniye, hak: s.hak } as YarimEl);
+  };
+
+  // Her hamlede ve hak değişince
+  useEffect(() => {
+    if (el.masa.hamle > 0 && !sayildi.current) {
+      sayildi.current = true;
+      istatistikGuncelle(localStorage, (i) => elBasladi(i, anahtar));
+    }
+    if (kazandi) {
+      if (!kazancSayildi.current) {
+        kazancSayildi.current = true;
+        istatistikGuncelle(localStorage, (i) => istatistikKazanildi(i, anahtar, saniye));
+      }
+      yarimElSil(localStorage);
+    } else yaz();
+  }, [el.masa, hak, kazandi]);
+
+  // Sayfa gizlenince (telefonda uygulamadan çıkınca) ve masadan çıkınca son süreyle
+  useEffect(() => {
+    const gizlenince = () => {
+      if (document.visibilityState === 'hidden') yaz();
+    };
+    document.addEventListener('visibilitychange', gizlenince);
+    window.addEventListener('pagehide', yaz);
+    return () => {
+      document.removeEventListener('visibilitychange', gizlenince);
+      window.removeEventListener('pagehide', yaz);
+      yaz();
+    };
+  }, []);
+
+  return {
+    // El bırakıldı (eli bırakma sorusunda "Evet"): yarım el silinir
+    birak: () => {
+      birakildi.current = true;
+      yarimElSil(localStorage);
+    },
+    // Yeni el başlıyor
+    yeniEl: () => {
+      sayildi.current = false;
+      kazancSayildi.current = false;
+      birakildi.current = false;
     },
   };
 }
@@ -193,7 +287,9 @@ export function BilgiSatiri(o: {
   );
 }
 
-// Alt şerit (yol haritası 4): geri al, ipucu, yeni el, oyun seçimi. Simgeler kodla çizilir.
+// Alt şerit (yol haritası 4): geri al, ipucu, yeni el, ana ekran. Simgeler kodla çizilir; düğmeler
+// başparmak boyunda, simge üstte yazı altta (Kemal, 15 Kasım: örnek ekran).
+// "Ana ekran" (7. paket) eli bırakmadan masadan çıkar: el saklanır, ana ekranda "Oyuna devam et".
 // Sol el düzeninde (5. paket) sıra ayna gibi ters döner; deste de öbür yana geçer.
 export function MasaDugmeleri(o: {
   solEl: boolean;
@@ -202,7 +298,7 @@ export function MasaDugmeleri(o: {
   kalanHak: number;
   ipucu: () => void;
   yeniEl: () => void;
-  geri: () => void;
+  anaEkran: () => void;
 }) {
   return (
     <nav className={`masa-dugmeler ${o.solEl ? 'sol-el' : ''}`}>
@@ -222,10 +318,16 @@ export function MasaDugmeleri(o: {
         {m('masa.ipucu')}
       </button>
       <button className="dugme ince" onClick={o.yeniEl}>
+        <svg className="simge" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M12.5 1.5v3h-3" />
+        </svg>
         {m('masa.yeniEl')}
       </button>
-      <button className="dugme ince" onClick={o.geri}>
-        {m('masa.geri')}
+      <button className="dugme ince" onClick={o.anaEkran}>
+        <svg className="simge" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M2.5 7.5 8 2.5l5.5 5M4 6.5v7h8v-7" />
+        </svg>
+        {m('masa.anaEkran')}
       </button>
     </nav>
   );

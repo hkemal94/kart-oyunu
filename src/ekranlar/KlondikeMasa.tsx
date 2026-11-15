@@ -1,6 +1,7 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
+import { useEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
+import { yarimMi, type YarimEl } from '../oyun/yarimEl';
 import { ipucuHakkiAl } from '../reklam/ipucuHakki';
 import { KartYuzu } from '../kart/KartYuzu';
 import { ekranaGoreAralik, kartOlcusu, sutunKonumlari } from '../kart/duzen';
@@ -31,7 +32,9 @@ import {
   OyunSonu,
   ReklamKutusu,
   useElBirakma,
+  useElKaydi,
   useGeriAlHakki,
+  useMasaBlogu,
   usePuan,
   useSure,
 } from './masaOrtak';
@@ -62,7 +65,7 @@ const UST_SIRA = {
 const BEKLENEN_KAPALI = 6;
 const BEKLENEN_ACIK = 8;
 const EN_COK_ACIK = 0.42;
-const EN_COK_KAPALI = 0.24;
+const EN_COK_KAPALI = 0.18; // kapalı kartlar sık (Kemal, 15 Kasım: örnek ekran)
 const EN_AZ_KAPALI = 0.08;
 
 interface Surukleme {
@@ -95,42 +98,39 @@ function icindeMi(a: Yer | null | undefined, b: Yer | null): boolean {
 
 interface Ozellik {
   cekme: CekmeSayisi;
-  geri: () => void;
+  anaEkran: () => void; // masadan çıkar; yarım el saklanır (7. paket)
+  oyunSecimi: () => void; // oyun sonundan
   ayarlar: OyuncuAyarlari;
   ayarAc: () => void;
+  devam?: YarimEl; // kaldığı yerden açılan el (7. paket)
   baslangic?: KlondikeMasasi; // yalnız geliştirmedeki deneme eli için
 }
 
-export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
-  const [masa, setMasa] = useState<KlondikeMasasi>(() => baslangic ?? klondikeDagit(cekme));
+export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, baslangic }: Ozellik) {
+  const [masa, setMasa] = useState<KlondikeMasasi>(() => (devam?.masa as KlondikeMasasi | undefined) ?? baslangic ?? klondikeDagit(cekme));
   const [el, setEl] = useState(0); // yeni elde kartlar yeniden dağıtılarak gelsin diye
   const [secim, setSecim] = useState<Yer | null>(null);
   const [surukleme, setSurukleme] = useState<Surukleme | null>(null);
   const [red, setRed] = useState<Yer | null>(null);
   const [uyari, setUyari] = useState<MetinAnahtari | null>(null);
   const [gecmis, setGecmis] = useState<KlondikeMasasi[]>([]); // geri al için önceki masalar
-  const geriAlHak = useGeriAlHakki();
+  const geriAlHak = useGeriAlHakki(devam?.hak);
   const [ipucu, setIpucu] = useState<{ ipucu: KlondikeIpucu; sayi: number } | null>(null);
   const ipucuSirasi = useRef(0); // arka arkaya basınca sıradaki ipucu
   const sonDokunus = useRef<{ id: string; zaman: number } | null>(null);
-  const alanRef = useRef<HTMLDivElement>(null);
-  const [alan, setAlan] = useState({ en: 360, boy: 560 });
-
-  useLayoutEffect(() => {
-    const d = alanRef.current;
-    if (!d) return;
-    const olc = () => setAlan({ en: d.clientWidth, boy: d.clientHeight });
-    olc();
-    const g = new ResizeObserver(olc);
-    g.observe(d);
-    return () => g.disconnect();
-  }, []);
+  // Masa ekranı doldurur; kart alanı bilgi satırı ile alt şerit arasındaki yükseklik (masaOrtak.tsx)
+  const { masaRef, blokRef, alanRef, alan } = useMasaBlogu();
 
   const kazandi = kazandiMi(masa);
-  const { saniye, sifirla: sureyiSifirla } = useSure(kazandi);
+  const { saniye, sifirla: sureyiSifirla } = useSure(kazandi, devam?.saniye);
   // Puan ve seri (6. paket; src/kart/puan.ts). El yarımken bırakmak seriyi bitirir.
   const puan = usePuan('klasik', masa.cekme, klondikeOzeti(masa, saniye), kazandi);
-  const birakma = useElBirakma(masa.hamle > 0 && !kazandi, puan.seriyiBitir);
+  // Kaldığı yerden devam ve istatistik (7. paket)
+  const kayit = useElKaydi({ oyun: 'klasik', zorluk: masa.cekme, masa } as Parameters<typeof useElKaydi>[0], saniye, geriAlHak.hak, kazandi, !!devam);
+  const birakma = useElBirakma(yarimMi(masa.hamle, kazandi), () => {
+    puan.seriyiBitir();
+    kayit.birak();
+  });
 
   // Uyarı, ipucu ve sallanma kendiliğinden kaybolur
   useEffect(() => {
@@ -173,7 +173,9 @@ export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozelli
     enCokKapali: EN_COK_KAPALI,
   });
   const yelpazeAdim = kartEn * 0.32; // 3 kart çekmede açılan son üç kart yan yana kayar
-  const sutunX = (c: number) => c * (kartEn + ARALIK);
+  // Kart eni tam piksele yuvarlanınca artan pay sütun aralarına dağılır: sütunlar iki kenara eşit uzanır
+  const ara = Math.max(ARALIK, (alan.en - kartEn * KLONDIKE_SUTUN_SAYISI) / (KLONDIKE_SUTUN_SAYISI - 1));
+  const sutunX = (c: number) => c * (kartEn + ara);
   const ustSira = UST_SIRA[ayarlar.solEl ? 'sol' : 'sag'];
   const temelX = (no: number) => sutunX(ustSira.temel + no);
 
@@ -207,7 +209,7 @@ export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozelli
   // Ekrandaki noktanın hedefi: üst sırada temel yığınlar, altında sütunlar
   const hedefBul = (istemciX: number, istemciY: number): Hedef | null => {
     const r = alanRef.current!.getBoundingClientRect();
-    const c = Math.min(KLONDIKE_SUTUN_SAYISI - 1, Math.max(0, Math.floor((istemciX - r.left + ARALIK / 2) / (kartEn + ARALIK))));
+    const c = Math.min(KLONDIKE_SUTUN_SAYISI - 1, Math.max(0, Math.floor((istemciX - r.left + ara / 2) / (kartEn + ara))));
     if (istemciY - r.top < kartBoy + UST_ARALIK / 2) {
       const t = c - ustSira.temel;
       return t >= 0 && t < TEMEL_TAKIMLARI.length ? { tur: 'temel' } : null;
@@ -251,6 +253,7 @@ export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozelli
     setGecmis([]);
     geriAlHak.yeniEl(); // haklar her elde baştan
     puan.yeniEl();
+    kayit.yeniEl();
     setSurukleme(null);
     setUyari(null);
     sureyiSifirla();
@@ -366,7 +369,8 @@ export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozelli
   const surukIlk = surukleme?.basladi ? cizimler.find((c) => c.yer && icindeMi(c.yer, surukleme.yer) && icindeMi(surukleme.yer, c.yer)) : undefined;
 
   return (
-    <main className="masa">
+    <main className="masa" ref={masaRef}>
+      <div className="masa-blok" ref={blokRef}>
       <BilgiSatiri
         saniye={saniye}
         baslik={m('masa.baslikKlasik', masa.cekme)}
@@ -473,15 +477,16 @@ export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozelli
         kalanHak={geriAlHak.hak.kalan}
         ipucu={ipucuBas}
         yeniEl={() => birakma.sor(yeniEl)}
-        geri={() => birakma.sor(geri)}
+        anaEkran={anaEkran}
       />
+      </div>
 
       {birakma.soruAcik && <ElBirakmaSorusu evet={birakma.evet} hayir={birakma.hayir} />}
 
       {geriAlHak.kutu && <ReklamKutusu kapat={geriAlHak.kutuyuKapat} hakAl={geriAlHak.reklamlaAl} />}
 
       {kazandi && (
-        <OyunSonu altBaslik={m('masa.baslikKlasik', masa.cekme)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={geri} />
+        <OyunSonu altBaslik={m('masa.baslikKlasik', masa.cekme)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={oyunSecimi} />
       )}
     </main>
   );

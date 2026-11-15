@@ -1,6 +1,7 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
+import { useEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
+import { yarimMi, type YarimEl } from '../oyun/yarimEl';
 import { ipucuHakkiAl } from '../reklam/ipucuHakki';
 import {
   BilgiSatiri,
@@ -9,7 +10,9 @@ import {
   OyunSonu,
   ReklamKutusu,
   useElBirakma,
+  useElKaydi,
   useGeriAlHakki,
+  useMasaBlogu,
   usePuan,
   useSure,
 } from './masaOrtak';
@@ -39,12 +42,12 @@ import {
 // hamleyi geri getirir; her elde sınırlı hak var, bitince "reklam yerine" kutusu bir hak daha verir
 // (src/kart/geriAlHakki.ts). İpucu bir hamleyi kısa süre parlatır, arka arkaya basınca sıradaki gelir.
 
-const ARALIK = 2; // sütunlar arası boşluk (piksel)
+const ARALIK = 3; // sütunlar arası boşluk (piksel; Kemal, 15 Kasım: örnek ekran)
 // Kemal, 15 Kasım: kart boyu ve aralık ekran yüksekliğine göre (src/kart/duzen.ts). Kart uzun
 // ekranda en çok bu orana kadar uzar; aralık kartın bu paylarından fazla açılmaz.
 const EN_COK_ORAN = 1.6;
 const EN_COK_ACIK = 0.52;
-const EN_COK_KAPALI = 0.4;
+const EN_COK_KAPALI = 0.22; // kapalı kartlar sık, açıklar daha geniş (Kemal, 15 Kasım: örnek ekran)
 const EN_AZ_KAPALI = 0.1;
 // Ekrana göre aralık bu uzunluktaki sütun sıkışmadan sığacak kadar açılır (5 kapalı, 10 açık)
 const BEKLENEN_KAPALI = 5;
@@ -72,14 +75,16 @@ interface Surukleme extends Secim {
 
 interface Ozellik {
   renk: RenkSayisi;
-  geri: () => void;
+  anaEkran: () => void; // masadan çıkar; yarım el saklanır (7. paket)
+  oyunSecimi: () => void; // oyun sonundan
   ayarlar: OyuncuAyarlari;
   ayarAc: () => void;
+  devam?: YarimEl; // kaldığı yerden açılan el (7. paket)
   baslangic?: SpiderMasasi; // yalnız geliştirmedeki deneme eli için
 }
 
-export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
-  const [masa, setMasa] = useState<SpiderMasasi>(() => baslangic ?? spiderDagit(renk));
+export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, baslangic }: Ozellik) {
+  const [masa, setMasa] = useState<SpiderMasasi>(() => (devam?.masa as SpiderMasasi | undefined) ?? baslangic ?? spiderDagit(renk));
   const [el, setEl] = useState(0); // yeni elde kartlar yeniden dağıtılarak gelsin diye
   const [secim, setSecim] = useState<Secim | null>(null);
   const [surukleme, setSurukleme] = useState<Surukleme | null>(null);
@@ -87,28 +92,23 @@ export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
   const [uyari, setUyari] = useState<MetinAnahtari | null>(null);
   const [gecmis, setGecmis] = useState<SpiderMasasi[]>([]); // geri al için önceki masalar
   // Bir eldeki ücretsiz geri al hakkı ve haklar bitince "reklam yerine" kutusu (masaOrtak.tsx)
-  const geriAlHak = useGeriAlHakki();
+  const geriAlHak = useGeriAlHakki(devam?.hak);
   const [ipucu, setIpucu] = useState<{ ipucu: Ipucu; sayi: number } | null>(null);
   const ipucuSirasi = useRef(0); // arka arkaya basınca sıradaki ipucu
-  const alanRef = useRef<HTMLDivElement>(null);
-  const [alan, setAlan] = useState({ en: 360, boy: 500 });
-
-  useLayoutEffect(() => {
-    const d = alanRef.current;
-    if (!d) return;
-    const olc = () => setAlan({ en: d.clientWidth, boy: d.clientHeight });
-    olc();
-    const g = new ResizeObserver(olc);
-    g.observe(d);
-    return () => g.disconnect();
-  }, []);
+  // Masa ekranı doldurur; kart alanı bilgi satırı ile alt şerit arasındaki yükseklik (masaOrtak.tsx)
+  const { masaRef, blokRef, alanRef, alan } = useMasaBlogu();
 
   const kazandi = kazandiMi(masa);
   // Süre: el başında başlar, kazanınca durur
-  const { saniye, sifirla: sureyiSifirla } = useSure(kazandi);
+  const { saniye, sifirla: sureyiSifirla } = useSure(kazandi, devam?.saniye);
   // Puan ve seri (6. paket; src/kart/puan.ts). El yarımken bırakmak seriyi bitirir.
   const puan = usePuan('spider', renk, spiderOzeti(masa, saniye), kazandi);
-  const birakma = useElBirakma(masa.hamle > 0 && !kazandi, puan.seriyiBitir);
+  // Kaldığı yerden devam ve istatistik (7. paket)
+  const kayit = useElKaydi({ oyun: 'spider', zorluk: renk, masa } as Parameters<typeof useElKaydi>[0], saniye, geriAlHak.hak, kazandi, !!devam);
+  const birakma = useElBirakma(yarimMi(masa.hamle, kazandi), () => {
+    puan.seriyiBitir();
+    kayit.birak();
+  });
 
   // Uyarı ve sallanma kendiliğinden kaybolur
   useEffect(() => {
@@ -164,10 +164,13 @@ export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
     ),
   );
 
-  const sutunX = (c: number) => c * (kartEn + ARALIK);
+
+  // Kart eni tam piksele yuvarlanınca artan pay sütun aralarına dağılır: sütunlar iki kenara eşit uzanır
+  const ara = Math.max(ARALIK, (alan.en - kartEn * SPIDER_SUTUN_SAYISI) / (SPIDER_SUTUN_SAYISI - 1));
+  const sutunX = (c: number) => c * (kartEn + ara);
   const sutunBul = (istemciX: number) => {
     const r = alanRef.current!.getBoundingClientRect();
-    const c = Math.floor((istemciX - r.left + ARALIK / 2) / (kartEn + ARALIK));
+    const c = Math.floor((istemciX - r.left + ara / 2) / (kartEn + ara));
     return Math.min(SPIDER_SUTUN_SAYISI - 1, Math.max(0, c));
   };
 
@@ -206,6 +209,7 @@ export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
     setGecmis([]);
     geriAlHak.yeniEl(); // haklar her elde baştan
     puan.yeniEl();
+    kayit.yeniEl();
     setSurukleme(null);
     setUyari(null);
     sureyiSifirla();
@@ -298,7 +302,8 @@ export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
   const destedenKalan = masa.deste.length / SPIDER_SUTUN_SAYISI;
 
   return (
-    <main className="masa">
+    <main className="masa" ref={masaRef}>
+      <div className="masa-blok" ref={blokRef}>
       <BilgiSatiri
         saniye={saniye}
         baslik={m('masa.baslik', renk)}
@@ -422,15 +427,16 @@ export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
         kalanHak={geriAlHak.hak.kalan}
         ipucu={ipucuBas}
         yeniEl={() => birakma.sor(yeniEl)}
-        geri={() => birakma.sor(geri)}
+        anaEkran={anaEkran}
       />
+      </div>
 
       {birakma.soruAcik && <ElBirakmaSorusu evet={birakma.evet} hayir={birakma.hayir} />}
 
       {geriAlHak.kutu && <ReklamKutusu kapat={geriAlHak.kutuyuKapat} hakAl={geriAlHak.reklamlaAl} />}
 
       {kazandi && (
-        <OyunSonu altBaslik={m('masa.baslik', renk)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={geri} />
+        <OyunSonu altBaslik={m('masa.baslik', renk)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={oyunSecimi} />
       )}
     </main>
   );
