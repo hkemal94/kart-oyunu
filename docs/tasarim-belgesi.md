@@ -125,6 +125,11 @@ En yeni üstte.
 - **15 Kasım ("Oyuna başlayalım"):** Spider klasik solitaire'den önce gelir; Spider'da 1, 2 ve 4
   renk. Depo `kart-oyunu` adıyla açıldı; ad geçici çalışma adı. Sade Meyhane masasına görseli
   gelince karar verilecek; şimdilik oyunda yok. Teknoloji: Vite + React + TypeScript, 2B.
+- **15 Kasım akşam (pul koleksiyonu):** aylık rozet kalktı, yerine **pul koleksiyonu** geldi.
+  Her tamamlanan ay bir pul verir; bir çeyreğin üç aylık pulu toplanınca daha büyük ve süslü bir
+  **4. pul** gelir ("3+1 pul serisi"). Pullar gerçek posta pulu gibi, her biri ayrı tasarlanır (tek
+  şablon yok). Ben → Ödüller'de "Pul koleksiyonu" kartı, dokununca ayrı sayfa. Pullar yazısız;
+  çeyrek ve yıl pulun altında yazar. Eski "18 Düzada nesnesinden 12 seç" listesi düştü (8.1, 7).
 - **15 Kasım akşam (desteler):** paket desteler belli oldu: beş mahallenin (Liman, İskele, Çiftlik,
   Merkez, Stadyum) her biri için ikişer deste (10) ve yalnız renkten oluşan 2 deste, toplam 12;
   seriler ikişer desteden oluşur. Bir süre yalnız arka yüzler çalışılır, ön yüzlere sonra bakılır;
@@ -326,7 +331,8 @@ bırakılır (öneri).
   "yıldız/gün sayısı", Pazartesi'den başlayan takvim (kazanılan günde yıldız, bugün vurgulu,
   gelecek günler soluk ve kilitli), önceki aylara ok; altta seçili günün oyunu, zorluğu ve
   "Oyna"; en altta "Kartpostal etkinliği · Yakında".
-- **Ben sekmesi (Kemal, 15 Kasım):** ödüller (aylık ödüller ve kartpostal koleksiyonu), ayarlar,
+- **Ben sekmesi (Kemal, 15 Kasım):** ödüller (pul koleksiyonu ve kartpostal koleksiyonu; aylık
+  ödüllerin yerine 15 Kasım akşam pul koleksiyonu geldi, 8.1), ayarlar,
   nasıl oynanır, yardım, oyun hakkında, gizlilik. İstatistik ve paketlerin yeri: öneri, bu sekme;
   karar Kemal'in. **Yapılan (7. paket):** en üstte "Ödüller" (aylık ödüller ve kartpostal
   koleksiyonu, ikisi boş yer tutucu); altında İstatistik, Ayarlar (5. paketteki ekran üstüne
@@ -673,9 +679,9 @@ Açık kalanlar:
 - **Kartpostal sırası:** yedi yer seçildi (8.2); hangi sırayla açılacağı [Kemal].
 - **Kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi:** web denemesinde ayarlanabilir gelir,
   Kemal seçer (Kemal, 15 Kasım soru turu). Sayılar [Kemal].
-- **Aylık ödül nesneleri:** her ay bir Düzada nesnesi ya da simgesi (Kemal, 15 Kasım soru turu);
-  hangileri olacağı [Kemal]: ajans 18 adaylık bir liste getirdi, Kemal seçecek (15 Kasım soru
-  turu 2. set). Örnekteki kupa kopyalanmaz.
+- **Pul koleksiyonu:** kazanma, yer ve yazı kapandı (Kemal, 15 Kasım akşam; 8.1). Açık kalan: her
+  pulun tasarımı (her biri ayrı çalışılır; ilk pullar hangi aylardan başlar ve konuları [Kemal]);
+  4. pulun ne kadar büyük ve süslü olacağı tasarımla birlikte. Eski 18 adaylık nesne listesi düştü.
 - **Puan formülü:** a / b / c (8.3; puan paketi, 15 Kasım). Kodda varsayılan a; adres sonuna
   `?puan=b` yazılarak denenir. Sayılar da adaydır, seçilen adayın sayıları ayrıca değişebilir.
 - **Kaybetme:** el ne zaman kaybedilmiş sayılır? Şimdilik yalnız eli bırakınca (8.3). Adaylar:
@@ -719,11 +725,21 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
 - **Geçmiş günler sonradan oynanabilir** (Kemal, 15 Kasım): takvimde geçmiş bir güne dokununca o
   günün eli açılır. Sonradan kazanılan geçmiş gün de yıldız alır (öneri; aylık ödül bütün günleri
   istediği için).
-- **Aylık ödül ayın bütün günleri yıldızlanınca gelir** (Kemal, 15 Kasım); Ben sekmesindeki
-  "ödüller"de durur. **Her ay bir Düzada nesnesi ya da simgesi** (Kemal, 15 Kasım soru turu);
-  hangileri olacağı [Kemal]: ajans 18 adaylık bir liste getirdi, Kemal seçecek (15 Kasım soru
-  turu 2. set). Örnekteki kupa çizimi kopyalanmaz. Yalnız künyede olan nesne ve
-  simgeler çizilir; görsel üretimi Kemal onayıyla.
+- **Pul koleksiyonu (Kemal, 15 Kasım akşam; aylık rozetin yerine):**
+  - **Kazanma:** her ay bir pul. Ay, bütün günleri yıldızlanınca tamamlanır (15 Kasım kuralı
+    sürüyor). Bir çeyreğin (Ocak–Mart, Nisan–Haziran, Temmuz–Eylül, Ekim–Aralık) üç aylık pulu
+    toplanınca daha büyük ve süslü bir **4. pul** gelir: "3+1 pul serisi". Geçmiş günler sonradan
+    oynanabildiği için geçmiş bir ayın ve çeyreğin pulu da sonradan tamamlanabilir.
+  - **Görünüm:** gerçek posta pulu gibi (tırtıklı kenar). **Her pul ayrı tasarlanır**, tek şablon
+    yok; hepsine tek tek çalışılır. Yalnız künyedeki nesne, yer ve simgeler; örnek oyunun kupası
+    kopyalanmaz. Görsel üretimi Kemal onayıyla; tasarlanmamış pul yer tutucuyla durur.
+  - **Yer:** Ben → Ödüller'de "Pul koleksiyonu" kartı; dokununca ayrı sayfa açılır (öneri: her yıl
+    bir satır, çeyrek başına 3 pul + 4. pul; kazanılmamış pul soluk, gelecek aylar kilitli).
+  - **Yazı:** pul yazısız; çeyrek ve yıl pulun altında, sayfada yazar.
+  - **Eski rozetler:** telefonda yalnız yıldızlı günler saklandığı için pullar da bu listeden
+    hesaplanır; tamamlanmış her ay kendi pulu olur, kazanılan hiçbir şey kaybolmaz (öneri, Oyun
+    Tasarımcısı 15 Kasım).
+  - Eski öneri ("her ay bir Düzada nesnesi", 18 adaylık liste) düştü.
 - **Günlük mücadele eli puan serisine sayılır** (Kemal, 15 Kasım soru turu): kazanınca serinin
   aşaması artar, kaybedince seri biter (8.3). Önceki öneri ("ayrı tutulsun") düştü.
 - Takvim Mücadeleler sekmesinde; ana ekranın üstünde günün kartı.
@@ -738,7 +754,8 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
   - Masada başlığın yanında küçük yıldızlı tarih işareti; kazanınca oyun sonunda "Günün yıldızı"
     ve "Takvime dön".
   - Aylık ödül: ayın bütün günleri yıldızlanınca Ben → Ödüller → Aylık ödüller'de
-    "[YER TUTUCU: ayın ödülü]" rozeti; görsel Kemal'in seçimini bekliyor.
+    "[YER TUTUCU: ayın ödülü]" rozeti. 15 Kasım akşam kararıyla pul koleksiyonuna dönüşecek
+    (sonraki paket; yukarıda).
   - Günlük yarım el kaldığı yerden devam eder, normal yarım elden ayrı saklanır.
   - Seri: günlük el normal elle aynı seriye (oyun ve zorluk başına) sayılır; kazanınca aşama
     artar, bırakınca seri biter.
@@ -839,9 +856,9 @@ Açık kalanlar sayı ya da seçim; web denemesinde ve ilgili paket gelince soru
    set): yedi yer, yazısız (8.2). Açık kalan: hangi sırayla açılacakları.
 3. Kart oyunu: Kartpostal etkinliğinde kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi?
    Web denemesinde ayarlanabilir gelir (9. paket), Kemal seçer.
-4. Kart oyunu: Aylık ödülde hangi ay hangi Düzada nesnesi ya da simgesi? Ajans 18 adaylık bir
-   liste getirdi (15 Kasım soru turu 2. set); Kemal seçecek. 8. paketle ödülün yeri hazır: Ben →
-   Ödüller → Aylık ödüller'de "[YER TUTUCU: ayın ödülü]" rozeti.
+4. Kart oyunu: Aylık ödülde hangi ay hangi Düzada nesnesi ya da simgesi? **Değişti:** rozet yerine
+   pul koleksiyonu (Kemal 15 Kasım akşam; 8.1). Kazanma, yer ve yazı cevaplandı; her pulun
+   tasarımı ayrı çalışılır, konuları [Kemal].
 5. Kart oyunu: Puan hesabı hangi aday olsun? Neden: formülü Kemal seçecek (15 Kasım). Nasıl
    denenir: adres sonuna `?puan=a`, `?puan=b`, `?puan=c`. Adaylar (8.3): a · çarpanlı taban
    (şu anki varsayılan) · b · hamle başı puan · c · bonuslu sabit puan.
