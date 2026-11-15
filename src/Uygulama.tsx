@@ -9,13 +9,13 @@ import { denemeMasasi, klondikeDenemesi, type DenemeTuru, type KlondikeDenemeTur
 
 type Ekran = 'acilis' | 'secim' | 'spider' | 'klasik';
 
-// Yalnız geliştirmede: adres sonuna ?deneme=kazan, ?deneme=dizi, ?deneme=klasik-kazan ya da
+// Yalnız geliştirmede: adres sonuna ?deneme=kazan, ?deneme=dizi, ?deneme=uzun, ?deneme=klasik-kazan ya da
 // ?deneme=klasik-orta yazılınca hazır bir el doğrudan masada açılır (ekran görüntüsü ve elle
 // deneme için). Yayındaki oyunda çalışmaz.
 function denemeOku() {
   if (!import.meta.env.DEV) return null;
   const tur = new URLSearchParams(location.search).get('deneme');
-  if (tur === 'kazan' || tur === 'dizi') return { oyun: 'spider' as const, ...denemeMasasi(tur as DenemeTuru) };
+  if (tur === 'kazan' || tur === 'dizi' || tur === 'uzun') return { oyun: 'spider' as const, ...denemeMasasi(tur as DenemeTuru) };
   if (tur === 'klasik-kazan' || tur === 'klasik-orta') {
     return { oyun: 'klasik' as const, ...klondikeDenemesi(tur as KlondikeDenemeTuru) };
   }

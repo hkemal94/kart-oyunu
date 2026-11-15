@@ -87,16 +87,19 @@ button:disabled { cursor: default; }
 /* Kurala uymayan taşıma: kart yerine döner ve hafifçe sallanır */
 .kart-yeri.reddedildi .kart { animation: sars 0.36s ease-in-out; }
 @keyframes sars { 0%, 100% { transform: none; } 25% { transform: translateX(-3px); } 50% { transform: translateX(3px); } 75% { transform: translateX(-2px); } }
-.masa-alt { position: relative; display: flex; flex-direction: column; gap: 4px; padding-top: 8px; }
-.masa-alt-etiket { font-size: 11px; opacity: 0.6; padding-left: 2px; }
-.masa-alt-sira { display: flex; gap: 3px; align-items: flex-end; }
-.masa-alt-sira .yuva { position: static; flex: none; }
-.deste { position: relative; flex: none; border: none; background: transparent; padding: 0; display: flex; align-items: center; gap: 4px; color: var(--krem); }
+.masa-alt { position: relative; padding-top: 8px; }
+/* Alt şerit (Kemal, 15 Kasım): solda tamamlanan diziler, sağda deste; ikisi de dar yelpaze */
+.masa-alt-sira { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.tamamlanan { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.alt-yelpaze { position: relative; flex: none; }
+.sayac { font-size: 12px; font-weight: 600; opacity: 0.7; font-variant-numeric: tabular-nums; }
+.deste { position: relative; flex: none; border: none; background: transparent; padding: 0; display: flex; align-items: center; gap: 8px; color: var(--krem); }
 .deste-yigin { position: relative; flex: none; border-radius: 4px; }
-.deste-yazi { font-size: 11px; font-weight: 600; line-height: 1.1; text-align: left; }
+.deste-yigin.bos { border: 1px dashed rgba(243, 239, 232, 0.3); }
+.deste-yazi { font-size: 12px; font-weight: 600; line-height: 1.1; text-align: right; }
 .deste:disabled .deste-yazi { opacity: 0.5; }
 /* Tamamlanan dizi alana gelince kısa bir büyüme */
-.masa-alt-sira .kart.tamam { animation: tamam 0.4s ease-out; }
+.alt-yelpaze .kart.tamam { animation: tamam 0.4s ease-out; }
 @keyframes tamam { from { transform: scale(1.25); opacity: 0; } to { transform: none; opacity: 1; } }
 /* Boş sütun uyarısı: destenin üstünde kısa süre durur */
 .uyari { position: absolute; left: 4px; right: 4px; bottom: calc(100% + 6px); margin: 0; background: var(--krem); color: var(--lacivert); border-radius: 10px; padding: 8px 12px; font-size: 12px; text-align: center; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35); animation: belir 0.2s ease-out; z-index: 700; }

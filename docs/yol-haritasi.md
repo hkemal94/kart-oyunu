@@ -42,6 +42,13 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   en iyi"; oyun seçiminde her kartın altında en iyi puan; el yarımken "Yeni el" ya da "Oyun
   seçimi"ne basınca eli bırakma sorusu. Formül için üç aday (a, b, c; `?puan=b`); Kemal seçecek.
   Bilgisayarda telefon boyutunda denendi; gerçek telefonda denenmedi.
+- 15 Kasım 2026 (öneri; `ajans/spider-duzen`): Spider düzeni (Kemal 15 Kasım). Spider'da kartlar
+  biraz uzadı, kartlar arası aralık ekranın yüksekliğine göre açıldı; elin başında masa daha dolu.
+  Sütun uzadıkça aralık kendiliğinden sıkışır (önce kapalı kartlar), alt şeritle çakışmaz. Alt
+  şeritte tamamlanan diziler ve deste dar yelpaze (kartlar birbirinin üstüne yarı biner); boş dizi
+  yuvası yok, yalnız "2/8" sayacı. Klasik solitaire'de aralık da ekrana göre; düzeni aynı.
+  Bilgisayarda 320x640, 390x844 ve 430x932 boyutlarında denendi (taşma yok); gerçek telefonda
+  denenmedi. Ekran görüntüleri: `docs/ekran-goruntuleri/duzen-*.png`.
 - Sırada: 4. paketin kalan maddeleri (kendiliğinden bitirme, kaldığı yerden devam, istatistik).
 
 ## Paketler
@@ -243,6 +250,9 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ## Bitenler
 
+- Spider düzeni (Kemal 15 Kasım): büyüyen kartlar, ekrana göre aralık, dar yelpaze alt şerit;
+  klasik solitaire'de ekrana göre aralık (`ajans/spider-duzen`, 15 Kasım 2026; Kemal birleştirince
+  kesinleşir).
 - 0. Depo ve iskelet ve 1. Kart ve masa (PR #1, 15 Kasım 2026).
 - 2. Spider kuralları (PR #3, 15 Kasım 2026).
 - 4. Yardımcılar: geri al ve ipucu, Spider (`ajans/geri-al-ipucu`, 15 Kasım 2026; Kemal

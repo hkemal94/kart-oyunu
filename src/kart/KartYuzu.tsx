@@ -14,12 +14,12 @@ export function degerYazisi(deger: number): string {
 interface Ozellik {
   kart: Pick<Kart, 'takim' | 'deger' | 'acik'>;
   genislik: number;
+  yukseklik?: number; // verilmezse standart oran (Spider masasında uzun ekranda kart biraz uzar)
   stil?: CSSProperties;
   sinif?: string;
 }
 
-export function KartYuzu({ kart, genislik, stil, sinif }: Ozellik) {
-  const yukseklik = genislik * 1.42;
+export function KartYuzu({ kart, genislik, yukseklik = genislik * 1.42, stil, sinif }: Ozellik) {
   const kutu: CSSProperties = {
     width: genislik,
     height: yukseklik,
