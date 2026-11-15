@@ -1,16 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Acilis } from './ekranlar/Acilis';
 import { OyunSecimi } from './ekranlar/OyunSecimi';
 import { Masa } from './ekranlar/Masa';
 import { KlondikeMasa } from './ekranlar/KlondikeMasa';
-import type { RenkSayisi } from './kart/kart';
-import type { CekmeSayisi } from './kart/klondike';
+import { AnaEkran } from './ekranlar/AnaEkran';
+import { Ben, type BenSayfasi } from './ekranlar/Ben';
+import { Mucadeleler, SekmeCubugu, type Sekme } from './ekranlar/Sekmeler';
+import { ElBirakmaSorusu } from './ekranlar/masaOrtak';
+import { kayitOku, kayitYaz, puanAdayi, puanAnahtari, seriBitir } from './kart/puan';
+import { sonSecimOku, sonSecimYaz, type SonSecim } from './oyun/sonSecim';
+import { yarimElOku, yarimElSil, type YarimEl } from './oyun/yarimEl';
 import { Ayarlar } from './ekranlar/Ayarlar';
 import { dilSec } from './metinler';
 import { ayarlariOku, ayarlariYaz, ilkDil, type OyuncuAyarlari } from './oyun/oyuncuAyarlari';
 import { denemeMasasi, klondikeDenemesi, type DenemeTuru, type KlondikeDenemeTuru } from './kart/deneme';
 
-type Ekran = 'acilis' | 'secim' | 'spider' | 'klasik';
+type Ekran = 'acilis' | 'sekmeler' | 'secim' | 'spider' | 'klasik';
 
 // Yalnız geliştirmede: adres sonuna ?deneme=kazan, ?deneme=dizi, ?deneme=uzun, ?deneme=klasik-kazan ya da
 // ?deneme=klasik-orta yazılınca hazır bir el doğrudan masada açılır (ekran görüntüsü ve elle
@@ -32,8 +37,10 @@ function ilkAyarlar(): OyuncuAyarlari {
   return a;
 }
 
-// Ekranlar arası geçiş (belge 2): açılış → oyun seçimi → masa (Spider ya da klasik solitaire).
-// Ayarlar (5. paket) her ekranın üstüne açılır; kapanınca altta kalan ekran olduğu gibi sürer.
+// Ekranlar arası geçiş (belge 2; 7. paket): açılış → sekmeler (Ana ekran · Mücadeleler · Ben) →
+// oyun seçimi → masa (Spider ya da klasik solitaire). Masada alt sekmeler görünmez; masadan
+// "Ana ekran" ile çıkınca sekmeler geri gelir, yarım el saklanır. Ayarlar (5. paket) her ekranın
+// üstüne açılır; kapanınca altta kalan ekran olduğu gibi sürer.
 export function Uygulama() {
   const [ayarlar, setAyarlar] = useState(ilkAyarlar);
   const [ayarAcik, setAyarAcik] = useState(false);
@@ -47,41 +54,125 @@ export function Uygulama() {
 
   const [deneme] = useState(denemeOku);
   const [ekran, setEkran] = useState<Ekran>(deneme ? deneme.oyun : 'acilis');
-  const [renk, setRenk] = useState<RenkSayisi>(deneme?.oyun === 'spider' ? deneme.renk : 1);
-  const [cekme, setCekme] = useState<CekmeSayisi>(deneme?.oyun === 'klasik' ? deneme.masa.cekme : 1);
+  const [sekme, setSekme] = useState<Sekme>('ana');
+  const [benSayfa, setBenSayfa] = useState<BenSayfasi | null>(null);
+  const [secim, setSecim] = useState<SonSecim>(() => {
+    const s = sonSecimOku(localStorage);
+    if (deneme?.oyun === 'spider') return { ...s, oyun: 'spider', renk: deneme.renk };
+    if (deneme?.oyun === 'klasik') return { ...s, oyun: 'klasik', cekme: deneme.masa.cekme };
+    return s;
+  });
+  const secimDegistir = (yeni: Partial<SonSecim>) => {
+    const s = { ...secim, ...yeni };
+    sonSecimYaz(localStorage, s);
+    setSecim(s);
+  };
+
+  // Kaldığı yerden devam: saklanan yarım el masadan dönünce yeniden okunur (masa çıkarken yazar)
+  const [yarimEl, setYarimEl] = useState<YarimEl | null>(() => yarimElOku(localStorage));
+  useEffect(() => {
+    if (ekran === 'sekmeler') setYarimEl(yarimElOku(localStorage));
+  }, [ekran]);
+  const [devam, setDevam] = useState<YarimEl | undefined>(undefined);
+  const [elNo, setElNo] = useState(0); // her açılışta masa baştan kurulsun
+  const [birakSoru, setBirakSoru] = useState(false);
+
+  const anaEkranaDon = () => {
+    setSekme('ana');
+    setBenSayfa(null);
+    setEkran('sekmeler');
+  };
+  const masayaGit = (oyun: 'spider' | 'klasik', d?: YarimEl) => {
+    setDevam(d);
+    setElNo((n) => n + 1);
+    setEkran(oyun);
+  };
+  const devamEt = () => {
+    const y = yarimElOku(localStorage);
+    if (!y) return setYarimEl(null);
+    secimDegistir(y.oyun === 'spider' ? { oyun: 'spider', renk: y.zorluk } : { oyun: 'klasik', cekme: y.zorluk });
+    masayaGit(y.oyun, y);
+  };
+  // "Yeni oyun": oyun seçimine gider; yarım el varken önce eli bırakma sorusu (belge 2)
+  const yeniOyun = () => (yarimEl ? setBirakSoru(true) : setEkran('secim'));
+  const eliBirak = () => {
+    const y = yarimElOku(localStorage);
+    if (y) {
+      // Bırakılan el kaybedilmiş sayılır: o oyun ve zorluğun serisi biter (8.3)
+      const aday = puanAdayi(location.search);
+      kayitYaz(localStorage, aday, seriBitir(kayitOku(localStorage, aday), puanAnahtari(y.oyun, y.zorluk)));
+    }
+    yarimElSil(localStorage);
+    setYarimEl(null);
+    setBirakSoru(false);
+    setEkran('secim');
+  };
+
+  const sekmeSec = (s: Sekme) => {
+    setSekme(s);
+    setBenSayfa(null);
+    setEkran('sekmeler');
+  };
+  const masada = ekran === 'spider' || ekran === 'klasik';
 
   return (
     <div className="cerceve">
-      {ekran === 'acilis' && <Acilis basla={() => setEkran('secim')} />}
+      {ekran === 'acilis' && <Acilis basla={anaEkranaDon} />}
+      {ekran === 'sekmeler' && sekme === 'ana' && (
+        <AnaEkran secim={secim} yarimEl={yarimEl} devamEt={devamEt} yeniOyun={yeniOyun} />
+      )}
+      {ekran === 'sekmeler' && sekme === 'mucadeleler' && <Mucadeleler />}
+      {ekran === 'sekmeler' && sekme === 'ben' && <Ben sayfa={benSayfa} sayfaAc={setBenSayfa} ayarAc={ayarAc} />}
       {ekran === 'secim' && (
         <OyunSecimi
-          renk={renk}
-          renkSec={setRenk}
-          spiderBasla={() => setEkran('spider')}
-          cekme={cekme}
-          cekmeSec={setCekme}
-          klasikBasla={() => setEkran('klasik')}
+          renk={secim.renk}
+          renkSec={(renk) => secimDegistir({ renk })}
+          spiderBasla={() => {
+            secimDegistir({ oyun: 'spider' });
+            masayaGit('spider');
+          }}
+          cekme={secim.cekme}
+          cekmeSec={(cekme) => secimDegistir({ cekme })}
+          klasikBasla={() => {
+            secimDegistir({ oyun: 'klasik' });
+            masayaGit('klasik');
+          }}
           ayarAc={ayarAc}
+          istatistikAc={() => {
+            setSekme('ben');
+            setBenSayfa('istatistik');
+            setEkran('sekmeler');
+          }}
         />
       )}
       {ekran === 'spider' && (
         <Masa
-          renk={renk}
-          geri={() => setEkran('secim')}
+          key={elNo}
+          renk={secim.renk}
+          anaEkran={anaEkranaDon}
+          oyunSecimi={() => setEkran('secim')}
           ayarlar={ayarlar}
           ayarAc={ayarAc}
-          baslangic={deneme?.oyun === 'spider' ? deneme.masa : undefined}
+          devam={devam?.oyun === 'spider' ? devam : undefined}
+          baslangic={deneme?.oyun === 'spider' && elNo === 0 ? deneme.masa : undefined}
         />
       )}
       {ekran === 'klasik' && (
         <KlondikeMasa
-          cekme={cekme}
-          geri={() => setEkran('secim')}
+          key={elNo}
+          cekme={secim.cekme}
+          anaEkran={anaEkranaDon}
+          oyunSecimi={() => setEkran('secim')}
           ayarlar={ayarlar}
           ayarAc={ayarAc}
-          baslangic={deneme?.oyun === 'klasik' ? deneme.masa : undefined}
+          devam={devam?.oyun === 'klasik' ? devam : undefined}
+          baslangic={deneme?.oyun === 'klasik' && elNo === 0 ? deneme.masa : undefined}
         />
       )}
+      {!masada && ekran !== 'acilis' && (
+        <SekmeCubugu secili={ekran === 'secim' ? 'ana' : sekme} sec={sekmeSec} />
+      )}
+      {birakSoru && <ElBirakmaSorusu evet={eliBirak} hayir={() => setBirakSoru(false)} />}
       {ayarAcik && <Ayarlar ayarlar={ayarlar} degistir={ayarDegistir} kapat={() => setAyarAcik(false)} />}
     </div>
   );

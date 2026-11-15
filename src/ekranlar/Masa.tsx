@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
+import { yarimMi, type YarimEl } from '../oyun/yarimEl';
 import { ipucuHakkiAl } from '../reklam/ipucuHakki';
 import {
   BilgiSatiri,
@@ -9,6 +10,7 @@ import {
   OyunSonu,
   ReklamKutusu,
   useElBirakma,
+  useElKaydi,
   useGeriAlHakki,
   usePuan,
   useSure,
@@ -72,14 +74,16 @@ interface Surukleme extends Secim {
 
 interface Ozellik {
   renk: RenkSayisi;
-  geri: () => void;
+  anaEkran: () => void; // masadan çıkar; yarım el saklanır (7. paket)
+  oyunSecimi: () => void; // oyun sonundan
   ayarlar: OyuncuAyarlari;
   ayarAc: () => void;
+  devam?: YarimEl; // kaldığı yerden açılan el (7. paket)
   baslangic?: SpiderMasasi; // yalnız geliştirmedeki deneme eli için
 }
 
-export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
-  const [masa, setMasa] = useState<SpiderMasasi>(() => baslangic ?? spiderDagit(renk));
+export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, baslangic }: Ozellik) {
+  const [masa, setMasa] = useState<SpiderMasasi>(() => (devam?.masa as SpiderMasasi | undefined) ?? baslangic ?? spiderDagit(renk));
   const [el, setEl] = useState(0); // yeni elde kartlar yeniden dağıtılarak gelsin diye
   const [secim, setSecim] = useState<Secim | null>(null);
   const [surukleme, setSurukleme] = useState<Surukleme | null>(null);
@@ -87,7 +91,7 @@ export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
   const [uyari, setUyari] = useState<MetinAnahtari | null>(null);
   const [gecmis, setGecmis] = useState<SpiderMasasi[]>([]); // geri al için önceki masalar
   // Bir eldeki ücretsiz geri al hakkı ve haklar bitince "reklam yerine" kutusu (masaOrtak.tsx)
-  const geriAlHak = useGeriAlHakki();
+  const geriAlHak = useGeriAlHakki(devam?.hak);
   const [ipucu, setIpucu] = useState<{ ipucu: Ipucu; sayi: number } | null>(null);
   const ipucuSirasi = useRef(0); // arka arkaya basınca sıradaki ipucu
   const alanRef = useRef<HTMLDivElement>(null);
@@ -105,10 +109,15 @@ export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
 
   const kazandi = kazandiMi(masa);
   // Süre: el başında başlar, kazanınca durur
-  const { saniye, sifirla: sureyiSifirla } = useSure(kazandi);
+  const { saniye, sifirla: sureyiSifirla } = useSure(kazandi, devam?.saniye);
   // Puan ve seri (6. paket; src/kart/puan.ts). El yarımken bırakmak seriyi bitirir.
   const puan = usePuan('spider', renk, spiderOzeti(masa, saniye), kazandi);
-  const birakma = useElBirakma(masa.hamle > 0 && !kazandi, puan.seriyiBitir);
+  // Kaldığı yerden devam ve istatistik (7. paket)
+  const kayit = useElKaydi({ oyun: 'spider', zorluk: renk, masa } as Parameters<typeof useElKaydi>[0], saniye, geriAlHak.hak, kazandi, !!devam);
+  const birakma = useElBirakma(yarimMi(masa.hamle, kazandi), () => {
+    puan.seriyiBitir();
+    kayit.birak();
+  });
 
   // Uyarı ve sallanma kendiliğinden kaybolur
   useEffect(() => {
@@ -206,6 +215,7 @@ export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
     setGecmis([]);
     geriAlHak.yeniEl(); // haklar her elde baştan
     puan.yeniEl();
+    kayit.yeniEl();
     setSurukleme(null);
     setUyari(null);
     sureyiSifirla();
@@ -422,7 +432,7 @@ export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
         kalanHak={geriAlHak.hak.kalan}
         ipucu={ipucuBas}
         yeniEl={() => birakma.sor(yeniEl)}
-        geri={() => birakma.sor(geri)}
+        anaEkran={anaEkran}
       />
 
       {birakma.soruAcik && <ElBirakmaSorusu evet={birakma.evet} hayir={birakma.hayir} />}
@@ -430,7 +440,7 @@ export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
       {geriAlHak.kutu && <ReklamKutusu kapat={geriAlHak.kutuyuKapat} hakAl={geriAlHak.reklamlaAl} />}
 
       {kazandi && (
-        <OyunSonu altBaslik={m('masa.baslik', renk)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={geri} />
+        <OyunSonu altBaslik={m('masa.baslik', renk)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={oyunSecimi} />
       )}
     </main>
   );

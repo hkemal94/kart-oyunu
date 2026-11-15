@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
+import { yarimMi, type YarimEl } from '../oyun/yarimEl';
 import { ipucuHakkiAl } from '../reklam/ipucuHakki';
 import { KartYuzu } from '../kart/KartYuzu';
 import { ekranaGoreAralik, kartOlcusu, sutunKonumlari } from '../kart/duzen';
@@ -31,6 +32,7 @@ import {
   OyunSonu,
   ReklamKutusu,
   useElBirakma,
+  useElKaydi,
   useGeriAlHakki,
   usePuan,
   useSure,
@@ -95,21 +97,23 @@ function icindeMi(a: Yer | null | undefined, b: Yer | null): boolean {
 
 interface Ozellik {
   cekme: CekmeSayisi;
-  geri: () => void;
+  anaEkran: () => void; // masadan çıkar; yarım el saklanır (7. paket)
+  oyunSecimi: () => void; // oyun sonundan
   ayarlar: OyuncuAyarlari;
   ayarAc: () => void;
+  devam?: YarimEl; // kaldığı yerden açılan el (7. paket)
   baslangic?: KlondikeMasasi; // yalnız geliştirmedeki deneme eli için
 }
 
-export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
-  const [masa, setMasa] = useState<KlondikeMasasi>(() => baslangic ?? klondikeDagit(cekme));
+export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, baslangic }: Ozellik) {
+  const [masa, setMasa] = useState<KlondikeMasasi>(() => (devam?.masa as KlondikeMasasi | undefined) ?? baslangic ?? klondikeDagit(cekme));
   const [el, setEl] = useState(0); // yeni elde kartlar yeniden dağıtılarak gelsin diye
   const [secim, setSecim] = useState<Yer | null>(null);
   const [surukleme, setSurukleme] = useState<Surukleme | null>(null);
   const [red, setRed] = useState<Yer | null>(null);
   const [uyari, setUyari] = useState<MetinAnahtari | null>(null);
   const [gecmis, setGecmis] = useState<KlondikeMasasi[]>([]); // geri al için önceki masalar
-  const geriAlHak = useGeriAlHakki();
+  const geriAlHak = useGeriAlHakki(devam?.hak);
   const [ipucu, setIpucu] = useState<{ ipucu: KlondikeIpucu; sayi: number } | null>(null);
   const ipucuSirasi = useRef(0); // arka arkaya basınca sıradaki ipucu
   const sonDokunus = useRef<{ id: string; zaman: number } | null>(null);
@@ -127,10 +131,15 @@ export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozelli
   }, []);
 
   const kazandi = kazandiMi(masa);
-  const { saniye, sifirla: sureyiSifirla } = useSure(kazandi);
+  const { saniye, sifirla: sureyiSifirla } = useSure(kazandi, devam?.saniye);
   // Puan ve seri (6. paket; src/kart/puan.ts). El yarımken bırakmak seriyi bitirir.
   const puan = usePuan('klasik', masa.cekme, klondikeOzeti(masa, saniye), kazandi);
-  const birakma = useElBirakma(masa.hamle > 0 && !kazandi, puan.seriyiBitir);
+  // Kaldığı yerden devam ve istatistik (7. paket)
+  const kayit = useElKaydi({ oyun: 'klasik', zorluk: masa.cekme, masa } as Parameters<typeof useElKaydi>[0], saniye, geriAlHak.hak, kazandi, !!devam);
+  const birakma = useElBirakma(yarimMi(masa.hamle, kazandi), () => {
+    puan.seriyiBitir();
+    kayit.birak();
+  });
 
   // Uyarı, ipucu ve sallanma kendiliğinden kaybolur
   useEffect(() => {
@@ -251,6 +260,7 @@ export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozelli
     setGecmis([]);
     geriAlHak.yeniEl(); // haklar her elde baştan
     puan.yeniEl();
+    kayit.yeniEl();
     setSurukleme(null);
     setUyari(null);
     sureyiSifirla();
@@ -473,7 +483,7 @@ export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozelli
         kalanHak={geriAlHak.hak.kalan}
         ipucu={ipucuBas}
         yeniEl={() => birakma.sor(yeniEl)}
-        geri={() => birakma.sor(geri)}
+        anaEkran={anaEkran}
       />
 
       {birakma.soruAcik && <ElBirakmaSorusu evet={birakma.evet} hayir={birakma.hayir} />}
@@ -481,7 +491,7 @@ export function KlondikeMasa({ cekme, geri, ayarlar, ayarAc, baslangic }: Ozelli
       {geriAlHak.kutu && <ReklamKutusu kapat={geriAlHak.kutuyuKapat} hakAl={geriAlHak.reklamlaAl} />}
 
       {kazandi && (
-        <OyunSonu altBaslik={m('masa.baslikKlasik', masa.cekme)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={geri} />
+        <OyunSonu altBaslik={m('masa.baslikKlasik', masa.cekme)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={oyunSecimi} />
       )}
     </main>
   );

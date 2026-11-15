@@ -23,6 +23,14 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **15 Kasım (ana ekran ve Ben sekmesi, 7. paket):** Kemal: "Ana ekran ve Ben sekmesiyle devam et".
+  Altta üç sekme (Ana ekran · Mücadeleler · Ben), ana ekran, Ben sekmesi, kaldığı yerden devam ve
+  basit istatistik oyuna girdi (2, 1.3, 8.4). Ajansın önerisi olarak kodda duranlar (Kemal'in onayı
+  yok): masanın alt şeridindeki dördüncü düğme "Oyun seçimi" yerine "Ana ekran" oldu; eli bırakmadan
+  masadan çıkar, el saklanır. Geri al geçmişi saklanmaz, kalan hak saklanır. Bir el ilk hamlede
+  "oynanan" sayılır. Ana ekranda en iyi puan, yarım el varsa onun, yoksa son seçilen oyun ve
+  zorluğun puanıdır. "Nasıl oynanır" metni standart kuralların kısa özeti olarak yazıldı (taslak,
+  Kemal onaylayacak).
 - **15 Kasım (puan paketi, 6. paket):** Kemal: "Puanla devam et". Seri, aşama, en iyi puan ve eli
   bırakma sorusu oyuna girdi (8.3, 2). Puan formülü için ajans üç aday getirdi (a, b, c; 8.3);
   Kemal seçecek, o zamana kadar aday a varsayılan. Adaylar adresten denenir (`?puan=b`). Ajansın
@@ -187,8 +195,16 @@ kalır.
   öbürleri; hamle yoksa desteden çekmeyi gösterir.
 - **Kendiliğinden bitirme:** bütün kartlar açılınca oyun kalanları kendisi yerleştirir.
 - **Kaldığı yerden devam:** uygulama kapanınca oyun kaybolmaz; ana ekranda "devam et" çıkar.
+  **Yapılan (7. paket):** en az bir hamle yapılmış, kazanılmamış el telefonun tarayıcısında
+  saklanır (her hamlede, telefon başka uygulamaya geçince ve masadan çıkınca). Saklananlar: oyun ve
+  zorluk, masanın hâli, süre, kalan geri al hakkı. Tek yarım el olur. Geri al geçmişi saklanmaz
+  (öneri, standart çözüm: uzun Spider elinde geçmiş tarayıcının saklama yerini doldurabilir); el
+  açılınca "Geri al" ilk yeni hamleye kadar soluk durur. Kazanınca ya da bırakınca silinir.
 - **Süre ve hamle sayacı:** masanın üst satırında; ayarlardan kapatılabilir.
 - **Basit istatistik:** oynanan, kazanılan, en iyi süre; oyun sonu ekranında ve menüde.
+  **Yapılan (7. paket):** Ben sekmesinde "İstatistik": oyun ve zorluk başına (Spider 1, 2, 4 renk;
+  klasik 1, 3 kart) oynanan, kazanılan, en iyi süre. Bir el ilk hamlede oynanan sayılır (öneri);
+  kaldığı yerden açılan el yeniden sayılmaz. Oyun sonu ekranında henüz yok (öneri: sonraki pakette).
 
 Yardımcı değil, kontrol (öneri; Kemal'in listesinde yoktu): dokunarak taşıma. Karta dokununca
 uygun yere kendisi gider; sürüklemek de olur. Dikey ekranda tek başparmakla oynanabilsin diye
@@ -206,17 +222,29 @@ Dikey, kısa ve derli toplu; boş delik kalmaz, ekrana yayılmaz (Kemal'in DK Li
 bırakılır (öneri).
 - **Açılış:** Kems Company ve Sürek Kulübü izi (minik, boğmayan), sonra masa. Uzun açılış videosu yok.
 - **Alt sekmeler (Kemal, 15 Kasım):** altta üç sekme: ana ekran, mücadeleler, ben. Masada sekmeler
-  görünmez (öneri; oyun alanı dar).
+  görünmez (Kemal, 15 Kasım; masa tam ekran). Masadan "Ana ekran" ile çıkınca geri gelir (7. paket).
 - **Ana ekran (Kemal, 15 Kasım):** üstte günlük mücadele ve etkinlik kartları; ortada oyunun adı
   [ad: Kemal] ve en iyi puan (en yüksek seri puanı; 8.3); altta "devam et" (yarım el varsa) ve
   "yeni oyun". El yarımken "yeni oyun"a dokununca önce onay sorusu çıkar (aşağıda, "Eli bırakma").
-- **Oyun seçimi:** "yeni oyun"a dokununca açılır (öneri). Alt alta iki kart: Spider (üstte),
+  **Yapılan (7. paket):** üstte "Günlük mücadele" ve "Kartpostal etkinliği" kartları "Yakında"
+  (8. ve 9. paket); ortada küçük kart yelpazesi, oyunun adı [Kemal], "En iyi puan" ve hangi oyunun
+  puanı olduğu (yarım el varsa onun, yoksa son seçilen oyun ve zorluk; öneri); altta "Oyuna devam
+  et" (yarım el yoksa soluk, altında "Yarım el yok") ve "Yeni oyun". Soruya "Evet" denirse yarım
+  el silinir, o oyunun serisi biter, oyun seçimi açılır; "Hayır" denirse soru kapanır, ana ekran
+  kalır (öneri).
+- **Oyun seçimi:** "yeni oyun"a dokununca açılır (öneri; 7. pakette böyle). Alttaki "Ayarlar"
+  ayarları, "İstatistik" Ben sekmesindeki istatistiği açar; "Paketler" yakında. Altta sekmeler görünür. Alt alta iki kart: Spider (üstte),
   klasik solitaire (Kemal, 15 Kasım). Her birinin altında zorluk seçimi (1/3 kart; 1/2/4 renk).
 - **Mücadeleler sekmesi:** günlük mücadelenin takvimi ve kartpostal etkinliği (8.1 ve 8.2).
+  7. pakette yer tutucu: iki "Yakında" kartı ve "[YER TUTUCU]".
 - **Ben sekmesi (Kemal, 15 Kasım):** ödüller (aylık ödüller ve kartpostal koleksiyonu), ayarlar,
   nasıl oynanır, yardım, oyun hakkında, gizlilik. İstatistik ve paketlerin yeri: öneri, bu sekme;
-  karar Kemal'in.
-- **Masa:** üstte ince bilgi satırı (süre, hamle; ayarda açıksa puan ve aşama; küçük ve sessiz, kapatılabilir; sonunda küçük ayar düğmesi, 5. paket), ortada oyun
+  karar Kemal'in. **Yapılan (7. paket):** en üstte "Ödüller" (aylık ödüller ve kartpostal
+  koleksiyonu, ikisi boş yer tutucu); altında İstatistik, Ayarlar (5. paketteki ekran üstüne
+  açılır), Nasıl oynanır; sonra Yardım, Oyun hakkında, Gizlilik (yer tutucu). Satıra dokununca
+  sayfa açılır, "Geri" listeye döner. Paketler henüz bu sekmede yok (13. paket).
+- **Masa:** (7. paket: alt şeritteki dördüncü düğme "Oyun seçimi" yerine "Ana ekran"; soru sormadan
+  masadan çıkar, el saklanır; öneri.) Üstte ince bilgi satırı (süre, hamle; ayarda açıksa puan ve aşama; küçük ve sessiz, kapatılabilir; sonunda küçük ayar düğmesi, 5. paket), ortada oyun
   alanı, arkada seçili masa (kulüp evi ya da Sade Meyhane), altta başparmak hizasında ince bir
   şerit: geri al, ipucu, yeni el, menü. Deneme elinde bilgi satırında küçük, sessiz bir "deneme"
   izi (öneri). Bilgi satırında o anki aşama da görünebilir (öneri; "Aşama 1, 2, 3…", 8.3).
@@ -660,15 +688,19 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
 - **Günlük mücadele eli seriye sayılır** (Kemal, 15 Kasım soru turu; 8.1): kazanınca aşama artar,
   kaybedince seri biter.
 - Kaldığı yerden devam (1.3): uygulama kapanınca seri bitmez; yarım el "devam et" ile sürer (öneri;
-  eli bırakmak yalnız "yeni oyun" ya da "yeni el" ile olur). "Devam et" henüz yok (4. paket); o
-  gelene kadar sayfa kapanınca yarım el kaybolur ama seri sürer.
+  eli bırakmak yalnız "yeni oyun" ya da "yeni el" ile olur). 7. paketle geldi: sayfa kapanınca
+  yarım el artık kaybolmuyor.
 - Ayarlarda "her hamlede puanı göster" (Kemal): açıksa masanın bilgi satırında puan görünür.
 
 ### 8.4 Ana ekran ve Ben sekmesi
 
 Ayrıntı 2. bölümde (alt sekmeler, ana ekran, Ben sekmesi, ayarlarda titreşim ve "her hamlede puanı
-göster"). "Nasıl oynanır", "yardım", "oyun hakkında" ve "gizlilik" metinleri Kemal'in; yazılana
-kadar `[YER TUTUCU: …]` durur. Gizlilik metni telefon adımında gerekir (6. bölüm).
+göster"). "Yardım", "oyun hakkında" ve "gizlilik" metinleri Kemal'in; yazılana kadar
+`[YER TUTUCU: …]` durur. Gizlilik metni telefon adımında gerekir (6. bölüm).
+"Nasıl oynanır" (7. paket; Kems'in işi, 15 Kasım): Spider ve klasik solitaire'in standart
+kurallarının kısa özeti ve iki oyunda ortak üç madde (dokunarak taşıma, geri al ve ipucu, puan).
+Kurgu değil, kural anlatımıdır; Türkçesi ve İngilizcesi metin dosyalarında. **Taslak, Kemal
+onaylayacak.**
 
 ## Kemal'e sorular
 
@@ -698,3 +730,7 @@ Açık kalanlar sayı ya da seçim; web denemesinde ve ilgili paket gelince soru
    (önerilen, şu anki) · tek seri, oyun değişse de sürer.
 10. Kart oyunu: Eli bırakma sorusunun metni ne olsun? Şimdi "[YER TUTUCU: eli bırakma sorusu]";
    anlamı "eli bırakıyor musun, serin biter" (2).
+11. Kart oyunu: "Nasıl oynanır" metni uygun mu? Neden: standart kuralların kısa özeti olarak
+   ajans yazdı (7. paket). Adaylar: olduğu gibi kalsın (önerilen) · düzeltmelerimi yazarım.
+12. Kart oyunu: Masadaki dördüncü düğme "Ana ekran" olsun mu (eli bırakmadan çıkar)? Adaylar:
+   "Ana ekran" (önerilen, şu anki) · "Menü" adıyla küçük bir menü açılsın.
