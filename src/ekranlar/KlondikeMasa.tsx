@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
 import { yarimMi, type YarimEl } from '../oyun/yarimEl';
@@ -8,17 +8,19 @@ import { gunlukRastgele, type GunlukEl } from '../oyun/gunluk';
 import { tarihYazisi, useGunlukYildiz } from './Gunluk';
 import { ekranaGoreAralik, kartOlcusu, sutunKonumlari } from '../kart/duzen';
 import { TAKIM_SIMGESI, type Kart } from '../kart/kart';
+import { DAGITIM_ADIMI, HAREKET } from '../kart/hareket';
 import {
   cek,
   cekmeDurumu,
+  ciftDokunusHedefi,
   geriAl,
   ipuclari,
   kazandiMi,
   klondikeDagit,
   KLONDIKE_SUTUN_SAYISI,
+  oynanabilirKartlar,
   tasi,
   tasinabilirMi,
-  temeleGonder,
   temelNo,
   TEMEL_TAKIMLARI,
   type CekmeSayisi,
@@ -30,12 +32,16 @@ import {
 import {
   BilgiSatiri,
   ElBirakmaSorusu,
+  HareketKalkani,
+  konumYazisi,
   MasaDugmeleri,
   OyunSonu,
   ReklamKutusu,
   useElBirakma,
   useElKaydi,
   useGeriAlHakki,
+  useHareket,
+  useKayanlar,
   masaPayi,
   useMasaBlogu,
   usePuan,
@@ -46,8 +52,10 @@ import { klondikeOzeti } from '../kart/puan';
 // Klasik solitaire masası (yol haritası, 3. paket; belge 1.1). Kurallar src/kart/klondike.ts'te.
 // Üstte ince bilgi satırı (süre, hamle); altında dört temel yığın, açılan kartlar ve çekme
 // destesi; onun altında yedi sütun; en altta düğmeler. Karta dokun, sonra gideceği yere dokun; ya
-// da sürükle. Karta çift dokununca uygun temel yığına gider. Desteye dokununca kart açılır; deste
-// bitince açılanlar destenin altına döner. Geri al ve ipucu Spider'daki gibi.
+// da sürükle. Karta çift dokununca önce uygun temel yığına, gidemiyorsa uygun bir sütuna kayar; yer
+// yoksa sallanır (Kemal, 15 Kasım). Desteye dokununca kart açılır; deste bitince açılanlar destenin
+// altına döner. Geri al ve ipucu Spider'daki gibi. Yeni elde kartlar desteden teker teker uçar; o an
+// oynanamayan açık kartlar biraz koyu (ayardan kapanır; Kemal'in telefon yorumları, 15 Kasım).
 
 const ARALIK = 4; // sütunlar arası boşluk (piksel)
 const UST_ARALIK = 12; // üst sıra ile sütunlar arası boşluk
@@ -91,6 +99,16 @@ interface Cizim {
   z: number;
 }
 
+// Her kartın hangi yığında olduğu (son hamlede yer değiştirenler kayarken üstte çizilir)
+const yerler = (masa: KlondikeMasasi) => {
+  const h = new Map<string, string>();
+  masa.sutunlar.forEach((s, no) => s.forEach((k) => h.set(k.id, `s${no}`)));
+  masa.temeller.forEach((t, no) => t.forEach((k) => h.set(k.id, `t${no}`)));
+  masa.acilan.forEach((k) => h.set(k.id, 'a'));
+  masa.deste.forEach((k) => h.set(k.id, 'd'));
+  return h;
+};
+
 // Kart (yer b) seçili yerin (a) içinde mi: aynı sütunda ve daha üstte, ya da aynı yığının üstü
 function icindeMi(a: Yer | null | undefined, b: Yer | null): boolean {
   if (!a || !b || a.tur !== b.tur) return false;
@@ -126,6 +144,9 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
   const sonDokunus = useRef<{ id: string; zaman: number } | null>(null);
   // Masa ekranı doldurur; kart alanı bilgi satırı ile alt şerit arasındaki yükseklik (masaOrtak.tsx)
   const { masaRef, blokRef, alanRef, alan } = useMasaBlogu();
+  const hareket = useHareket(alanRef);
+  const kayan = useKayanlar();
+  const oynanabilir = useMemo(() => oynanabilirKartlar(masa), [masa]);
 
   const kazandi = kazandiMi(masa);
   const { saniye, sifirla: sureyiSifirla } = useSure(kazandi, devam?.saniye);
@@ -160,14 +181,6 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
     return () => clearTimeout(z);
   }, [red]);
   useEffect(() => setSecim(null), [el]);
-
-  // İlk dağıtımda kartlar sırayla gelir
-  const ilkSira = useMemo(() => {
-    const harita = new Map<string, number>();
-    masa.sutunlar.forEach((s, c) => s.forEach((k, i) => harita.set(k.id, i * KLONDIKE_SUTUN_SAYISI + c)));
-    masa.deste.forEach((k) => harita.set(k.id, 0));
-    return harita;
-  }, [el]);
 
   const { en: kartEn, boy: kartBoy } = kartOlcusu(alan.en, alan.tamBoy, KLONDIKE_SUTUN_SAYISI, ARALIK);
   const kose = Math.max(3, kartEn * 0.1);
@@ -229,8 +242,24 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
   // Her hamlede önceki masa geçmişe girer
   const hamleYap = (yeni: KlondikeMasasi) => {
     setGecmis((g) => [...g, masa]);
+    kayan.isaretle(yerler(masa), yerler(yeni));
     setMasa(yeni);
   };
+
+  // Yeni elde sütunların kartları desteden teker teker gelir (kaldığı yerden açılan elde ve deneme
+  // elinde değil). Hız Spider'ınkiyle aynı (src/kart/hareket.ts).
+  const dagitilanEl = useRef(-1);
+  useLayoutEffect(() => {
+    if (!alan.olculdu || dagitilanEl.current === el) return;
+    dagitilanEl.current = el;
+    if (el === 0 && (devam || baslangic)) return;
+    const sira = masa.sutunlar
+      .flatMap((s, c) => s.map((k, i) => ({ id: k.id, n: i * KLONDIKE_SUTUN_SAYISI + c })))
+      .sort((a, b) => a.n - b.n)
+      .map((a) => a.id);
+    const kimden = { x: sutunX(ustSira.deste), y: 0 };
+    hareket.baslat(sira.map((id, j) => ({ id, kimden, gecikme: j * DAGITIM_ADIMI, sure: HAREKET.ucus })));
+  }, [el, alan.olculdu]);
 
   const geriAlBas = () => {
     setSecim(null);
@@ -255,6 +284,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
   };
 
   const yeniEl = () => {
+    hareket.bitir();
     setMasa(dagitim());
     setEl((e) => e + 1);
     setGecmis([]);
@@ -317,24 +347,26 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
       dene(s.yer, hedefBul(e.clientX, e.clientY));
       return;
     }
-    // Dokunuş. Çift dokunuş: kart uygun temel yığına gider.
+    // Dokunuş. Çift dokunuş (Kemal, 15 Kasım): kart önce uygun temel yığına, gidemiyorsa uygun bir
+    // sütuna kayar; gidecek yer yoksa sallanır.
     const simdi = Date.now();
     const onceki = sonDokunus.current;
     sonDokunus.current = { id: c.k.id, zaman: simdi };
     const { yer } = c;
     if (yer && onceki && onceki.id === c.k.id && simdi - onceki.zaman < CIFT_DOKUNMA) {
       sonDokunus.current = null;
-      const sonuc = temeleGonder(masa, yer);
-      if (sonuc) {
-        setSecim(null);
-        hamleYap(sonuc);
-        return;
-      }
+      setSecim(null);
+      const hedef = tasinabilirMi(masa, yer) ? ciftDokunusHedefi(masa, yer) : null;
+      const sonuc = hedef && tasi(masa, yer, hedef);
+      if (sonuc) hamleYap(sonuc);
+      else if (c.k.acik) setRed(yer);
+      return;
     }
     const ayniYigin =
       secim && yer && (secim.tur === yer.tur && (yer.tur !== 'sutun' || (secim.tur === 'sutun' && secim.no === yer.no)));
     const hedef = yer ? yerinHedefi(yer) : null;
     if (secim && !ayniYigin && hedef) {
+      sonDokunus.current = null; // bu dokunuş bir taşımaydı
       dene(secim, hedef);
     } else if (secim && yer && icindeMi(secim, yer) && icindeMi(yer, secim)) {
       setSecim(null); // seçili karta yeniden dokunuldu
@@ -419,7 +451,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
           )}
         </div>
 
-        <div key={el} className="kart-katmani">
+        <div key={el} className="kart-katmani" style={{ '--kayma': `${HAREKET.kayma}ms` } as CSSProperties}>
           {/* Kartlar hep aynı sırada çizilir: yer değişince yeniden dağıtılıyormuş gibi oynamasın */}
           {[...cizimler]
             .sort((a, b) => (a.k.id < b.k.id ? -1 : 1))
@@ -430,6 +462,8 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
                 left = surukleme.x - surukleme.tutX - alanR.left + (c.x - surukIlk.x);
                 top = surukleme.y - surukleme.tutY - alanR.top + (c.y - surukIlk.y);
               }
+              // O an hiçbir yere gidemeyen açık kart biraz koyu (ayar; kurallar src/kart/klondike.ts)
+              const soluk = ayarlar.koyulastir && c.k.acik && !oynanabilir.has(c.k.id);
               const sinif = [
                 'kart-yeri',
                 c.yer ? '' : 'sabit',
@@ -437,16 +471,16 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
                 icindeMi(secim, c.yer) ? 'secili' : '',
                 icindeMi(red, c.yer) ? 'reddedildi' : '',
                 ipucuMu(c) ? 'ipucu' : '',
+                soluk ? 'soluk' : '',
               ].join(' ');
               return (
                 <div
                   key={c.k.id}
+                  data-kart={c.k.id}
                   className={sinif}
                   style={{
-                    left,
-                    top,
-                    zIndex: tasinan ? 500 + c.z : c.z,
-                    animationDelay: `${(ilkSira.get(c.k.id) ?? 0) * 14}ms`,
+                    transform: konumYazisi(left, top),
+                    zIndex: tasinan ? 500 + c.z : kayan.kayanlar.has(c.k.id) ? 300 + c.z : c.z,
                   }}
                   onPointerDown={(e) => kartBas(e, c.yer)}
                   onPointerMove={kartKay}
@@ -488,6 +522,9 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
         anaEkran={anaEkran}
       />
       </div>
+
+      {/* Dağıtım sürerken dokunma kapalı; masaya tek dokunuş dağıtımı hemen bitirir */}
+      {hareket.kilitli && <HareketKalkani bitir={hareket.bitir} />}
 
       {birakma.soruAcik && <ElBirakmaSorusu evet={birakma.evet} hayir={birakma.hayir} />}
 

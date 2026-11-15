@@ -12,6 +12,7 @@ import {
   gunlukYarimElOku,
   gunlukYarimElSil,
   gunlukYaz,
+  takvimAyi,
   tarihOku,
   tarihtenBugun,
   type GunlukEl,
@@ -27,7 +28,7 @@ import { denemeMasasi, gunlukDenemesi, klondikeDenemesi, type DenemeTuru, type K
 
 type Ekran = 'acilis' | 'sekmeler' | 'secim' | 'spider' | 'klasik';
 
-// Yalnız geliştirmede: adres sonuna ?deneme=kazan, ?deneme=dizi, ?deneme=uzun, ?deneme=klasik-kazan ya da
+// Yalnız geliştirmede: adres sonuna ?deneme=kazan, ?deneme=dizi, ?deneme=uzun, ?deneme=cift, ?deneme=klasik-kazan ya da
 // ?deneme=klasik-orta yazılınca hazır bir el doğrudan masada açılır (ekran görüntüsü ve elle
 // deneme için). ?deneme=gunluk-kazan bugünün günlük eli olarak bir hamlede biten Spider'ı açar;
 // ?deneme=takvim takvime hazır yıldızlar koyar (8. paket). Yayındaki oyunda çalışmaz.
@@ -36,7 +37,7 @@ function denemeOku() {
   const tur = new URLSearchParams(location.search).get('deneme');
   if (tur === 'takvim' || tur === 'gunluk-kazan') gunlukYaz(localStorage, gunlukDenemesi(tarihtenBugun()));
   if (tur === 'gunluk-kazan') return { oyun: 'spider' as const, gunluk: true, ...denemeMasasi('kazan') };
-  if (tur === 'kazan' || tur === 'dizi' || tur === 'uzun') return { oyun: 'spider' as const, ...denemeMasasi(tur as DenemeTuru) };
+  if (tur === 'kazan' || tur === 'dizi' || tur === 'uzun' || tur === 'cift') return { oyun: 'spider' as const, ...denemeMasasi(tur as DenemeTuru) };
   if (tur === 'klasik-kazan' || tur === 'klasik-orta') {
     return { oyun: 'klasik' as const, ...klondikeDenemesi(tur as KlondikeDenemeTuru) };
   }
@@ -207,7 +208,7 @@ export function Uygulama() {
       {ekran === 'sekmeler' && sekme === 'mucadeleler' && (
         <Mucadeleler
           gorulenAy={gorulenAy}
-          ayDegistir={setGorulenAy}
+          ayDegistir={(a) => setGorulenAy(takvimAyi(a.yil, a.ay))}
           seciliGun={seciliGun}
           gunSec={setSeciliGun}
           secim={(() => {

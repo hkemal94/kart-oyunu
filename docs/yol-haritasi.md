@@ -89,7 +89,18 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   kadar kısaldı, uzun Spider sütunu yine alt şeride değmez. Menü ekranları değişmedi. 320x640,
   390x844 ve 430x932'de denendi (taşma yok); gerçek telefonda denenmedi. Ekran görüntüleri:
   `pay-*.png`.
-- Sırada: 4. paketten kalan kendiliğinden bitirme; sonra 8. paket (günlük mücadele).
+- 15 Kasım 2026 (öneri; `ajans/telefon-yorumlari-1`; Kemal telefonda denedi, beş yorum): (1) karta
+  çift dokununca gidebileceği yere kısa bir kaymayla gider (klasikte önce temel, yoksa uygun sütun;
+  Spider'da önce aynı takımın bir büyüğü, sonra başka takımın bir büyüğü, en son boş sütun); yer
+  yoksa kart sallanır; hamle sayılır, geri alınır. (2) Yeni elde kartlar desteden teker teker uçarak
+  dağılır, Spider'da "Dağıt"taki on kart da; dağıtım sürerken masaya dokununca hemen biter; kaldığı
+  yerden açılan elde hareket yok. (3) O an hiçbir yere oynanamayan açık kartlar biraz koyu; Ayarlar'da
+  "Oynanamayan kartları koyulaştır" (varsayılan açık). (4) Spider'da tamamlanan sıra astan papaza teker
+  teker "Tamamlanan diziler"e akar. (5) Takvim en çok Ocak 2026'ya kadar geri gider. Süreler ayar
+  dosyasında (`src/oyun/ayarlar.json` → hareket; öneri, Kemal ayarlar). Telefonda "hareketi azalt"
+  açıksa hareketler atlanır. Bilgisayarda telefon boyutunda (390x844) denendi; gerçek telefonda
+  denenmedi. Ekran görüntüleri: `docs/ekran-goruntuleri/yorum-*.png`.
+- Sırada: 4. paketten kalan kendiliğinden bitirme; sonra 9. paket (kartpostal etkinliği).
 
 ## Paketler
 
@@ -144,7 +155,7 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   açılanlar destenin altına döner (sınırsız; sınır Kemal'e soru). Bir küçük ve ters renk dizilir;
   açık sıralı dizi birlikte taşınır; boş sütuna yalnız papaz. Temelden sütuna geri almak serbest.
   Kart dokunarak (karta, sonra gideceği yere) ya da sürükleyerek taşınır; karta çift dokununca
-  uygun temel yığına gider. Kurala uymayan taşımada kart yerine döner ve sallanır. 52 kart
+  uygun temel yığına gider (telefon yorumlarıyla: temele gidemiyorsa uygun bir sütuna). Kurala uymayan taşımada kart yerine döner ve sallanır. 52 kart
   temelde olunca oyun sonu: süre, hamle, "Yeni el", "Oyun seçimi".
 - Geri al ve ipucu Spider'daki gibi; geri al hakkı aynı yerden (`src/kart/geriAlHakki.ts`,
   `?geriAlHak=`). İpucu sırası (öneri): temele giden, kapalı kartı açan, öbürleri; hamle yoksa
@@ -280,7 +291,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   saatine göre değişir. Günlük yarım el ayrı yerde saklanır (normal "Oyuna devam et" ile
   karışmaz); bir tane olur; başka bir günlük el açılırken eli bırakma sorusu çıkar, "Evet" o elin
   serisini bitirir. Masadaki "Yeni el" günlük elde aynı günün elini baştan dağıtır (eli bırakma
-  sorusuyla). Kazanılmış gün yeniden oynanabilir, yeni yıldız gelmez. Önceki aylara sınır yok.
+  sorusuyla). Kazanılmış gün yeniden oynanabilir, yeni yıldız gelmez. Takvim en çok Ocak 2026'ya
+  kadar geri gider; o ayda geri ok soluk ve kapalı (Kemal, 15 Kasım telefon yorumları).
   Günlük el istatistiğe de sayılır. Ay ve gün adları metin dosyasında, dile göre.
 - Deneme yolları (yalnız geliştirmede): `?deneme=takvim` (takvime hazır yıldızlar: geçen ay tam,
   bu ay birkaç boş gün), `?deneme=gunluk-kazan` (bugünün günlük eli olarak bir hamlede biten
@@ -345,6 +357,10 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   reklam hesapları Kemal'in hesabıyla açılır.
 
 ## Bitenler
+
+- Kemal'in telefon yorumları (15 Kasım): çift dokunuşla hızlı yerleştirme, teker teker dağıtma,
+  oynanamayan kartları koyulaştırma (ayarla), tamamlanan sıranın akışı, takvimin Ocak 2026 sınırı
+  (`ajans/telefon-yorumlari-1`, 15 Kasım 2026; Kemal birleştirince kesinleşir).
 
 - 8. Günlük mücadele (`ajans/gunluk-mucadele`, 15 Kasım 2026; ödül görseli Kemal'de; Kemal
   birleştirince kesinleşir).

@@ -23,6 +23,26 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **15 Kasım (telefon yorumları):** Kemal oyunu telefonda denedi, beş yorum yazdı; hepsi oyuna
+  girdi (1.3, 2, 8.1). (1) Çift dokunuşla hızlı yerleştirme: iki masada da karta (Spider'da
+  taşınabilir dizinin en üst kartına) iki kez dokununca kart gidebileceği yere kısa bir kaymayla
+  gider; klasikte önce temel yığın, yoksa uygun sütun; Spider'da önce aynı takımın bir büyük kartı,
+  sonra başka takımın bir büyük kartı, en son boş sütun. Yer yoksa kart hafifçe sallanır. Hamle
+  sayılır, geri alınır. (2) Teker teker dağıtma: yeni elde kartlar desteden masaya teker teker,
+  hızlı uçarak dağılır; Spider'da "Dağıt"taki on kart da. Dağıtım sürerken dokunma kapalı, masaya
+  tek dokunuş dağıtımı hemen bitirir; kaldığı yerden açılan elde hareket yok. (3) O an hiçbir yere
+  oynanamayan açık kartlar bir iki ton koyu (başka kartın altında kalıp taşınamayanlar da); kapalı
+  kartlar hariç. Ayarlar'da "Oynanamayan kartları koyulaştır", varsayılanı açık. (4) Spider'da
+  tamamlanan sıra tek seferde kaybolmaz; en alttaki astan başlayarak teker teker "Tamamlanan
+  diziler"e akar, bu sırada dokunma kapalı. (5) Günlük mücadele takvimi en çok Ocak 2026'ya kadar
+  geri gider (7. bölümdeki açık soru kapandı). Ajansın önerisi olarak kodda duranlar (Kemal'in onayı
+  yok): süreler (Spider açılış dağıtımı 1,8 saniye, bir kartın uçuşu 0,24 saniye, kayma 0,24
+  saniye, akış 0,7 saniye) ayar dosyasında, Kemal KKM'den değiştirir; "Dağıt" ve klasik
+  solitaire'in açılışı Spider açılışıyla aynı hızda; telefonda "hareketi azalt" açıksa hareketler
+  atlanır (kartlar hemen yerinde, sallanma kısa); "oynanabilir" kural olarak "kendisi ya da üstünde
+  durduğu dizi o an kurala uygun bir yere gidebiliyor" demek (boş sütun varken Spider'da taşınabilir
+  her dizi; klasikte temeldeki üst kart da sütuna inebiliyorsa); çift dokunuşta aynı öncelikte
+  soldaki sütun seçilir.
 - **15 Kasım (günlük mücadele, 8. paket):** Kemal: "Günlük mücadeleye başla". Takvim, günün eli,
   yıldız, aylık ödül yer tutucusu ve ana ekrandaki günün kartı oyuna girdi (8.1, 2). Belgedeki öneri
   (aynı gün, aynı oyun ve zorlukta herkese aynı dağıtım) Kemal'in "bunu yap"ıyla kodda: dağıtım
@@ -238,6 +258,21 @@ Yardımcı değil, kontrol (öneri; Kemal'in listesinde yoktu): dokunarak taşı
 uygun yere kendisi gider; sürüklemek de olur. Dikey ekranda tek başparmakla oynanabilsin diye
 dokunarak taşıma ana yol olur.
 
+**Çift dokunuşla hızlı yerleştirme (Kemal, 15 Kasım telefon yorumları):** iki masada da bir karta
+(Spider'da taşınabilir bir dizinin en üst kartına) iki kez dokununca, gidebileceği geçerli bir yer
+varsa kart kısa bir kaymayla oraya gider. Klasik solitaire'de önce temel yığın, yoksa uygun bir
+sütun (dolu sütun boş sütundan önce; öneri). Spider'da öncelik: aynı takımın bir büyük kartının
+altı, sonra başka takımın bir büyük kartı, en son boş sütun; aynı öncelikte soldaki sütun (öneri).
+Sütunun tamamını boş sütuna taşımak bir şey değiştirmediği için sayılmaz. Yer yoksa kart hafifçe
+sallanır. Hamle sayılır, geri alınır. Kurallar `src/kart/spider.ts` ve `src/kart/klondike.ts`'te
+(`ciftDokunusHedefi`), testleri `testler/oynanabilir.test.ts`.
+
+**Oynanamayan kartları koyulaştırma (Kemal, 15 Kasım telefon yorumları):** o an hiçbir yere
+oynanamayan açık kartlar bir iki ton koyu görünür; başka bir kartın altında kalıp taşınamayanlar da.
+Kapalı kartlar bunun dışında. "Oynanabilir" (kural, ekrandan ayrı: `oynanabilirKartlar`): kartın
+kendisi ya da üstünde durduğu birlikte taşınabilir dizi o an kurala uygun bir yere gidebiliyor.
+Klasikte açılanlarda ve temelde yalnız en üstteki kart alınabilir. Ayarlar'dan kapatılır (2).
+
 Oyuncu ne yapar, neden eğlenceli: kısa, kendi hızında bir düzen kurma işi; her el yeni bir
 bulmaca, kaybetmenin cezası yok, yeni el bir dokunuş uzakta. Her elin ücretsiz geri al hakları ve
 ipucu takılınca bırakmak yerine denemeyi sürdürtür. Kulüp evinin masası ve çiftliğin sesi bunu "bir
@@ -276,7 +311,14 @@ bırakılır (öneri).
   açılır), Nasıl oynanır; sonra Yardım, Oyun hakkında, Gizlilik (yer tutucu). Satıra dokununca
   sayfa açılır, "Geri" listeye döner. Paketler henüz bu sekmede yok (13. paket).
 - **Masa:** (7. paket: alt şeritteki dördüncü düğme "Oyun seçimi" yerine "Ana ekran"; soru sormadan
-  masadan çıkar, el saklanır; öneri.) Üstte ince bilgi satırı (süre, hamle; ayarda açıksa puan ve aşama; küçük ve sessiz, kapatılabilir; sonunda küçük ayar düğmesi, 5. paket), ortada oyun
+  masadan çıkar, el saklanır; öneri.) **Kart hareketleri (Kemal, 15 Kasım telefon yorumları):** yeni
+  elde kartlar desteden masaya teker teker, hızlı uçarak dağılır (Spider'da "Dağıt"taki on kart da;
+  klasikte sütunların kartları); dağıtım sürerken dokunma kapalı, masaya tek dokunuş dağıtımı hemen
+  bitirir; kaldığı yerden açılan elde hareket yok. Spider'da tamamlanan sıra en alttaki astan
+  başlayarak teker teker "Tamamlanan diziler"e akar, bu sırada da dokunma kapalı. Süreler tek yerde,
+  ayar dosyasında (`src/oyun/ayarlar.json` → hareket; öneri, Kemal ayarlar): Spider açılış dağıtımı
+  1,8 saniye, akış 0,7 saniye. Telefonda akıcı olsun diye kartlar yalnız "transform" ile yer
+  değiştirir; telefonun "hareketi azalt" tercihi açıksa hareketler atlanır. Üstte ince bilgi satırı (süre, hamle; ayarda açıksa puan ve aşama; küçük ve sessiz, kapatılabilir; sonunda küçük ayar düğmesi, 5. paket), ortada oyun
   alanı, arkada seçili masa (kulüp evi ya da Sade Meyhane), altta başparmak hizasında ince bir
   şerit: geri al, ipucu, yeni el, menü. Deneme elinde bilgi satırında küçük, sessiz bir "deneme"
   izi (öneri). Bilgi satırında o anki aşama da görünebilir (öneri; "Aşama 1, 2, 3…", 8.3).
@@ -308,7 +350,8 @@ bırakılır (öneri).
   "Ayarlar" düğmesinden ve masanın üst satırındaki küçük düğmeden açılır; ekranın üstüne gelir,
   kapanınca el kaldığı yerden sürer. Üç bölüm: ses ve titreşim (ses, mahalle sesi, titreşim; ses
   paketi gelince çalışır, anahtarlar şimdiden duruyor), masa (sol el düzeni, sayaçları gizle, her
-  hamlede puanı göster), dil ve deste (Türkçe / English; deste şimdilik yalnız sade deste).
+  hamlede puanı göster; telefon yorumlarıyla "oynanamayan kartları koyulaştır", varsayılanı açık),
+  dil ve deste (Türkçe / English; deste şimdilik yalnız sade deste).
   Değişiklik anında geçerli olur ve telefonun tarayıcısında saklanır. Sol el düzeninde alt şeritteki
   düğmeler ve deste yer değiştirir (Spider'da deste sola, tamamlanan diziler sağa; klasik
   solitaire'de üst sıra ayna gibi: deste solda, temel yığınlar sağda). Sayaçları gizle: süre ve
@@ -615,9 +658,7 @@ Açık kalanlar:
   yok: [Kemal]. Reklamsız satın alınınca ipucu reklamsız mı: [Kemal].
 - **Günlük mücadelede dağıtım:** aynı gün aynı zorlukta herkese aynı dağıtım (8.1). Kemal 15 Kasım'da
   "bunu yap" dedi; 8. paketle kodda. Kapandı.
-- **Günlük mücadelede önceki aylar:** takvimde ne kadar geriye gidilebilsin? Şimdilik sınır yok
-  (öneri). Adaylar: sınır yok, her geçmiş ay oynanır ve ödül alır (şu anki) · yalnız oyunun ilk
-  açıldığı aydan beri · yalnız son birkaç ay (sayı [Kemal]).
+- **Günlük mücadelede önceki aylar:** takvim en çok Ocak 2026'ya kadar (Kemal 15 Kasım). Kapandı.
 - **Günlük elde "Yeni el":** şimdi aynı günün elini baştan dağıtıyor (eli bırakma sorusuyla).
   Adaylar: aynı günün eli baştan (şu anki) · düğme günlük elde gizlensin.
 - **Kart köşesindeki harfler:** dile göre değişsin mi (öneri: değişir). İskelette iki dilde de
@@ -659,7 +700,8 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
     her telefonda aynı el, başka gün ya da zorlukta başka el (yukarıdaki öneri, Kemal "bunu yap").
   - Takvim (Mücadeleler): ayın adı, "yıldız/gün sayısı", Pazartesi'den başlayan haftalar, gün
     kısaltmaları dile göre; kazanılan günde yıldız (kodla çizilir; örnek oyunun kupası
-    kopyalanmaz), bugün vurgulu, gelecek günler soluk ve dokunulmaz, önceki aylara ok. Altta
+    kopyalanmaz), bugün vurgulu, gelecek günler soluk ve dokunulmaz, önceki aylara ok. Takvim en
+    çok Ocak 2026'ya kadar geri gider; o ayda geri ok soluk ve kapalı (Kemal, 15 Kasım). Altta
     seçili gün için oyun ve zorluk seçimi ve "Oyna".
   - Masada başlığın yanında küçük yıldızlı tarih işareti; kazanınca oyun sonunda "Günün yıldızı"
     ve "Takvime dön".
@@ -786,8 +828,7 @@ Açık kalanlar sayı ya da seçim; web denemesinde ve ilgili paket gelince soru
    ajans yazdı (7. paket). Adaylar: olduğu gibi kalsın (önerilen) · düzeltmelerimi yazarım.
 12. Kart oyunu: Masadaki dördüncü düğme "Ana ekran" olsun mu (eli bırakmadan çıkar)? Adaylar:
    "Ana ekran" (önerilen, şu anki) · "Menü" adıyla küçük bir menü açılsın.
-13. Kart oyunu: Günlük mücadele takviminde ne kadar geriye gidilebilsin? Neden: geçmiş günler
-   oynanır ve her tamamlanan ay ödül verir; sınır yoksa eski aylar da doldurulabilir. Adaylar: sınır
-   yok (önerilen, şu anki) · oyunun ilk açıldığı aydan beri · son birkaç ay (sayı [Kemal]).
+13. Kart oyunu: Günlük mücadele takviminde ne kadar geriye gidilebilsin? **Cevaplandı:** takvim en
+   çok Ocak 2026'ya kadar (Kemal 15 Kasım).
 14. Kart oyunu: Günlük elde masadaki "Yeni el" ne yapsın? Adaylar: aynı günün elini baştan dağıtsın
    (önerilen, şu anki) · günlük elde gizlensin.

@@ -1,14 +1,44 @@
 {
   "oyun": "[Kemal]",
   "kaynak": "https://hkemal94.github.io/kart-oyunu/",
-  "not": "Oyunun adı Kemal'in; 'kart-oyunu' geçici çalışma adı. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ana ekran, Ben sekmesi ve ince kenarlı masa görüntüleri öneri dalından (ajans/ana-ekran); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor. Günlük mücadele görüntüleri (gunluk-*.png) öneri dalından (ajans/gunluk-mucadele); saat 15 Kasım 2026'ya sabitlendi, takvimdeki yıldızlar yalnız geliştirmede çalışan hazır veriden (?deneme=takvim).",
+  "not": "Oyunun adı Kemal'in; 'kart-oyunu' geçici çalışma adı. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ana ekran, Ben sekmesi ve ince kenarlı masa görüntüleri öneri dalından (ajans/ana-ekran); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor. Günlük mücadele görüntüleri (gunluk-*.png) öneri dalından (ajans/gunluk-mucadele); saat 15 Kasım 2026'ya sabitlendi, takvimdeki yıldızlar yalnız geliştirmede çalışan hazır veriden (?deneme=takvim). Telefon yorumları görüntüleri (yorum-*.png) öneri dalından (ajans/telefon-yorumlari-1); koyu kartlar hazır deneme ellerinde (?deneme=cift, ?deneme=klasik-orta). Hareketler (dağıtma, kayma, akış) yalnız videoda görünür; videolar depoya konmadı.",
   "goruntuler": [
+    {
+      "dosya": "yorum-1-spider-koyu.png",
+      "baslik": "Spider: o an oynanamayan açık kartlar koyu (Kemal'in telefon yorumları)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)",
+      "kapak": true
+    },
+    {
+      "dosya": "yorum-2-klasik-koyu.png",
+      "baslik": "Klasik solitaire: o an oynanamayan açık kartlar koyu",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "yorum-3-ayarlar.png",
+      "baslik": "Ayarlar: 'Oynanamayan kartları koyulaştır' anahtarı (varsayılan açık)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "yorum-4-spider-ayar-kapali.png",
+      "baslik": "Spider: anahtar kapalıyken bütün açık kartlar aynı parlaklıkta",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "yorum-5-takvim-ocak-2026.png",
+      "baslik": "Mücadeleler: takvim Ocak 2026'da, geri ok soluk ve kapalı",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
     {
       "dosya": "gunluk-1-takvim.png",
       "baslik": "Mücadeleler: günlük mücadele takvimi (birkaç yıldızlı gün, bugün vurgulu, gelecek günler soluk)",
       "tarih": "2026-11-15",
-      "cihaz": "telefon (dikey, 390x844)",
-      "kapak": true
+      "cihaz": "telefon (dikey, 390x844)"
     },
     {
       "dosya": "gunluk-2-ana-ekran.png",

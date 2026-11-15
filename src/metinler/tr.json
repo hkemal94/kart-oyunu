@@ -77,6 +77,8 @@
   "ayar.sayaclariGizle.aciklama": "Süre ve hamle görünmez",
   "ayar.puaniGoster": "Her hamlede puanı göster",
   "ayar.puaniGoster.aciklama": "Masanın üstünde puan ve aşama",
+  "ayar.koyulastir": "Oynanamayan kartları koyulaştır",
+  "ayar.koyulastir.aciklama": "O an hiçbir yere gidemeyen açık kartlar biraz koyu görünür",
   "ayar.bolum.dil": "Dil ve deste",
   "ayar.dil": "Dil",
   "ayar.dil.tr": "Türkçe",

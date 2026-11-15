@@ -210,3 +210,52 @@ export function ipuclari(masa: KlondikeMasasi): KlondikeIpucu[] {
   if (sirali.length === 0 && cekmeDurumu(masa) !== 'bos') return [{ tur: 'cek' }];
   return sirali;
 }
+
+// ---------------------------------------------------------------------------------------------
+// Kemal'in telefon yorumları (15 Kasım). Ekrandan ayrı; testleri testler/oynanabilir.test.ts.
+
+// Bir yerden gidilebilecek bütün yerler: önce temel, sonra dolu sütunlar, en son boş sütun
+// (soldan sağa). Kendi sütunu ve temelden temele sayılmaz.
+function gidilecekYerler(masa: KlondikeMasasi, yer: Yer): Hedef[] {
+  const yerler: Hedef[] = [];
+  if (birakilabilirMi(masa, yer, { tur: 'temel' })) yerler.push({ tur: 'temel' });
+  const sutunlar = masa.sutunlar.map((s, no) => ({ no, bos: s.length === 0 }));
+  for (const bos of [false, true]) {
+    for (const s of sutunlar) {
+      if (s.bos !== bos) continue;
+      const hedef: Hedef = { tur: 'sutun', no: s.no };
+      if (birakilabilirMi(masa, yer, hedef)) yerler.push(hedef);
+    }
+  }
+  return yerler;
+}
+
+// Çift dokunuş (Kemal): kart önce temel yığına, gidemiyorsa uygun bir sütuna gider (dolu sütun boş
+// sütundan önce). Sütunda dokunulan kart üstündeki diziyle birlikte gider; temele yalnız sütunun en
+// üstteki kartı gider. Gidecek yer yoksa null (ekran kartı hafifçe sallar).
+export function ciftDokunusHedefi(masa: KlondikeMasasi, yer: Yer): Hedef | null {
+  return gidilecekYerler(masa, yer)[0] ?? null;
+}
+
+// Oynanabilir kartlar (Kemal: "o an hiçbir yere oynanamayan açık kartlar koyulaşsın"). Açık bir
+// kart, kendisi ya da üstünde durduğu birlikte taşınabilir dizi o an kurala uygun bir yere (temel
+// ya da sütun) gidebiliyorsa oynanabilir. Açılanlarda ve temelde yalnız en üstteki kart alınabilir;
+// altındakiler oynanamaz. Kapalı kartlar (deste dahil) listeye girmez.
+export function oynanabilirKartlar(masa: KlondikeMasasi): Set<string> {
+  const sonuc = new Set<string>();
+  masa.sutunlar.forEach((s, no) => {
+    for (let sira = 0; sira < s.length; sira++) {
+      const yer: Yer = { tur: 'sutun', no, sira };
+      if (!tasinabilirMi(masa, yer) || gidilecekYerler(masa, yer).length === 0) continue;
+      for (let i = sira; i < s.length; i++) sonuc.add(s[i].id);
+      break;
+    }
+  });
+  const ustte = (yer: Yer) => {
+    const k = yerdekiKartlar(masa, yer)[0];
+    if (k && gidilecekYerler(masa, yer).length > 0) sonuc.add(k.id);
+  };
+  ustte({ tur: 'acilan' });
+  masa.temeller.forEach((_, no) => ustte({ tur: 'temel', no }));
+  return sonuc;
+}

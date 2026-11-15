@@ -11,6 +11,7 @@ import {
   gunlukYaz,
   gunlukYarimElOku,
   oncekiAy,
+  oncekiAyaGidilirMi,
   sonrakiAy,
   takvimHucreleri,
   tamamlananAylar,
@@ -82,6 +83,7 @@ export function Mucadeleler({ gorulenAy, ayDegistir, seciliGun, gunSec, secim, s
   const { yil, ay } = gorulenAy;
   const bu = tarihOku(bugun);
   const sonAyda = yil > bu.yil || (yil === bu.yil && ay >= bu.ay);
+  const ilkAyda = !oncekiAyaGidilirMi(yil, ay); // Ocak 2026'dan geriye gidilmez (Kemal, 15 Kasım)
   const durum = gunDurumu(seciliGun, bugun);
   const zorluk = zorlukSec(secim);
   const el: GunlukEl = { tarih: seciliGun, oyun: secim.oyun, zorluk };
@@ -97,7 +99,12 @@ export function Mucadeleler({ gorulenAy, ayDegistir, seciliGun, gunSec, secim, s
 
       <section className="takvim">
         <header className="takvim-ust">
-          <button className="takvim-ok" onClick={() => ayDegistir(oncekiAy(yil, ay))} aria-label={m('gunluk.oncekiAy')}>
+          <button
+            className="takvim-ok"
+            onClick={() => !ilkAyda && ayDegistir(oncekiAy(yil, ay))}
+            disabled={ilkAyda}
+            aria-label={m('gunluk.oncekiAy')}
+          >
             <svg className="simge" viewBox="0 0 16 16" aria-hidden="true">
               <path d="M10 3.5 5.5 8 10 12.5" />
             </svg>
