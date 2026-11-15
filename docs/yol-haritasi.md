@@ -104,10 +104,12 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   4. paketten kalan kendiliğinden bitirme. Klasik solitaire'de bütün kartlar açık, deste ve açılan
   kartlar boşken masanın altında "Bitir" düğmesi çıkar; basınca kartlar en küçükten birer birer
   temellere kayar, el kazanılır (puan, istatistik, günlük yıldız normal). Bitirme tek geri al adımı;
-  sürerken masaya dokununca hemen biter. Spider'a konmadı (karar Kemal'in; belge 7, soru 15).
+  sürerken masaya dokununca hemen biter. Spider'a konmadı (sonra Kemal: Spider'da "Bitir" olmasın).
   Günlük elde "Yeni el" günün elini baştan dağıtır: Kemal "şu anki kalsın" dedi, belgeye karar
   olarak yazıldı. Bilgisayarda telefon boyutunda (390x844) denendi; gerçek telefonda denenmedi.
   Ekran görüntüleri: `docs/ekran-goruntuleri/bitir-*.png`.
+- 15 Kasım 2026 (öneri; `ajans/spider-bitir-karari`): yalnız belge. Kemal: Spider'da "Bitir"
+  olmasın, önerilen hâl kalıcı (belge 7, soru 15 kapandı). Oyunda değişen bir şey yok.
 - Sırada: 9. paket (kartpostal etkinliği).
 
 ## Paketler
@@ -214,8 +216,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   kartlar hemen yerinde. Her kart bir hamle (elle bitirmekle aynı puan); puan, istatistik ve günlük
   yıldız normal kazanç gibi. Tek geri al adımı. Kurallar `src/kart/klondike.ts`, testleri
   `testler/bitirme.test.ts`. Deneme yolu (yalnız geliştirmede): `?deneme=klasik-bitir`. Spider'da
-  yok: Spider'da tam diziler zaten kendiliğinden kalkıyor, "her zaman biter" anı net değil; karar
-  Kemal'in (belge 7, soru 15).
+  yok: tam diziler zaten kendiliğinden kalkıyor; Kemal 15 Kasım: Spider'da "Bitir" olmasın
+  (belge 7, soru 15 kapandı).
 - **Bekliyor:** oyun sonu ekranında istatistik (öneri). Süre ve hamle sayacı
   2. pakette geldi; ayardan kapatma 5. pakette.
 - Neye bağlı: 2. ve 3. paket.
