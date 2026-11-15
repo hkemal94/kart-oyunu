@@ -8,4 +8,6 @@ geçici çalışma adıdır; oyunun adı [Kemal].
 - Sıra ve açık işler: `docs/yol-haritasi.md`
 - Deneme bağlantısı (ana dala birleşince): https://hkemal94.github.io/kart-oyunu/
 
-Çalıştırmak için: `npm install`, sonra `npm run dev`. Derleme: `npm run build`.
+Çalıştırmak için: `npm install`, sonra `npm run dev`. Derleme: `npm run build`. Kural testleri:
+`npm test`. Geliştirmede hazır deneme elleri: adres sonuna `?deneme=dizi` (oyun ortası) ya da
+`?deneme=kazan` (bir hamlede oyun sonu); yayındaki oyunda çalışmaz.

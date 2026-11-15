@@ -67,22 +67,27 @@ button:disabled { cursor: default; }
 .secim-alt button { flex: 1; display: flex; flex-direction: column; align-items: center; border: 1px solid rgba(14, 28, 79, 0.2); background: transparent; border-radius: 12px; padding: 10px 4px; color: var(--lacivert); opacity: 0.55; font-size: 13px; }
 .secim-alt small { font-size: 10px; }
 
-/* Masa: düz renkli yer tutucu (kulüp evi görseli 6. pakette) */
-.masa { height: 100%; display: flex; flex-direction: column; background: var(--lacivert); color: var(--krem); padding: 10px 6px calc(8px + env(safe-area-inset-bottom)); touch-action: none; }
-.masa-ust { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 0 2px; }
-.masa-ust h1 { margin: 0; font-size: 14px; font-weight: 600; }
-.masa-not { margin: 6px 2px 8px; font-size: 11px; opacity: 0.6; text-align: center; }
+/* Masa: düz renkli yer tutucu (kulüp evi görseli 11. pakette) */
+.masa { height: 100%; display: flex; flex-direction: column; background: var(--lacivert); color: var(--krem); padding: calc(6px + env(safe-area-inset-top)) 6px calc(8px + env(safe-area-inset-bottom)); touch-action: none; position: relative; }
+/* Üstte ince bilgi satırı: süre, oyun, hamle (belge 2) */
+.masa-bilgi { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 0 4px 8px; font-size: 12px; font-variant-numeric: tabular-nums; opacity: 0.85; }
+.masa-bilgi > span { flex: 1; }
+.masa-bilgi > span:last-child { text-align: right; }
+.masa-bilgi-baslik { text-align: center; font-weight: 600; opacity: 0.75; }
 .oyun-alani { position: relative; flex: 1; min-height: 0; }
 .kart-katmani { position: absolute; inset: 0; }
 .yuva { position: absolute; top: 0; border: 1px dashed rgba(243, 239, 232, 0.3); }
 .yuva.hedef { border-color: var(--kiremit); }
-.kart-yeri { position: absolute; transition: left 0.18s ease, top 0.18s ease; animation: dagit 0.32s ease-out both; touch-action: none; }
+.kart-yeri { position: absolute; transition: left 0.24s ease-out, top 0.24s ease-out; animation: dagit 0.32s ease-out both; touch-action: none; }
 .kart-yeri.tasiniyor { transition: none; }
 .kart-yeri.tasiniyor .kart { box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45); }
 .kart-yeri.secili .kart { outline: 2px solid var(--kiremit); outline-offset: -1px; }
 .kart-yeri.secili .kart { transform: translateY(-3px); }
 @keyframes dagit { from { opacity: 0; transform: translateY(60vh); } to { opacity: 1; transform: none; } }
-.masa-alt { display: flex; flex-direction: column; gap: 4px; padding-top: 8px; }
+/* Kurala uymayan taşıma: kart yerine döner ve hafifçe sallanır */
+.kart-yeri.reddedildi .kart { animation: sars 0.36s ease-in-out; }
+@keyframes sars { 0%, 100% { transform: none; } 25% { transform: translateX(-3px); } 50% { transform: translateX(3px); } 75% { transform: translateX(-2px); } }
+.masa-alt { position: relative; display: flex; flex-direction: column; gap: 4px; padding-top: 8px; }
 .masa-alt-etiket { font-size: 11px; opacity: 0.6; padding-left: 2px; }
 .masa-alt-sira { display: flex; gap: 3px; align-items: flex-end; }
 .masa-alt-sira .yuva { position: static; flex: none; }
@@ -90,3 +95,23 @@ button:disabled { cursor: default; }
 .deste-yigin { position: relative; flex: none; }
 .deste-yazi { font-size: 11px; font-weight: 600; line-height: 1.1; text-align: left; }
 .deste:disabled .deste-yazi { opacity: 0.5; }
+/* Tamamlanan dizi alana gelince kısa bir büyüme */
+.masa-alt-sira .kart.tamam { animation: tamam 0.4s ease-out; }
+@keyframes tamam { from { transform: scale(1.25); opacity: 0; } to { transform: none; opacity: 1; } }
+/* Boş sütun uyarısı: destenin üstünde kısa süre durur */
+.uyari { position: absolute; left: 4px; right: 4px; bottom: calc(100% + 6px); margin: 0; background: var(--krem); color: var(--lacivert); border-radius: 10px; padding: 8px 12px; font-size: 12px; text-align: center; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35); animation: belir 0.2s ease-out; z-index: 700; }
+@keyframes belir { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+/* Altta başparmak hizasında düğmeler */
+.masa-dugmeler { display: flex; justify-content: space-between; gap: 8px; padding: 10px 2px 0; }
+.masa-dugmeler .dugme { flex: 1; padding: 9px 10px; }
+/* Oyun sonu */
+.oyun-sonu { position: absolute; inset: 0; z-index: 900; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(14, 28, 79, 0.72); animation: belir 0.35s ease-out 0.35s both; }
+.oyun-sonu-kutu { width: 100%; max-width: 320px; background: var(--krem); color: var(--lacivert); border-radius: 18px; padding: 20px 18px; display: flex; flex-direction: column; gap: 10px; text-align: center; }
+.oyun-sonu-kutu h2 { margin: 0; font-size: 24px; font-weight: 600; }
+.oyun-sonu-alt { margin: -6px 0 2px; font-size: 13px; opacity: 0.6; }
+.oyun-sonu-kutu dl { display: flex; margin: 0 0 6px; border-top: 1px solid rgba(14, 28, 79, 0.15); border-bottom: 1px solid rgba(14, 28, 79, 0.15); }
+.oyun-sonu-kutu dl > div { flex: 1; padding: 10px 0; }
+.oyun-sonu-kutu dl > div + div { border-left: 1px solid rgba(14, 28, 79, 0.15); }
+.oyun-sonu-kutu dt { font-size: 12px; opacity: 0.6; }
+.oyun-sonu-kutu dd { margin: 2px 0 0; font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.dugme.ikincil { background: transparent; color: var(--lacivert); border: 1px solid rgba(14, 28, 79, 0.3); padding: 11px 36px; font-size: 15px; }

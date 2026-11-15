@@ -20,7 +20,11 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   telefonda denenmedi.
 - 15 Kasım 2026 (öneri; `ajans/ornek-oyun-kararlari`): yalnız belge. Kemal'in gösterdiği örnek
   Spider oyunundan gelen kararlar belgeye (8. bölüm) ve buraya işlendi; oyunda bir şey değişmedi.
-- Sırada: 2. paket, Spider kuralları.
+- 15 Kasım 2026 (öneri; `ajans/spider-kurallari`): 2. paket, Spider kuralları. Kurala uymayan
+  taşıma reddedilir, kart yerine döner; tamamlanan dizi kalkar; boş sütun varken dağıtma uyarısı;
+  üstte süre ve hamle; 8 dizide oyun sonu ekranı. Bilgisayarda telefon boyutunda denendi; gerçek
+  telefonda denenmedi.
+- Sırada: 3. paket, klasik solitaire.
 
 ## Paketler
 
@@ -41,10 +45,21 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   dokun, sonra sütuna dokun; ya da sürükle. Uzun sütun alana sığsın diye sıkışır.
 - Kural kontrolü yok: her açık kart her sütuna gider; sütunda en üstte kalan kapalı kart açılır.
 
-### 2. Spider (Kemal, 15 Kasım: önce Spider)
+### 2. Spider (Kemal, 15 Kasım: önce Spider) · bitti (`ajans/spider-kurallari`)
 
 - Standart kurallar (belge 1.2), 1 / 2 / 4 renk, iki deste. Doğru diziyi taşıma, tamamlanan
-  dizinin masadan kalkması, kazanma, oyun sonu ekranı (yeni el, yeniden dene, oyun seçimi).
+  dizinin masadan kalkması, kazanma, oyun sonu ekranı (yeni el, oyun seçimi).
+- Yapılan: kurallar `src/kart/spider.ts`'te, ekrandan ayrı; testleri `testler/spider.test.ts`
+  (`npm test`, yeni paket yok). Bir kart bir büyük kartın üstüne (renk fark etmez); birlikte
+  taşınan dizi aynı takımdan, sıralı ve açık; boş sütuna her kart ya da dizi. Kurala uymayan
+  taşımada kart yumuşakça yerine döner ve hafifçe sallanır. Papazdan asa aynı takım dizisi
+  kendiliğinden "Tamamlanan diziler"e gider; en üstte kalan kapalı kart açılır. Boş sütun varken
+  "Dağıt"a dokununca kısa uyarı. Üstte ince satır: süre ve hamle (taşıma ve dağıtma birer hamle).
+  Sekiz dizide oyun sonu: süre, hamle, "Yeni el", "Oyun seçimi". Ekran görüntüleri:
+  `docs/ekran-goruntuleri/spider-*.png`.
+- Bu pakette yok: geri al ve ipucu (4. paket), puan (6. paket), kazanmadan bırakınca "yeniden
+  dene" (oyun sonu kutusu yalnız kazanınca çıkıyor; kaybetme ekranı 4. pakette geri al ile
+  birlikte düşünülür, öneri).
 - Dikey ekranda on sütun: köşe okunurluğu burada denenir; sonuç deste görsellerine kural olarak
   gider (Merch Tasarımcısı'na not). Kemal küçük telefonda dener.
 - Neye bağlı: 1. paket.
@@ -151,3 +166,4 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 ## Bitenler
 
 - 0. Depo ve iskelet ve 1. Kart ve masa (PR #1, 15 Kasım 2026).
+- 2. Spider kuralları (`ajans/spider-kurallari`, 15 Kasım 2026; Kemal birleştirince kesinleşir).
