@@ -127,3 +127,14 @@ button:disabled { cursor: default; }
 .oyun-sonu.hizli { animation-delay: 0s; animation-duration: 0.2s; }
 .oyun-sonu-kutu h2.kucuk { font-size: 18px; }
 .reklam-yeri { margin: 0 0 4px; padding: 26px 12px; border: 1px dashed rgba(14, 28, 79, 0.35); border-radius: 12px; font-size: 13px; opacity: 0.75; }
+
+/* Klasik solitaire (3. paket): üstte temel yığınlar, açılan kartlar ve deste; altında yedi sütun */
+.yuva.temel { display: flex; align-items: center; justify-content: center; color: rgba(243, 239, 232, 0.28); line-height: 1; }
+.yuva.deste-yuvasi { display: flex; align-items: center; justify-content: center; color: rgba(243, 239, 232, 0.6); }
+.yuva.deste-yuvasi.bos { opacity: 0.5; }
+.simge.buyuk { width: 46%; height: 46%; }
+.deste.klasik { position: absolute; top: 0; z-index: 400; display: block; }
+.deste.klasik.ipucu { animation: ipucu 0.8s ease-in-out 2; }
+.kart-yeri.sabit { pointer-events: none; }
+.uyari.alt { bottom: 8px; }
+.kart-yeri.sabit .kart { box-shadow: none; }

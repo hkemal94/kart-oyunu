@@ -3,6 +3,10 @@
 // Bu dosya yalnız tür alır (import type); böylece Node testleri derlemeden çalıştırabilir.
 
 import type { Kart, RenkSayisi, Takim } from './kart';
+import { geriAl as ortakGeriAl, karistir, type GeriAlSonucu as OrtakGeriAlSonucu } from './ortak.ts';
+
+// Ortak parçalar (src/kart/ortak.ts); eski yerinden de alınabilsin diye burada da açık.
+export { karistir };
 
 export const SPIDER_SUTUN_SAYISI = 10;
 export const SPIDER_DIZI = 8; // iki deste = 104 kart = sekiz tam dizi
@@ -36,15 +40,6 @@ export function spiderKartlari(renk: RenkSayisi): Kart[] {
     }
   }
   return kartlar;
-}
-
-export function karistir<T>(dizi: T[], rastgele: () => number = Math.random): T[] {
-  const sonuc = [...dizi];
-  for (let i = sonuc.length - 1; i > 0; i--) {
-    const j = Math.floor(rastgele() * (i + 1));
-    [sonuc[i], sonuc[j]] = [sonuc[j], sonuc[i]];
-  }
-  return sonuc;
 }
 
 export function spiderDagit(renk: RenkSayisi, rastgele: () => number = Math.random): SpiderMasasi {
@@ -135,16 +130,12 @@ export function kazandiMi(masa: SpiderMasasi): boolean {
 
 // Geri al: her hamleden önceki masa saklanır. Taşıma ya da dağıtma, kendiliğinden açılan kart ve
 // kalkan dizi aynı adımın içindedir; geri alınca hepsi birlikte geri gelir. Geri almak da bir hamle
-// sayılır (Kemal, 15 Kasım soru turu). Hak sınırı burada değil, src/kart/geriAlHakki.ts'te.
-export interface GeriAlSonucu {
-  masa: SpiderMasasi;
-  gecmis: SpiderMasasi[];
-}
+// sayılır (Kemal, 15 Kasım soru turu). Ortak kural src/kart/ortak.ts'te; hak sınırı
+// src/kart/geriAlHakki.ts'te.
+export type GeriAlSonucu = OrtakGeriAlSonucu<SpiderMasasi>;
 
 export function geriAl(masa: SpiderMasasi, gecmis: SpiderMasasi[]): GeriAlSonucu | null {
-  if (gecmis.length === 0) return null;
-  const onceki = gecmis[gecmis.length - 1];
-  return { masa: { ...onceki, hamle: masa.hamle + 1 }, gecmis: gecmis.slice(0, -1) };
+  return ortakGeriAl(masa, gecmis);
 }
 
 // İpucu: ya bir taşıma (hangi sütunun hangi kartından itibaren, hangi sütuna) ya da "Dağıt".

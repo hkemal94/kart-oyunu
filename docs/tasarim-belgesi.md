@@ -23,6 +23,13 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **15 Kasım (soru turu 2. set):** Kartpostal yerleri (Kemal seçti, yedi yer): İskele ve The Imperial Kemsköy; Liman ve Deniz Feneri; Dirlik Stadı; Küçükçetmi Çiftliği; Merkez ve Belediye; Ada Tepesi ve sırtlar (Kuzey Sırtı, Çetmi Sırtı); Sahil Yolu ve Güney Burnu.
+  Kartpostallar yazısız: üstünde yer adı ya da başka yazı yok. Aylık ödül nesneleri: ajans 18
+  adaylık bir liste getirdi, Kemal seçecek (8.1, 8.2, 7).
+- **15 Kasım (klasik solitaire, 3. paket):** Kemal: "klasik solitaire'e başla". Standart Klondike
+  kuralları işlendi (1.1). Ajansın önerisi olarak kodda duranlar (Kemal'in onayı yok): deste
+  bitince açılan kartlar sınırsız döner (sınır açık soru, 7); karta çift dokununca uygun temel
+  yığına gider; klasik solitaire'de ipucu sırası temele giden, kapalı kartı açan, öbürleri (1.3).
 - **15 Kasım (soru turu):** Geri al sınırlı: her elde birkaç ücretsiz hak, fazlası telefon
   uygulamasında reklamla; web denemesinde haklar bitince "[YER TUTUCU: burada reklam olacak]"
   kutusu ve bir düğme çıkar, dokununca bir hak gelir. Hak sayısını Kemal web denemesinde seçer
@@ -128,6 +135,13 @@ numaraları eski sırada kaldı.
   (ya da papazla başlayan dizi) konur.
 - Kalan kartlar çekme destesinde; oyuncu buradan kart açar.
 - **Zorluk seçeneği:** 1 kart çekme (kolay) ya da 3 kart çekme (klasik).
+- Standart ayrıntılar (3. paket; yeni kural yok): açık ve sıralı dizi (bir küçük, ters renk)
+  birlikte taşınır; boş sütuna yalnız papaz ya da papazla başlayan dizi konur; temele yalnız tek
+  kart gider; temelden sütuna geri almak serbesttir; sütunun üstünde kalan kapalı kart
+  kendiliğinden açılır. 3 kart çekmede en son açılan kart en üstte kalır ve yalnız o oynanır.
+- **Deste bitince:** açılan kartlar sırası bozulmadan destenin altına döner. Dönüş şimdilik
+  sınırsız (standart; öneri); sınır olsun mu açık soru (7). Dönmek bir hamle sayılır.
+- **Çift dokunuş (öneri, standart kolaylık):** karta çift dokununca uygun temel yığına gider.
 
 ### 1.2 Spider
 
@@ -160,7 +174,9 @@ kalır.
 - **İpucu:** bir sonraki olası hamleyi gösterir. Telefon uygulamasında **reklam izleyerek alınır**
   (Kemal, 15 Kasım; 5. bölüm). Web deneme sürümünde reklamsız çalışır. **Sıra (Kemal, 15 Kasım
   soru turu):** önce diziyi tamamlayan hamle (papazdan asa aynı takım diziyi kuran), sonra aynı
-  takıma konan, sonra kapalı kartı açan, sonra öbürleri.
+  takıma konan, sonra kapalı kartı açan, sonra öbürleri. Bu sıra Spider içindir. **Klasik
+  solitaire'de (öneri; Kemal'in onayı yok):** önce temele giden, sonra kapalı kartı açan, sonra
+  öbürleri; hamle yoksa desteden çekmeyi gösterir.
 - **Kendiliğinden bitirme:** bütün kartlar açılınca oyun kalanları kendisi yerleştirir.
 - **Kaldığı yerden devam:** uygulama kapanınca oyun kaybolmaz; ana ekranda "devam et" çıkar.
 - **Süre ve hamle sayacı:** masanın üst satırında; ayarlardan kapatılabilir.
@@ -487,19 +503,26 @@ sayılır mı (evet; kazanınca aşama artar, kaybedince seri biter), aylık öd
 Düzada nesnesi ya da simgesi), puan hesabının yolu (ajans 2-3 aday getirir, Kemal seçer).
 Ertelenen: kartın kırmızısı (Sürek Kulübü destesi çizilince).
 
+15 Kasım (soru turu 2. set) kapananlar (Kemal): kartpostal yerleri (İskele ve The Imperial Kemsköy; Liman ve Deniz Feneri; Dirlik Stadı; Küçükçetmi Çiftliği; Merkez ve Belediye; Ada Tepesi ve sırtlar (Kuzey Sırtı, Çetmi Sırtı); Sahil Yolu ve Güney Burnu), kartpostalda yazı
+(yok, yazısız).
+
 Açık kalanlar:
+- **Klasik solitaire'de deste dönüşü:** açılan kartlar destenin altına kaç kez dönebilsin? Şimdilik
+  sınırsız (standart; öneri). Adaylar: sınırsız (önerilen) · 3 kart çekmede üç kez, 1 kart çekmede
+  bir kez (bazı oyunlardaki gibi) · ayarlardan seçilsin.
+- **Klasik solitaire'de ipucu sırası:** öneri temele giden, kapalı kartı açan, öbürleri (1.3).
 - **Geri al hak sayısı:** bir elde kaç ücretsiz hak: [Kemal], web denemesinde seçecek (Kemal, 15
   Kasım soru turu). Kodda deneme varsayılanı var, karar değil; adres sonuna `?geriAlHak=` yazılarak
   denenir (1.3).
 - **İlk kilitli deste:** içeriği ne. Kemal: sonra (15 Kasım gece). Adaylar 4.2'de kayıtta.
 - **Sade Meyhane masası:** ne görüneceği ve web denemesinde açık mı duracağı; görseli gelince
   (Kemal, 15 Kasım). Künyede yalnız taş fabrika binası, koya bakan yamaç ve otelin yanı var.
-- **Kartpostal yerleri:** hangi Düzada yerleri, hangi sırayla: [Kemal seçecek] (Kemal, 15 Kasım
-  soru turu: "ben seçerim"; ad vermedi).
+- **Kartpostal sırası:** yedi yer seçildi (8.2); hangi sırayla açılacağı [Kemal].
 - **Kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi:** web denemesinde ayarlanabilir gelir,
   Kemal seçer (Kemal, 15 Kasım soru turu). Sayılar [Kemal].
 - **Aylık ödül nesneleri:** her ay bir Düzada nesnesi ya da simgesi (Kemal, 15 Kasım soru turu);
-  hangileri olacağı [Kemal]. Örnekteki kupa kopyalanmaz.
+  hangileri olacağı [Kemal]: ajans 18 adaylık bir liste getirdi, Kemal seçecek (15 Kasım soru
+  turu 2. set). Örnekteki kupa kopyalanmaz.
 - **Puan adayları:** yapı belli (8.3); aşama başına artış, süre ve hamlenin payı ve formül için
   ajans puan paketi (yol haritası 6) yapılırken 2-3 aday getirir, Kemal seçer (Kemal, 15 Kasım soru
   turu).
@@ -535,7 +558,8 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
   istediği için).
 - **Aylık ödül ayın bütün günleri yıldızlanınca gelir** (Kemal, 15 Kasım); Ben sekmesindeki
   "ödüller"de durur. **Her ay bir Düzada nesnesi ya da simgesi** (Kemal, 15 Kasım soru turu);
-  hangileri olacağı [Kemal]. Örnekteki kupa çizimi kopyalanmaz. Yalnız künyede olan nesne ve
+  hangileri olacağı [Kemal]: ajans 18 adaylık bir liste getirdi, Kemal seçecek (15 Kasım soru
+  turu 2. set). Örnekteki kupa çizimi kopyalanmaz. Yalnız künyede olan nesne ve
   simgeler çizilir; görsel üretimi Kemal onayıyla.
 - **Günlük mücadele eli puan serisine sayılır** (Kemal, 15 Kasım soru turu): kazanınca serinin
   aşaması artar, kaybedince seri biter (8.3). Önceki öneri ("ayrı tutulsun") düştü.
@@ -548,9 +572,20 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
 - Biten resim koleksiyona girer (Ben sekmesi, ödüller). Önceki resim açılmadan sonraki kilitli
   kalır (Kemal).
 - Resimler **Düzada kartpostalları** (Kems'in önerisi; Kemal "Kartpostal etkinliği"ni seçti).
-  Hangi yerlerin olacağı [Kemal seçecek] (Kemal, 15 Kasım soru turu: "ben seçerim"). Yalnız künyede olan yerler çizilir; her görselden önce yer
-  künyede ve vikide okunur (ortak kurallar, "Çizmeden önce yerine bak"). Kartpostalda yer adı ya
-  da yazı olup olmayacağı [Kemal].
+- **Kartpostal yerleri (Kemal, 15 Kasım soru turu 2. set):**
+  1. İskele ve The Imperial Kemsköy
+  2. Liman ve Deniz Feneri
+  3. Dirlik Stadı
+  4. Küçükçetmi Çiftliği
+  5. Merkez ve Belediye
+  6. Ada Tepesi ve sırtlar (Kuzey Sırtı, Çetmi Sırtı)
+  7. Sahil Yolu ve Güney Burnu
+
+  Sıra burada yazıldığı gibidir; hangi sırayla açılacağı [Kemal]. Yalnız künyede olan yerler
+  çizilir; her görselden önce yer künyede ve vikide okunur, haritadaki konumuna bakılır (ortak
+  kurallar, "Çizmeden önce yerine bak").
+- **Kartpostallar yazısız** (Kemal, 15 Kasım soru turu 2. set): üstünde yer adı ya da başka yazı
+  yok.
 - Kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi **web denemesinde ayarlanabilir gelir,
   Kemal seçer** (Kemal, 15 Kasım soru turu). Sayılar [Kemal]; kodda yalnız işaretli deneme
   varsayılanı durur. Uydurma sayı yok.
@@ -591,10 +626,15 @@ Açık kalanlar sayı ya da seçim; web denemesinde ve ilgili paket gelince soru
 1. Kart oyunu: Bir elde kaç ücretsiz geri al hakkı olsun? Neden: geri al sınırlı (15 Kasım); sayı
    uydurulmaz, kodda yalnız deneme varsayılanı var. Nasıl denenir: adres sonuna `?geriAlHak=` ve
    bir sayı. Adaylar: web denemesinde birkaç sayıyı deneyip seçerim (önerilen) · şimdi ben söylerim.
-2. Kart oyunu: Kartpostallarda hangi Düzada yerleri olsun? Kemal: "ben seçerim"; seçimi bekleniyor
-   (künyede olan yerlerden).
+2. Kart oyunu: Kartpostallarda hangi Düzada yerleri olsun? **Cevaplandı** (15 Kasım soru turu 2.
+   set): yedi yer, yazısız (8.2). Açık kalan: hangi sırayla açılacakları.
 3. Kart oyunu: Kartpostal etkinliğinde kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi?
    Web denemesinde ayarlanabilir gelir (9. paket), Kemal seçer.
-4. Kart oyunu: Aylık ödülde hangi ay hangi Düzada nesnesi ya da simgesi? Günlük mücadele paketi
-   (8. paket) gelince sorulur.
+4. Kart oyunu: Aylık ödülde hangi ay hangi Düzada nesnesi ya da simgesi? Ajans 18 adaylık bir
+   liste getirdi (15 Kasım soru turu 2. set); Kemal seçecek.
 5. Kart oyunu: Puan hesabı: puan paketi (6. paket) yapılırken ajans 2-3 aday getirir, Kemal seçer.
+6. Kart oyunu: Klasik solitaire'de açılan kartlar destenin altına kaç kez dönsün? Neden: deste
+   bitince ne olacağı belgede yoktu; şimdilik standart olan sınırsız. Adaylar: sınırsız
+   (önerilen) · 3 kart çekmede üç kez, 1 kart çekmede bir kez · ayarlardan seçilsin.
+7. Kart oyunu: Klasik solitaire'de ipucu hangi sırayla gelsin? Adaylar: temele giden, kapalı
+   kartı açan, öbürleri; hamle yoksa desteden çek (önerilen, şu anki) · başka bir sıra.

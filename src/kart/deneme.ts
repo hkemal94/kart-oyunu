@@ -1,11 +1,15 @@
-// Yalnız geliştirmede çalışan deneme elleri (adres sonuna ?deneme=kazan ya da ?deneme=dizi).
+// Yalnız geliştirmede çalışan deneme elleri (adres sonuna ?deneme=kazan, ?deneme=dizi,
+// ?deneme=klasik-kazan ya da ?deneme=klasik-orta).
 // Ekran görüntüsü ve elle deneme için; yayındaki oyunda açılmaz (Uygulama.tsx, import.meta.env.DEV).
 // - kazan: yedi dizi tamam; asa dokunup papazlı sütuna dokununca sekizinci dizi kalkar, oyun biter.
 // - dizi: 2 renk, oyun ortası; kupa asını 4. sütundan 1. sütuna taşıyınca bir dizi kalkar.
 //   Son sütun boş: "Dağıt"a dokununca uyarı çıkar.
+// - klasik-kazan: klasik solitaire, 51 kart temelde; papaza çift dokununca oyun biter.
+// - klasik-orta: klasik solitaire, 3 kart çekme; hep aynı el, ipucunun ilk önerisiyle 40 hamle oynanmış.
 
 import type { Kart, RenkSayisi } from './kart';
 import { karistir, spiderKartlari, type SpiderMasasi } from './spider';
+import { cek, ipuclari, klondikeDagit, tasi, TEMEL_TAKIMLARI, type KlondikeMasasi } from './klondike';
 
 export type DenemeTuru = 'kazan' | 'dizi';
 
@@ -47,4 +51,24 @@ export function denemeMasasi(tur: DenemeTuru): { renk: RenkSayisi; masa: SpiderM
   sutunlar[0].push(...hazir.slice(0, 12));
   sutunlar[3].push(hazir[12]);
   return { renk: 2, masa: { sutunlar, deste, tamamlanan: ['kupa'], hamle: 0 } };
+}
+
+export type KlondikeDenemeTuru = 'klasik-kazan' | 'klasik-orta';
+
+export function klondikeDenemesi(tur: KlondikeDenemeTuru): { masa: KlondikeMasasi } {
+  if (tur === 'klasik-kazan') {
+    const temeller: Kart[][] = TEMEL_TAKIMLARI.map((takim) =>
+      Array.from({ length: takim === 'kupa' ? 12 : 13 }, (_, i) => ({ id: `${takim}-${i + 1}`, takim, deger: i + 1, acik: true })),
+    );
+    const sutunlar: Kart[][] = Array.from({ length: 7 }, () => []);
+    sutunlar[0] = [{ id: 'kupa-13', takim: 'kupa', deger: 13, acik: true }];
+    return { masa: { sutunlar, temeller, deste: [], acilan: [], cekme: 1, hamle: 0 } };
+  }
+  let masa = klondikeDagit(3, sabitRastgele(11));
+  for (let i = 0; i < 40; i++) {
+    const ip = ipuclari(masa)[0];
+    if (!ip) break;
+    masa = (ip.tur === 'cek' ? cek(masa) : tasi(masa, ip.yer, ip.hedef)) ?? masa;
+  }
+  return { masa };
 }
