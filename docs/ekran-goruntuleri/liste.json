@@ -1,11 +1,11 @@
 {
   "oyun": "[Kemal]",
   "kaynak": "https://hkemal94.github.io/kart-oyunu/",
-  "not": "Oyunun adı Kemal'in; 'kart-oyunu' geçici çalışma adı. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ana ekran, Ben sekmesi ve çerçeveli masa görüntüleri öneri dalından (ajans/ana-ekran); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor.",
+  "not": "Oyunun adı Kemal'in; 'kart-oyunu' geçici çalışma adı. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ana ekran, Ben sekmesi ve ince kenarlı masa görüntüleri öneri dalından (ajans/ana-ekran); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor.",
   "goruntuler": [
     {
       "dosya": "ana-1-ana-ekran.png",
-      "baslik": "Ana ekran (yarım el varken: Oyuna devam et açık)",
+      "baslik": "Ana ekran (yarım el varken: Oyuna devam et açık; ince kenar)",
       "tarih": "2026-11-15",
       "cihaz": "telefon (dikey, 390x844)",
       "kapak": true
@@ -48,13 +48,13 @@
     },
     {
       "dosya": "ana-8-spider-dagitim.png",
-      "baslik": "Spider dağıtım (çerçeveli masa, ortada)",
+      "baslik": "Spider dağıtım (masa ekranı dolduruyor, ince kenar, çerçeve yok)",
       "tarih": "2026-11-15",
       "cihaz": "telefon (dikey, 390x844)"
     },
     {
       "dosya": "ana-9-klasik-dagitim.png",
-      "baslik": "Klasik solitaire dağıtım (çerçeveli masa, ortada)",
+      "baslik": "Klasik solitaire dağıtım (7 sütun ekranı dolduruyor, ince kenar)",
       "tarih": "2026-11-15",
       "cihaz": "telefon (dikey, 390x844)"
     },

@@ -231,26 +231,47 @@ button:disabled { cursor: default; }
 .kurallar { display: flex; flex-direction: column; gap: 10px; }
 .kural ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 5px; font-size: 13px; line-height: 1.4; }
 
-/* Kenar payı ve çerçeve (Kemal, 15 Kasım: "Ekranlara sayfa kenarı gibi bir şey belirleyelim";
-   seçtiği: "Çerçeve + içerik ortada toplansın"). Tek ortak değer, ekran boyuna göre ölçeklenir.
-   Menü ekranlarında içerik ortada, en çok --icerik-en genişliğinde. Masada yatay pay kartları
-   küçültmesin diye payın dörtte biri (okunurluk önce); masa çerçeveli tek blok, dikeyde ortada. */
-:root { --kenar: clamp(12px, 4vmin, 22px); --icerik-en: 400px; }
+/* Kenar payı (Kemal, 15 Kasım: "Bu inanılmaz fazla bir sayfa kenarı"; seçtiği: "İnce kenar, masa
+   ekranı doldursun"; örnek ekran için "Bu uygun işte"). Bütün ekranlarda yalnız ince bir pay:
+   parmak ekran kenarına değmesin; çentik ve alt çubuk güvenli alanı ayrıca eklenir. Menü
+   ekranlarında içerik ortada, yayılmadan; masada çerçeve yok, masa ekranın tamamını kaplar. */
+:root { --kenar: clamp(8px, 2.6vmin, 12px); --icerik-en: 440px; }
 
-.sekme-ekrani, .cerceve > .secim { padding: calc(var(--kenar) + env(safe-area-inset-top)) var(--kenar) var(--kenar); gap: 14px; justify-content: flex-start; }
+.sekme-ekrani, .cerceve > .secim { padding: calc(var(--kenar) + env(safe-area-inset-top)) calc(var(--kenar) + env(safe-area-inset-right)) var(--kenar) calc(var(--kenar) + env(safe-area-inset-left)); gap: clamp(10px, 2vh, 18px); justify-content: flex-start; }
 .sekme-ekrani > *, .cerceve > .secim > * { width: 100%; max-width: var(--icerik-en); align-self: center; flex: none; }
 /* Dikeyde ortalama: ilk ve son öğedeki otomatik pay; içerik uzunsa pay sıfırlanır, kaydırılır */
 .sekme-ekrani > :first-child, .cerceve > .secim > :first-child { margin-top: auto; }
 .sekme-ekrani > :last-child, .cerceve > .secim > :last-child { margin-bottom: auto; }
-.ana-ekran { justify-content: flex-start; gap: 22px; }
 .acilis { padding: calc(var(--kenar) + env(safe-area-inset-top)) var(--kenar) calc(var(--kenar) + env(safe-area-inset-bottom)); }
+/* Ana ekran: uzun telefonda öğeler büyür, ortada büyük boşluk kalmaz (kompakt) */
+.ana-ekran { justify-content: flex-start; gap: clamp(14px, 3.2vh, 34px); }
+.ana-ekran .ana-kart { min-height: clamp(84px, 13vh, 132px); padding: clamp(12px, 2vh, 18px); }
+.ana-ekran .ana-kart-ad { font-size: clamp(15px, 2.1vh, 18px); }
+.ana-ekran .ana-orta { gap: clamp(10px, 1.8vh, 18px); }
+.ana-ekran .ana-yelpaze { transform-origin: center bottom; }
+@media (min-height: 760px) { .ana-ekran .ana-yelpaze { transform: scale(1.25); margin-top: 14px; } }
+@media (min-height: 900px) { .ana-ekran .ana-yelpaze { transform: scale(1.4); margin-top: 24px; } }
+.ana-ekran .ana-en-iyi { width: 100%; padding: clamp(10px, 2vh, 18px) 24px; }
+.ana-ekran .ana-dugmeler .dugme { min-height: clamp(48px, 7.4vh, 64px); }
+.sekme-cubugu { padding-left: calc(var(--kenar) + env(safe-area-inset-left)); padding-right: calc(var(--kenar) + env(safe-area-inset-right)); }
 
 .ayarlar-katman { align-items: center; justify-content: center; padding: var(--kenar); }
-.ayarlar { max-width: var(--icerik-en); border-radius: 18px; padding: 16px; }
+.ayarlar { max-width: var(--icerik-en); border-radius: 18px; padding: 14px; }
 
-.masa { justify-content: center; padding: calc(var(--kenar) / 4 + env(safe-area-inset-top)) calc(var(--kenar) / 4) calc(var(--kenar) / 4 + env(safe-area-inset-bottom)); }
-.masa-blok { flex: none; max-height: 100%; display: flex; flex-direction: column; border: 1px solid rgba(243, 239, 232, 0.22); border-radius: 14px; padding: 8px 0 8px; }
-.masa-blok > .masa-bilgi { padding: 0 6px 8px; }
-.masa-blok > .masa-dugmeler { padding: 10px 4px 0; }
-.masa-blok > .masa-alt { padding: 8px 4px 0; }
-.oyun-alani { flex: none; transition: height 0.24s ease-out; }
+/* Masa: çerçeve yok, ekranın tamamı. Üstte bilgi satırı, hemen altında kartlar (üstten başlar),
+   en altta alt şerit ve düğmeler. */
+.masa { padding: calc(6px + env(safe-area-inset-top)) calc(var(--kenar) + env(safe-area-inset-right)) calc(var(--kenar) + env(safe-area-inset-bottom)) calc(var(--kenar) + env(safe-area-inset-left)); }
+.masa-blok { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.oyun-alani { flex: 1; min-height: 0; }
+/* Bilgi satırı iki satır: üstte oyun ve ayar düğmesi, altında süre, hamle, puan, aşama; okunaklı */
+.masa-blok > .masa-bilgi { flex-wrap: wrap; row-gap: 2px; padding: 0 0 8px; font-size: clamp(12.5px, 3.6vw, 15px); opacity: 1; }
+.masa-bilgi > .masa-bilgi-baslik { order: -2; flex: 1 1 calc(100% - 32px); text-align: left; font-size: 1.05em; opacity: 1; }
+.masa-bilgi > .ayar-dugmesi { order: -1; width: 32px; height: 32px; margin: -4px -6px -4px 0; }
+.masa-bilgi .ayar-dugmesi .simge { width: 22px; height: 22px; }
+.masa-bilgi > span:not(.masa-bilgi-baslik) { opacity: 0.8; }
+.masa-blok > .masa-alt { padding: 8px 0 0; }
+/* Düğmeler başparmak boyunda: simge üstte, yazı altta */
+.masa-blok > .masa-dugmeler { padding: 10px 0 0; gap: 8px; }
+.masa-dugmeler .dugme { position: relative; flex: 1 1 0; flex-direction: column; gap: 3px; min-height: 60px; padding: 8px 2px 6px; border-radius: 16px; font-size: clamp(12px, 3.3vw, 14px); }
+.masa-dugmeler .simge { width: 22px; height: 22px; }
+.masa-dugmeler .hak { position: absolute; top: 5px; right: 6px; }

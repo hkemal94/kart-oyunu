@@ -48,7 +48,6 @@ import { klondikeOzeti } from '../kart/puan';
 
 const ARALIK = 4; // sütunlar arası boşluk (piksel)
 const UST_ARALIK = 12; // üst sıra ile sütunlar arası boşluk
-const ALT_PAY = 0.35; // en uzun sütunun altında bırakılan boşluk (kart boyunun payı); dokunmak için
 const SURUKLEME_ESIGI = 8; // bu kadar kayınca dokunuş değil sürükleme sayılır
 const CIFT_DOKUNMA = 350; // iki dokunuş arası bu kadar kısaysa çift dokunuş (milisaniye)
 const UYARI_SURESI = 2600; // uyarı ekranda bu kadar kalır (milisaniye)
@@ -66,7 +65,7 @@ const UST_SIRA = {
 const BEKLENEN_KAPALI = 6;
 const BEKLENEN_ACIK = 8;
 const EN_COK_ACIK = 0.42;
-const EN_COK_KAPALI = 0.24;
+const EN_COK_KAPALI = 0.18; // kapalı kartlar sık (Kemal, 15 Kasım: örnek ekran)
 const EN_AZ_KAPALI = 0.08;
 
 interface Surukleme {
@@ -119,8 +118,8 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
   const [ipucu, setIpucu] = useState<{ ipucu: KlondikeIpucu; sayi: number } | null>(null);
   const ipucuSirasi = useRef(0); // arka arkaya basınca sıradaki ipucu
   const sonDokunus = useRef<{ id: string; zaman: number } | null>(null);
-  // Çerçeveli masa bloğu; kart alanının en çok yüksekliği ekrana göre (masaOrtak.tsx)
-  const { masaRef, blokRef, alanRef, alan, yukseklik } = useMasaBlogu(el);
+  // Masa ekranı doldurur; kart alanı bilgi satırı ile alt şerit arasındaki yükseklik (masaOrtak.tsx)
+  const { masaRef, blokRef, alanRef, alan } = useMasaBlogu();
 
   const kazandi = kazandiMi(masa);
   const { saniye, sifirla: sureyiSifirla } = useSure(kazandi, devam?.saniye);
@@ -174,7 +173,9 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
     enCokKapali: EN_COK_KAPALI,
   });
   const yelpazeAdim = kartEn * 0.32; // 3 kart çekmede açılan son üç kart yan yana kayar
-  const sutunX = (c: number) => c * (kartEn + ARALIK);
+  // Kart eni tam piksele yuvarlanınca artan pay sütun aralarına dağılır: sütunlar iki kenara eşit uzanır
+  const ara = Math.max(ARALIK, (alan.en - kartEn * KLONDIKE_SUTUN_SAYISI) / (KLONDIKE_SUTUN_SAYISI - 1));
+  const sutunX = (c: number) => c * (kartEn + ara);
   const ustSira = UST_SIRA[ayarlar.solEl ? 'sol' : 'sag'];
   const temelX = (no: number) => sutunX(ustSira.temel + no);
 
@@ -192,7 +193,6 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
     cizimler.push({ k, yer: ust ? { tur: 'acilan' } : null, x: sutunX(ustSira.acilan) + kay * yelpazeAdim, y: 0, z: i });
   });
   masa.deste.forEach((k, i) => cizimler.push({ k, yer: null, x: sutunX(ustSira.deste), y: 0, z: i }));
-  let enAlt = sutunUstu + kartBoy; // en uzun sütunun altı
   masa.sutunlar.forEach((s, no) => {
     const konum = sutunKonumlari(
       s.map((k) => k.acik),
@@ -204,15 +204,12 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
     s.forEach((k, sira) => {
       cizimler.push({ k, yer: { tur: 'sutun', no, sira }, x: sutunX(no), y: sutunUstu + konum[sira], z: sira });
     });
-    if (s.length) enAlt = Math.max(enAlt, sutunUstu + konum[s.length - 1] + kartBoy);
   });
-  // Kart alanı içerik kadar: en uzun sütunun altı ve dokunmak için küçük bir pay
-  const alanYuksekligi = yukseklik(enAlt + kartBoy * ALT_PAY);
 
   // Ekrandaki noktanın hedefi: üst sırada temel yığınlar, altında sütunlar
   const hedefBul = (istemciX: number, istemciY: number): Hedef | null => {
     const r = alanRef.current!.getBoundingClientRect();
-    const c = Math.min(KLONDIKE_SUTUN_SAYISI - 1, Math.max(0, Math.floor((istemciX - r.left + ARALIK / 2) / (kartEn + ARALIK))));
+    const c = Math.min(KLONDIKE_SUTUN_SAYISI - 1, Math.max(0, Math.floor((istemciX - r.left + ara / 2) / (kartEn + ara))));
     if (istemciY - r.top < kartBoy + UST_ARALIK / 2) {
       const t = c - ustSira.temel;
       return t >= 0 && t < TEMEL_TAKIMLARI.length ? { tur: 'temel' } : null;
@@ -384,7 +381,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
         ayarAc={ayarAc}
       />
 
-      <div className="oyun-alani" ref={alanRef} style={{ height: alanYuksekligi }} onPointerUp={alaniBirak}>
+      <div className="oyun-alani" ref={alanRef} onPointerUp={alaniBirak}>
         {TEMEL_TAKIMLARI.map((t, no) => (
           <div
             key={`temel-${t}`}

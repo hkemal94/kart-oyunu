@@ -42,13 +42,12 @@ import {
 // hamleyi geri getirir; her elde sınırlı hak var, bitince "reklam yerine" kutusu bir hak daha verir
 // (src/kart/geriAlHakki.ts). İpucu bir hamleyi kısa süre parlatır, arka arkaya basınca sıradaki gelir.
 
-const ARALIK = 2; // sütunlar arası boşluk (piksel)
-const ALT_PAY = 0.35; // en uzun sütunun altında bırakılan boşluk (kart boyunun payı); dokunmak için
+const ARALIK = 3; // sütunlar arası boşluk (piksel; Kemal, 15 Kasım: örnek ekran)
 // Kemal, 15 Kasım: kart boyu ve aralık ekran yüksekliğine göre (src/kart/duzen.ts). Kart uzun
 // ekranda en çok bu orana kadar uzar; aralık kartın bu paylarından fazla açılmaz.
 const EN_COK_ORAN = 1.6;
 const EN_COK_ACIK = 0.52;
-const EN_COK_KAPALI = 0.4;
+const EN_COK_KAPALI = 0.22; // kapalı kartlar sık, açıklar daha geniş (Kemal, 15 Kasım: örnek ekran)
 const EN_AZ_KAPALI = 0.1;
 // Ekrana göre aralık bu uzunluktaki sütun sıkışmadan sığacak kadar açılır (5 kapalı, 10 açık)
 const BEKLENEN_KAPALI = 5;
@@ -96,8 +95,8 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
   const geriAlHak = useGeriAlHakki(devam?.hak);
   const [ipucu, setIpucu] = useState<{ ipucu: Ipucu; sayi: number } | null>(null);
   const ipucuSirasi = useRef(0); // arka arkaya basınca sıradaki ipucu
-  // Çerçeveli masa bloğu; kart alanının en çok yüksekliği ekrana göre (masaOrtak.tsx)
-  const { masaRef, blokRef, alanRef, alan, yukseklik } = useMasaBlogu(el);
+  // Masa ekranı doldurur; kart alanı bilgi satırı ile alt şerit arasındaki yükseklik (masaOrtak.tsx)
+  const { masaRef, blokRef, alanRef, alan } = useMasaBlogu();
 
   const kazandi = kazandiMi(masa);
   // Süre: el başında başlar, kazanınca durur
@@ -165,15 +164,13 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
     ),
   );
 
-  // Kart alanı içerik kadar: en uzun sütunun altı ve dokunmak için küçük bir pay
-  const alanYuksekligi = yukseklik(
-    Math.max(...konumlar.map((k) => (k.length ? k[k.length - 1] : 0))) + kartBoy * (1 + ALT_PAY),
-  );
 
-  const sutunX = (c: number) => c * (kartEn + ARALIK);
+  // Kart eni tam piksele yuvarlanınca artan pay sütun aralarına dağılır: sütunlar iki kenara eşit uzanır
+  const ara = Math.max(ARALIK, (alan.en - kartEn * SPIDER_SUTUN_SAYISI) / (SPIDER_SUTUN_SAYISI - 1));
+  const sutunX = (c: number) => c * (kartEn + ara);
   const sutunBul = (istemciX: number) => {
     const r = alanRef.current!.getBoundingClientRect();
-    const c = Math.floor((istemciX - r.left + ARALIK / 2) / (kartEn + ARALIK));
+    const c = Math.floor((istemciX - r.left + ara / 2) / (kartEn + ara));
     return Math.min(SPIDER_SUTUN_SAYISI - 1, Math.max(0, c));
   };
 
@@ -317,7 +314,7 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
         ayarAc={ayarAc}
       />
 
-      <div className="oyun-alani" ref={alanRef} style={{ height: alanYuksekligi }} onPointerUp={alaniBirak}>
+      <div className="oyun-alani" ref={alanRef} onPointerUp={alaniBirak}>
         {masa.sutunlar.map((_, c) => (
           <div
             key={`yuva-${c}`}

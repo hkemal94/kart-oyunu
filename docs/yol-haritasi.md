@@ -69,6 +69,11 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   ortada, sütunlar uzayınca büyür. Kart boyu değişmedi. 320x640, 390x844 ve 430x932'de denendi
   (taşma yok); gerçek telefonda denenmedi. Ekran görüntüleri: `ana-8-spider-dagitim.png`,
   `ana-9-klasik-dagitim.png`.
+- 15 Kasım 2026 (aynı öneri, `ajans/ana-ekran`; Kemal: "İnce kenar, masa ekranı doldursun", örnek
+  ekran için "Bu uygun işte"): çerçeve kalktı, kenar payı inceldi (8-12 piksel); masa ekranın tamamını
+  kaplar, kartlar ekran enini doldurur, kapalı kartlar sık; bilgi satırı iki satır ve büyük yazı;
+  düğmeler başparmak boyunda. 320x640, 390x844 ve 430x932'de denendi (taşma yok); gerçek telefonda
+  denenmedi. Ekran görüntüleri: `ana-*.png` yenilendi.
 - Sırada: 4. paketten kalan kendiliğinden bitirme; sonra 8. paket (günlük mücadele).
 
 ## Paketler

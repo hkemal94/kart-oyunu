@@ -23,7 +23,16 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
-- **15 Kasım (kenar payı ve çerçeve):** Kemal: "Ekranlara sayfa kenarı gibi bir şey belirleyelim;
+- **15 Kasım (ince kenar, masa ekranı doldurur):** Çerçeveli ilk hâli görünce Kemal: "Bu inanılmaz
+  fazla bir sayfa kenarı, şekli çok fazla bu." Seçtiği: "İnce kenar, masa ekranı doldursun". Örnek bir
+  Spider ekranı için de "Bu uygun işte" dedi (yalnız oran ve yerleşim alındı; görseli, rengi, çuhası
+  alınmadı). Bütün ekranlarda yalnız ince pay (8-12 piksel, ekran boyuna göre; çentik ve alt çubuk
+  güvenli alanı ayrıca). Masada çerçeve yok; masa ekranın tamamını kaplar: üstte bilgi (oyun ve
+  ayar düğmesi; altında süre, hamle, puan, aşama), hemen altında kartlar (üstten başlar), en altta
+  tamamlanan diziler, deste ve düğmeler. Kartlar ekran enini doldurur (Spider 10, klasik 7 sütun);
+  kapalı kartlar sık, açıklar daha geniş. Düğmeler başparmak boyunda, simge üstte yazı altta. Elin
+  başında masanın ortası boş kalır (Kemal: uygun). Menü ekranlarında içerik ortada, ince kenarla.
+- **15 Kasım (kenar payı ve çerçeve; yerini "ince kenar" aldı):** Kemal: "Ekranlara sayfa kenarı gibi bir şey belirleyelim;
   ekranın ortası bomboş, her şey kenarlarda." Seçtiği: "Çerçeve + içerik ortada toplansın". Bütün
   ekranlarda tek ortak kenar payı (ekran boyuna göre ölçeklenir). Menü ekranlarında (ana ekran, Ben,
   Mücadeleler, oyun seçimi, ayarlar) içerik dikeyde ve yatayda ortada, genişliği sınırlı; alt
@@ -111,8 +120,8 @@ Sabitler (Kemal'in 14-11-2026 ve 15-11-2026 kararları):
   gibi). Oyun tarayıcıda yazılır ve denenir, sonra mağaza uygulamasına paketlenir (6. bölüm).
 - **Web sürümü:** **yalnız deneme** (Kemal, 15 Kasım gece). Kemal ve yakın çevresi bağlantıyla
   dener; **web'de reklam ve satın alma yok**. Herkese açık web oyunu yok.
-- **Kenar payı ve çerçeve** (Kemal, 15 Kasım): her ekranda ortak kenar payı; içerik ortada toplanır;
-  masa çerçeveli tek blok (2. bölüm, kararların geçmişi).
+- **Kenar payı** (Kemal, 15 Kasım): her ekranda yalnız ince pay; menü ekranlarında içerik ortada;
+  masa çerçevesiz, ekranın tamamını kaplar (2. bölüm, kararların geçmişi).
 - **Ekran yönü:** **dikey** (Kemal, 14-11-2026). Öbür oyunlardan farklı olarak telefon dik tutulur.
 - **Dil:** ilk sürüm **Türkçe ve İngilizce** (Kemal, 14 Kasım). Oyun açılırken telefonun diline
   göre başlar, ayarlardan değiştirilir (öneri; 5. paketle yapıldı: seçim anında bütün ekranı
