@@ -53,6 +53,14 @@ export function takvimHucreleri(yil: number, ay: number): (number | null)[] {
 }
 
 export const oncekiAy = (yil: number, ay: number) => (ay === 1 ? { yil: yil - 1, ay: 12 } : { yil, ay: ay - 1 });
+
+// Takvim en çok Ocak 2026'ya kadar geri gider (Kemal, 15 Kasım). O ayda geri ok kapalı.
+export const TAKVIM_ILK_AY = { yil: 2026, ay: 1 };
+export const oncekiAyaGidilirMi = (yil: number, ay: number) =>
+  yil > TAKVIM_ILK_AY.yil || (yil === TAKVIM_ILK_AY.yil && ay > TAKVIM_ILK_AY.ay);
+// Görülecek ay sınırın gerisindeyse sınıra çekilir
+export const takvimAyi = (yil: number, ay: number) =>
+  yil < TAKVIM_ILK_AY.yil || (yil === TAKVIM_ILK_AY.yil && ay < TAKVIM_ILK_AY.ay) ? { ...TAKVIM_ILK_AY } : { yil, ay };
 export const sonrakiAy = (yil: number, ay: number) => (ay === 12 ? { yil: yil + 1, ay: 1 } : { yil, ay: ay + 1 });
 
 export type GunDurumu = 'gecmis' | 'bugun' | 'gelecek';

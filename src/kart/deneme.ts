@@ -6,6 +6,9 @@
 //   Son sütun boş: "Dağıt"a dokununca uyarı çıkar.
 // - uzun: Spider, 1 renk, ileri el: üç dizi tamam, desteden iki dağıtım kaldı, sütunlar uzun
 //   (masa düzeni denemesi; Kemal, 15 Kasım).
+// - cift: Spider, 2 renk (Kemal'in telefon yorumları, 15 Kasım). 8♥'ye çift dokununca 9♠ yerine
+//   9♥'nin altına kayar (aynı takım önce); 5♠'ye çift dokununca gidecek yer yok, sallanır. Masada
+//   oynanamayan kartlar koyu.
 // - klasik-kazan: klasik solitaire, 51 kart temelde; papaza çift dokununca oyun biter.
 // - klasik-orta: klasik solitaire, 3 kart çekme; hep aynı el, ipucunun ilk önerisiyle 40 hamle oynanmış.
 // - takvim, gunluk-kazan: günlük mücadele için hazır yıldızlar (aşağıda gunlukDenemesi).
@@ -15,7 +18,7 @@ import { karistir, spiderKartlari, type SpiderMasasi } from './spider';
 import { cek, ipuclari, klondikeDagit, tasi, TEMEL_TAKIMLARI, type KlondikeMasasi } from './klondike';
 import { ayinGunSayisi, oncekiAy, tarihOku, tarihYaz, type GunlukKaydi } from '../oyun/gunluk';
 
-export type DenemeTuru = 'kazan' | 'dizi' | 'uzun';
+export type DenemeTuru = 'kazan' | 'dizi' | 'uzun' | 'cift';
 
 // Her seferinde aynı eli veren basit sayı üreteci
 function sabitRastgele(tohum: number): () => number {
@@ -32,6 +35,18 @@ const dizisi = (kartlar: Kart[], d: number) =>
   kartlar.filter((k) => k.id.startsWith(`${d}-`)).sort((a, b) => b.deger - a.deger);
 
 export function denemeMasasi(tur: DenemeTuru): { renk: RenkSayisi; masa: SpiderMasasi } {
+  if (tur === 'cift') {
+    const havuz = karistir(spiderKartlari(2), sabitRastgele(3));
+    const al = (takim: Kart['takim'], deger: number) => {
+      const i = havuz.findIndex((k) => k.takim === takim && k.deger === deger);
+      return ac(havuz.splice(i, 1)[0]);
+    };
+    // Sütunların en üstteki açık kartları: 9♥, 8♥, 9♠, 5♠ ve öbürleri (5♠'nin gideceği 6 yok)
+    const acik = [al('kupa', 9), al('kupa', 8), al('maca', 9), al('maca', 5), al('maca', 13), al('kupa', 2), al('kupa', 11), al('maca', 3), al('maca', 12), al('maca', 7)];
+    const kapali = [5, 4, 5, 4, 4, 4, 5, 4, 5, 4]; // 44 kapalı kart; 50 kart destede
+    const sutunlar = kapali.map((n, c) => [...havuz.splice(0, n), acik[c]]);
+    return { renk: 2, masa: { sutunlar, deste: havuz, tamamlanan: [], hamle: 0 } };
+  }
   if (tur === 'kazan') {
     const kartlar = spiderKartlari(1);
     const son = dizisi(kartlar, 7).map(ac);

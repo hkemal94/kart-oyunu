@@ -1,5 +1,5 @@
 // Oyuncunun ayarları (yol haritası 5; belge 2, "Ayarlar"): ses, mahalle sesi, titreşim, sol el
-// düzeni, sayaçları gizle, her hamlede puanı göster, dil, deste. Telefonun tarayıcısında saklanır.
+// düzeni, sayaçları gizle, her hamlede puanı göster, oynanamayan kartları koyulaştır, dil, deste. Telefonun tarayıcısında saklanır.
 // Ekrandan ayrı; testleri testler/ayarlar.test.ts. Bu dosya hiçbir şey içe almaz.
 
 export type Dil = 'tr' | 'en';
@@ -13,11 +13,13 @@ export interface OyuncuAyarlari {
   solEl: boolean; // alt şeritteki düğmeler ve deste yer değiştirir
   sayaclariGizle: boolean; // süre ve hamle görünmez
   puaniGoster: boolean; // masanın bilgi satırında puan ve aşama
+  koyulastir: boolean; // o an oynanamayan açık kartlar bir iki ton koyu (Kemal, 15 Kasım)
   dil: Dil | null; // null: henüz seçilmedi, telefonun diline göre açılır
   deste: Deste; // şimdilik tek seçenek: sade deste
 }
 
-// Varsayılanlar (öneri): sesler açık, sağ el, sayaçlar ve puan görünür.
+// Varsayılanlar (öneri): sesler açık, sağ el, sayaçlar ve puan görünür. Oynanamayan kartları
+// koyulaştırma açık (Kemal, 15 Kasım).
 export const VARSAYILAN_AYARLAR: OyuncuAyarlari = {
   ses: true,
   mahalleSesi: true,
@@ -25,6 +27,7 @@ export const VARSAYILAN_AYARLAR: OyuncuAyarlari = {
   solEl: false,
   sayaclariGizle: false,
   puaniGoster: true,
+  koyulastir: true,
   dil: null,
   deste: 'sade',
 };
@@ -42,7 +45,7 @@ export function ayarlariOku(depo: Depo): OyuncuAyarlari {
     const ham = depo.getItem(AYAR_ANAHTARI);
     if (!ham) return { ...VARSAYILAN_AYARLAR };
     const v = JSON.parse(ham) as Partial<Record<keyof OyuncuAyarlari, unknown>>;
-    const evetHayir = (k: 'ses' | 'mahalleSesi' | 'titresim' | 'solEl' | 'sayaclariGizle' | 'puaniGoster') =>
+    const evetHayir = (k: 'ses' | 'mahalleSesi' | 'titresim' | 'solEl' | 'sayaclariGizle' | 'puaniGoster' | 'koyulastir') =>
       typeof v[k] === 'boolean' ? (v[k] as boolean) : VARSAYILAN_AYARLAR[k];
     return {
       ses: evetHayir('ses'),
@@ -51,6 +54,7 @@ export function ayarlariOku(depo: Depo): OyuncuAyarlari {
       solEl: evetHayir('solEl'),
       sayaclariGizle: evetHayir('sayaclariGizle'),
       puaniGoster: evetHayir('puaniGoster'),
+      koyulastir: evetHayir('koyulastir'),
       dil: DILLER.includes(v.dil as Dil) ? (v.dil as Dil) : null,
       deste: 'sade',
     };

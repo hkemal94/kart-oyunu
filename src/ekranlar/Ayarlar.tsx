@@ -6,7 +6,7 @@ import { DILLER, type OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
 // telefonun tarayıcısında saklanır (src/oyun/oyuncuAyarlari.ts). Ses ve titreşim ses paketiyle
 // (12. paket) çalışacak; anahtarları şimdiden duruyor, yanında "ses paketi gelince" yazıyor.
 
-type Anahtar = 'ses' | 'mahalleSesi' | 'titresim' | 'solEl' | 'sayaclariGizle' | 'puaniGoster';
+type Anahtar = 'ses' | 'mahalleSesi' | 'titresim' | 'solEl' | 'sayaclariGizle' | 'puaniGoster' | 'koyulastir';
 
 interface Ozellik {
   ayarlar: OyuncuAyarlari;
@@ -57,6 +57,7 @@ export function Ayarlar({ ayarlar, degistir, kapat }: Ozellik) {
           {satir('solEl', 'ayar.solEl.aciklama')}
           {satir('sayaclariGizle', 'ayar.sayaclariGizle.aciklama')}
           {satir('puaniGoster', 'ayar.puaniGoster.aciklama')}
+          {satir('koyulastir', 'ayar.koyulastir.aciklama')}
         </section>
 
         <section className="ayar-bolum">

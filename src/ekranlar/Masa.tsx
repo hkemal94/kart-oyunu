@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
 import { yarimMi, type YarimEl } from '../oyun/yarimEl';
@@ -6,34 +6,44 @@ import { ipucuHakkiAl } from '../reklam/ipucuHakki';
 import {
   BilgiSatiri,
   ElBirakmaSorusu,
+  HareketKalkani,
+  konumYazisi,
   MasaDugmeleri,
   OyunSonu,
   ReklamKutusu,
   useElBirakma,
   useElKaydi,
   useGeriAlHakki,
+  useHareket,
+  useKayanlar,
   masaPayi,
   useMasaBlogu,
   usePuan,
   useSure,
+  type Ucus,
 } from './masaOrtak';
 import { spiderOzeti } from '../kart/puan';
 import { KartYuzu } from '../kart/KartYuzu';
 import { gunlukRastgele, type GunlukEl } from '../oyun/gunluk';
 import { tarihYazisi, useGunlukYildiz } from './Gunluk';
 import { ekranaGoreAralik, KART_ORANI, kartOlcusu, sutunKonumlari, yelpazeEni } from '../kart/duzen';
-import type { RenkSayisi } from '../kart/kart';
+import { AKIS_ADIMI, DAGITIM_ADIMI, DIZI_KART_SAYISI, HAREKET, toplamSure } from '../kart/hareket';
+import type { Kart, RenkSayisi } from '../kart/kart';
 import {
+  ciftDokunusHedefi,
   dagitilabilirMi,
+  dagitToparlamadan,
   destedenDagit,
   geriAl,
   ipuclari,
   kazandiMi,
+  oynanabilirKartlar,
   spiderDagit,
   SPIDER_DIZI,
   SPIDER_SUTUN_SAYISI,
   tasi,
   tasinabilirMi,
+  tasiToparlamadan,
   type Ipucu,
   type SpiderMasasi,
 } from '../kart/spider';
@@ -44,6 +54,9 @@ import {
 // kart yerine döner ve hafifçe sallanır. Altta "Geri al" ve "İpucu" (4. paket): geri al son
 // hamleyi geri getirir; her elde sınırlı hak var, bitince "reklam yerine" kutusu bir hak daha verir
 // (src/kart/geriAlHakki.ts). İpucu bir hamleyi kısa süre parlatır, arka arkaya basınca sıradaki gelir.
+// Kemal'in telefon yorumları (15 Kasım): karta çift dokununca gidebileceği yere kayar (yer yoksa
+// sallanır); yeni elde ve "Dağıt"ta kartlar desteden teker teker uçar; tamamlanan sıra astan papaza
+// teker teker "Tamamlanan diziler"e akar; o an oynanamayan açık kartlar biraz koyu (ayardan kapanır).
 
 const ARALIK = 3; // sütunlar arası boşluk (piksel; Kemal, 15 Kasım: örnek ekran)
 // Kemal, 15 Kasım: kart boyu ve aralık ekran yüksekliğine göre (src/kart/duzen.ts). Kart uzun
@@ -61,6 +74,26 @@ const SURUKLEME_ESIGI = 8; // bu kadar kayınca dokunuş değil sürükleme say�
 const UYARI_SURESI = 2600; // boş sütun uyarısı ekranda bu kadar kalır (milisaniye)
 const RED_SURESI = 380; // reddedilen kartın sallanma süresi (milisaniye)
 const IPUCU_SURESI = 1600; // ipucunun parlama süresi (milisaniye)
+const CIFT_DOKUNMA = 350; // iki dokunuş arası bu kadar kısaysa çift dokunuş (milisaniye)
+
+// Tamamlanıp masadan kalkan, "Tamamlanan diziler"e akan kart: kalkmadan önceki yeri
+interface Akan {
+  k: Kart;
+  x: number;
+  y: number;
+}
+// Başlatılacak hareket: desteden teker teker gelen kartlar ve akan kartlar
+interface Istek {
+  no: number;
+  dagitilan: string[];
+  akanlar: Akan[];
+}
+// Her kartın hangi sütunda olduğu (son hamlede yer değiştirenler kayarken üstte çizilir)
+const yerler = (masa: SpiderMasasi) => {
+  const h = new Map<string, string>();
+  masa.sutunlar.forEach((s, c) => s.forEach((k) => h.set(k.id, `s${c}`)));
+  return h;
+};
 
 interface Secim {
   sutun: number;
@@ -101,8 +134,16 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
   const geriAlHak = useGeriAlHakki(devam?.hak);
   const [ipucu, setIpucu] = useState<{ ipucu: Ipucu; sayi: number } | null>(null);
   const ipucuSirasi = useRef(0); // arka arkaya basınca sıradaki ipucu
+  const sonDokunus = useRef<{ id: string; zaman: number } | null>(null);
+  const [akanlar, setAkanlar] = useState<Akan[]>([]);
+  const [istek, setIstek] = useState<Istek | null>(null);
+  const desteRef = useRef<HTMLSpanElement>(null);
+  const tamamRef = useRef<HTMLSpanElement>(null);
+  const kayan = useKayanlar();
   // Masa ekranı doldurur; kart alanı bilgi satırı ile alt şerit arasındaki yükseklik (masaOrtak.tsx)
   const { masaRef, blokRef, alanRef, alan } = useMasaBlogu();
+  const hareket = useHareket(alanRef);
+  const oynanabilir = useMemo(() => oynanabilirKartlar(masa), [masa]);
 
   const kazandi = kazandiMi(masa);
   // Süre: el başında başlar, kazanınca durur
@@ -139,13 +180,6 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
     return () => clearTimeout(z);
   }, [red]);
 
-  // İlk dağıtımda kartlar sırayla gelir; desteden gelenler sütun sırasıyla.
-  const ilkSira = useMemo(() => {
-    const harita = new Map<string, number>();
-    masa.sutunlar.forEach((s, c) => s.forEach((k, i) => harita.set(k.id, i * SPIDER_SUTUN_SAYISI + c)));
-    return harita;
-  }, [el]);
-
   useEffect(() => setSecim(null), [el]);
 
   const { en: kartEn, boy: kartBoy } = kartOlcusu(alan.en, alan.tamBoy, SPIDER_SUTUN_SAYISI, ARALIK, KART_ORANI, EN_COK_ORAN);
@@ -161,15 +195,15 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
   const yelpazeAdim = Math.max(6, Math.round(kartEn * YELPAZE_ADIMI));
 
   // Her sütundaki kartın üstten uzaklığı; uzun sütun alana sığsın diye sıkışır (önce kapalılar).
-  const konumlar = masa.sutunlar.map((s) =>
+  const sutunKonumu = (s: Kart[]) =>
     sutunKonumlari(
       s.map((k) => k.acik),
       aralik,
       kartBoy,
       alan.boy,
       kartBoy * EN_AZ_KAPALI,
-    ),
-  );
+    );
+  const konumlar = masa.sutunlar.map(sutunKonumu);
 
 
   // Kart eni tam piksele yuvarlanınca artan pay sütun aralarına dağılır: sütunlar iki kenara eşit uzanır
@@ -181,11 +215,64 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
     return Math.min(SPIDER_SUTUN_SAYISI - 1, Math.max(0, c));
   };
 
-  // Her hamlede önceki masa geçmişe girer
-  const hamleYap = (yeni: SpiderMasasi) => {
+  // Her hamlede önceki masa geçmişe girer. ara: toparlanmadan önceki hâl; bir dizi tamamlandıysa
+  // kartları oradaki yerlerinden akar. dagitilan: desteden teker teker gelen kartlar.
+  const hamleYap = (yeni: SpiderMasasi, ara?: SpiderMasasi | null, dagitilan: string[] = []) => {
     setGecmis((g) => [...g, masa]);
+    kayan.isaretle(yerler(masa), yerler(yeni));
+    let akan: Akan[] = [];
+    if (ara && yeni.tamamlanan.length > masa.tamamlanan.length) {
+      const kalan = new Set(yeni.sutunlar.flatMap((s) => s.map((k) => k.id)));
+      ara.sutunlar.forEach((s, c) => {
+        const konum = sutunKonumu(s);
+        s.forEach((k, i) => {
+          if (!kalan.has(k.id)) akan.push({ k, x: sutunX(c), y: konum[i] });
+        });
+      });
+      // En alttaki astan başlayarak papaza
+      akan = akan.sort((a, b) => a.k.deger - b.k.deger);
+    }
+    setAkanlar(akan);
     setMasa(yeni);
+    if (akan.length || dagitilan.length) setIstek((o) => ({ no: (o?.no ?? 0) + 1, dagitilan, akanlar: akan }));
   };
+
+  // Yeni elde kartlar desteden teker teker gelir (kaldığı yerden açılan elde ve deneme elinde değil)
+  const dagitilanEl = useRef(-1);
+  useLayoutEffect(() => {
+    if (!alan.olculdu || dagitilanEl.current === el) return;
+    dagitilanEl.current = el;
+    if (el === 0 && (devam || baslangic)) return;
+    const sira = masa.sutunlar
+      .flatMap((s, c) => s.map((k, i) => ({ id: k.id, n: i * SPIDER_SUTUN_SAYISI + c })))
+      .sort((a, b) => a.n - b.n)
+      .map((a) => a.id);
+    setIstek((o) => ({ no: (o?.no ?? 0) + 1, dagitilan: sira, akanlar: [] }));
+  }, [el, alan.olculdu]);
+
+  // Hareketi başlatır: önce desteden gelenler, sonra akan kartlar (kart önce yerine kayar)
+  useLayoutEffect(() => {
+    if (!istek) return;
+    const alanR = alanRef.current?.getBoundingClientRect();
+    if (!alanR) return;
+    const desteR = desteRef.current?.getBoundingClientRect();
+    const kimden = desteR
+      ? { x: desteR.right - kartEn - alanR.left, y: desteR.top - alanR.top }
+      : { x: alan.en - kartEn, y: alan.boy };
+    const ucuslar: Ucus[] = istek.dagitilan.map((id, j) => ({ id, kimden, gecikme: j * DAGITIM_ADIMI, sure: HAREKET.ucus }));
+    const akisBasi = istek.dagitilan.length ? toplamSure(istek.dagitilan.length, DAGITIM_ADIMI, HAREKET.ucus) : HAREKET.kayma;
+    const tamamR = tamamRef.current?.getBoundingClientRect();
+    const akanDizi = istek.akanlar.length / DIZI_KART_SAYISI;
+    istek.akanlar.forEach((a, j) => {
+      if (!tamamR) return;
+      const sira = masa.tamamlanan.length - akanDizi + Math.floor(j / DIZI_KART_SAYISI);
+      const kime = { x: tamamR.left + sira * yelpazeAdim - alanR.left, y: tamamR.top - alanR.top };
+      ucuslar.push({ id: a.k.id, kime, gecikme: akisBasi + j * AKIS_ADIMI, sure: HAREKET.akisUcusu });
+    });
+    hareket.baslat(ucuslar, () => {
+      if (istek.akanlar.length) setAkanlar([]);
+    });
+  }, [istek?.no]);
 
   const geriAlBas = () => {
     setSecim(null);
@@ -211,6 +298,8 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
   };
 
   const yeniEl = () => {
+    hareket.bitir();
+    setAkanlar([]);
     setMasa(dagitim());
     setEl((e) => e + 1);
     setGecmis([]);
@@ -227,8 +316,16 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
     setSecim(null);
     if (kaynak === hedef) return;
     const sonuc = tasi(masa, kaynak, sira, hedef);
-    if (sonuc) hamleYap(sonuc);
+    if (sonuc) hamleYap(sonuc, tasiToparlamadan(masa, kaynak, sira, hedef));
     else setRed({ sutun: kaynak, sira });
+  };
+
+  // Çift dokunuş (Kemal, 15 Kasım): dizi gidebileceği en iyi yere kayar; yer yoksa sallanır
+  const ciftDokun = (sutun: number, sira: number) => {
+    setSecim(null);
+    const hedef = ciftDokunusHedefi(masa, sutun, sira);
+    if (hedef === null) setRed({ sutun, sira });
+    else dene(sutun, sira, hedef);
   };
 
   const dagit = () => {
@@ -239,7 +336,12 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
       return;
     }
     const sonuc = destedenDagit(masa);
-    if (sonuc) hamleYap(sonuc);
+    if (!sonuc) return;
+    // "Dağıt": on kart desteden teker teker sütunlara uçar
+    const once = new Set(masa.sutunlar.flatMap((s) => s.map((k) => k.id)));
+    const ara = dagitToparlamadan(masa);
+    const gelen = (ara ?? sonuc).sutunlar.map((s) => s[s.length - 1]).filter((k) => k && !once.has(k.id)).map((k) => k.id);
+    hamleYap(sonuc, ara, gelen);
   };
 
   const kartBas = (e: TepkiOlayi<HTMLDivElement>, sutun: number, sira: number) => {
@@ -278,8 +380,18 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
       dene(s.sutun, s.sira, sutunBul(e.clientX));
       return;
     }
-    // Dokunuş
+    // Dokunuş. Aynı karta iki kez hızlı dokununca çift dokunuş.
+    const id = masa.sutunlar[sutun][sira].id;
+    const simdi = Date.now();
+    const onceki = sonDokunus.current;
+    sonDokunus.current = { id, zaman: simdi };
+    if (onceki && onceki.id === id && simdi - onceki.zaman < CIFT_DOKUNMA) {
+      sonDokunus.current = null;
+      ciftDokun(sutun, sira);
+      return;
+    }
     if (secim && secim.sutun !== sutun) {
+      sonDokunus.current = null; // bu dokunuş bir taşımaydı
       dene(secim.sutun, secim.sira, sutun);
     } else if (secim && secim.sutun === sutun && secim.sira === sira) {
       setSecim(null);
@@ -332,12 +444,23 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
             style={{ left: sutunX(c), width: kartEn, height: kartBoy, borderRadius: kose }}
           />
         ))}
-        <div key={el} className="kart-katmani">
-          {/* Kartlar hep aynı sırada çizilir: sütun değişince yeniden dağıtılıyormuş gibi oynamasın */}
-          {masa.sutunlar
-            .flatMap((s, c) => s.map((k, i) => ({ k, c, i })))
+        <div key={el} className="kart-katmani" style={{ '--kayma': `${HAREKET.kayma}ms` } as CSSProperties}>
+          {/* Kartlar hep aynı sırada çizilir: sütun değişince yeniden dağıtılıyormuş gibi oynamasın.
+              Akan kartlar (tamamlanan sıra) da aynı sıranın içinde, yerlerinden "Tamamlanan diziler"e gider. */}
+          {[
+            ...masa.sutunlar.flatMap((s, c) => s.map((k, i) => ({ k, c, i, akan: -1 }))),
+            ...akanlar.map((a, j) => ({ k: a.k, c: -1, i: j, akan: j })),
+          ]
             .sort((a, b) => (a.k.id < b.k.id ? -1 : 1))
-            .map(({ k, c, i }) => {
+            .map(({ k, c, i, akan }) => {
+              if (akan >= 0) {
+                const a = akanlar[akan];
+                return (
+                  <div key={k.id} data-kart={k.id} className="kart-yeri akan" style={{ transform: konumYazisi(a.x, a.y), zIndex: 600 + akan }}>
+                    <KartYuzu kart={k} genislik={kartEn} yukseklik={kartBoy} />
+                  </div>
+                );
+              }
               const tasinan = tasinanMi(c, i);
               let left = sutunX(c);
               let top = konumlar[c][i];
@@ -345,22 +468,24 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
                 left = surukleme.x - surukleme.tutX - alanR.left;
                 top = surukleme.y - surukleme.tutY - alanR.top + (konumlar[c][i] - konumlar[c][surukleme.sira]);
               }
+              // O an hiçbir yere gidemeyen açık kart biraz koyu (ayar; kurallar src/kart/spider.ts)
+              const soluk = ayarlar.koyulastir && k.acik && !oynanabilir.has(k.id);
               const sinif = [
                 'kart-yeri',
                 tasinan ? 'tasiniyor' : '',
                 seciliMi(c, i) ? 'secili' : '',
                 reddedildiMi(c, i) ? 'reddedildi' : '',
                 ipucuMu(c, i) ? 'ipucu' : '',
+                soluk ? 'soluk' : '',
               ].join(' ');
               return (
                 <div
                   key={k.id}
+                  data-kart={k.id}
                   className={sinif}
                   style={{
-                    left,
-                    top,
-                    zIndex: tasinan ? 500 + i : i,
-                    animationDelay: `${(ilkSira.get(k.id) ?? c) * 14}ms`,
+                    transform: konumYazisi(left, top),
+                    zIndex: tasinan ? 500 + i : kayan.kayanlar.has(k.id) ? 300 + i : i,
                   }}
                   onPointerDown={(e) => kartBas(e, c, i)}
                   onPointerMove={kartKay}
@@ -381,14 +506,20 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
         <div className="masa-alt-sira">
           <div className="tamamlanan" aria-label={`${m('masa.tamamlanan')} ${masa.tamamlanan.length}/${SPIDER_DIZI}`}>
             {masa.tamamlanan.length > 0 && (
-              <span className="alt-yelpaze" style={{ width: yelpazeEni(masa.tamamlanan.length, kartEn, yelpazeAdim), height: altBoy }}>
+              <span ref={tamamRef} className="alt-yelpaze" style={{ width: yelpazeEni(masa.tamamlanan.length, kartEn, yelpazeAdim), height: altBoy }}>
                 {masa.tamamlanan.map((takim, i) => (
                   <KartYuzu
                     key={`dolu-${i}`}
                     kart={{ takim, deger: 13, acik: true }}
                     genislik={kartEn}
                     sinif="tamam"
-                    stil={{ position: 'absolute', left: i * yelpazeAdim, top: 0 }}
+                    // Akan sıra yerine varana kadar görünmez
+                    stil={{
+                      position: 'absolute',
+                      left: i * yelpazeAdim,
+                      top: 0,
+                      visibility: i >= masa.tamamlanan.length - akanlar.length / DIZI_KART_SAYISI ? 'hidden' : undefined,
+                    }}
                   />
                 ))}
               </span>
@@ -407,6 +538,7 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
           >
             <span className="deste-yazi">{masa.deste.length ? m('masa.deste') : m('masa.desteBos')}</span>
             <span
+              ref={desteRef}
               className={`deste-yigin ${destedenKalan === 0 ? 'bos' : ''}`}
               style={{ width: Math.max(kartEn, yelpazeEni(destedenKalan, kartEn, yelpazeAdim)), height: altBoy, borderRadius: kose }}
             >
@@ -438,6 +570,9 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
         anaEkran={anaEkran}
       />
       </div>
+
+      {/* Dağıtım ve akış sürerken dokunma kapalı; masaya tek dokunuş hareketi hemen bitirir */}
+      {hareket.kilitli && <HareketKalkani bitir={hareket.bitir} />}
 
       {birakma.soruAcik && <ElBirakmaSorusu evet={birakma.evet} hayir={birakma.hayir} />}
 

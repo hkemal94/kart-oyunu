@@ -14,7 +14,10 @@ import {
   gunlukYarimElYaz,
   gunlukYaz,
   oncekiAy,
+  oncekiAyaGidilirMi,
   oynanabilirMi,
+  takvimAyi,
+  TAKVIM_ILK_AY,
   takvimHucreleri,
   tamamlananAylar,
   tarihtenBugun,
@@ -158,4 +161,25 @@ test('günlük el seriye sayılır: kazanınca aşama artar, bırakınca seri bi
   assert.equal(seriOku(k, anahtar).puan, 1150 + 2300);
   k = seriBitir(k, anahtar); // günlük el bırakıldı
   assert.deepEqual(seriOku(k, anahtar), { puan: 0, asama: 1 });
+});
+
+test('takvim en çok Ocak 2026\'ya kadar geri gider (Kemal, 15 Kasım)', () => {
+  assert.deepEqual(TAKVIM_ILK_AY, { yil: 2026, ay: 1 });
+  assert.equal(oncekiAyaGidilirMi(2026, 1), false); // Ocak 2026'da geri ok kapalı
+  assert.equal(oncekiAyaGidilirMi(2026, 2), true);
+  assert.equal(oncekiAyaGidilirMi(2026, 11), true);
+  assert.equal(oncekiAyaGidilirMi(2027, 1), true); // Ocak 2027'den Aralık 2026'ya gidilir
+  assert.equal(oncekiAyaGidilirMi(2025, 12), false);
+  // Kasım 2026'dan geri geri gidilince Ocak 2026'da durulur
+  let ay = { yil: 2026, ay: 11 };
+  let adim = 0;
+  while (oncekiAyaGidilirMi(ay.yil, ay.ay)) {
+    ay = oncekiAy(ay.yil, ay.ay);
+    adim++;
+  }
+  assert.deepEqual(ay, { yil: 2026, ay: 1 });
+  assert.equal(adim, 10);
+  // Sınırın gerisindeki ay sınıra çekilir
+  assert.deepEqual(takvimAyi(2025, 12), { yil: 2026, ay: 1 });
+  assert.deepEqual(takvimAyi(2026, 3), { yil: 2026, ay: 3 });
 });

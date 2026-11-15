@@ -7,7 +7,7 @@
     "dev": "vite --host",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host",
-    "test": "node --test testler/spider.test.ts testler/yardimcilar.test.ts testler/klondike.test.ts testler/puan.test.ts testler/duzen.test.ts testler/ayarlar.test.ts testler/devam.test.ts testler/istatistik.test.ts testler/gunluk.test.ts"
+    "test": "node --test testler/spider.test.ts testler/yardimcilar.test.ts testler/klondike.test.ts testler/puan.test.ts testler/duzen.test.ts testler/ayarlar.test.ts testler/devam.test.ts testler/istatistik.test.ts testler/gunluk.test.ts testler/oynanabilir.test.ts testler/hareket.test.ts"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.3.0",

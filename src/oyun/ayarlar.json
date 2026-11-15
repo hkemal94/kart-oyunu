@@ -56,6 +56,17 @@
         "hamleBonusu": { "ad": "Sınırın altında kalan her hamle için", "deger": 2, "birim": "puan", "not": "ADAY, Kemal seçecek" },
         "asamaEki": { "ad": "Aşama 1'in üstündeki her aşama için ek", "deger": 250, "birim": "puan", "not": "ADAY, Kemal seçecek" }
       }
+    },
+    "hareket": {
+      "ad": "Kart hareketleri",
+      "aciklama": "Teker teker dağıtma, çift dokunuşta kayma, tamamlanan sıranın akışı (Kemal'in telefon yorumları, 15 Kasım). Telefonda 'hareketi azalt' açıksa hareketler atlanır.",
+      "ayarlar": {
+        "dagitim": { "ad": "Spider açılış dağıtımının toplam süresi (54 kart, teker teker)", "deger": 1800, "birim": "milisaniye", "not": "ÖNERİ, Kemal ayarlar. 1800 = 1,8 saniye (1,5-2 saniye arası önerildi). 'Dağıt'taki 10 kart ve klasik solitaire'in açılışı aynı hızla gider." },
+        "ucus": { "ad": "Bir kartın desteden yerine uçuşu", "deger": 240, "birim": "milisaniye", "not": "ÖNERİ, Kemal ayarlar" },
+        "kayma": { "ad": "Taşınan kartın yerine kayması (çift dokunuş dahil)", "deger": 240, "birim": "milisaniye", "not": "ÖNERİ, Kemal ayarlar" },
+        "akis": { "ad": "Tamamlanan sıranın (13 kart) akışının toplam süresi", "deger": 700, "birim": "milisaniye", "not": "ÖNERİ, Kemal ayarlar. 700 = 0,7 saniye (0,6-0,8 saniye arası önerildi)" },
+        "akisUcusu": { "ad": "Akışta bir kartın uçuşu", "deger": 220, "birim": "milisaniye", "not": "ÖNERİ, Kemal ayarlar" }
+      }
     }
   }
 }

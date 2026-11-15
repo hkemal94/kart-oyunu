@@ -79,12 +79,26 @@ button:disabled { cursor: default; }
 .kart-katmani { position: absolute; inset: 0; }
 .yuva { position: absolute; top: 0; border: 1px dashed rgba(243, 239, 232, 0.3); }
 .yuva.hedef { border-color: var(--kiremit); }
-.kart-yeri { position: absolute; transition: left 0.24s ease-out, top 0.24s ease-out; animation: dagit 0.32s ease-out both; touch-action: none; }
+/* Kartın yeri yalnız transform ile verilir (Kemal'in telefon yorumları, 15 Kasım): kayarken sayfa
+   düzeni yeniden hesaplanmaz, telefonda akıcı. Kayma süresi src/oyun/ayarlar.json → hareket.kayma.
+   Dağıtım ve akış hareketleri koddan (src/ekranlar/masaOrtak.tsx, useHareket). */
+.kart-yeri { position: absolute; left: 0; top: 0; transition: transform var(--kayma, 240ms) ease-out; touch-action: none; }
 .kart-yeri.tasiniyor { transition: none; }
 .kart-yeri.tasiniyor .kart { box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45); }
 .kart-yeri.secili .kart { outline: 2px solid var(--kiremit); outline-offset: -1px; }
 .kart-yeri.secili .kart { transform: translateY(-3px); }
-@keyframes dagit { from { opacity: 0; transform: translateY(60vh); } to { opacity: 1; transform: none; } }
+/* O an oynanamayan açık kart bir iki ton koyu (ayar: "Oynanamayan kartları koyulaştır") */
+.kart.yuz::after { content: ''; position: absolute; inset: 0; background: rgba(14, 28, 79, 0.24); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+.kart-yeri.soluk .kart.yuz::after { opacity: 1; }
+.kart-yeri.akan { pointer-events: none; }
+/* Dağıtım ve akış sürerken masanın üstünde görünmez kalkan: dokunuş hareketi hemen bitirir */
+.hareket-kalkani { position: absolute; inset: 0; z-index: 1000; touch-action: none; }
+/* Telefonda "hareketi azalt" açıksa kartlar kaymaz, hemen yerine geçer; sallanma kısalır */
+@media (prefers-reduced-motion: reduce) {
+  .kart-yeri { transition: none; }
+  .kart-yeri.reddedildi .kart { animation-duration: 0.16s; }
+  .kart.yuz::after { transition: none; }
+}
 /* Kurala uymayan taşıma: kart yerine döner ve hafifçe sallanır */
 .kart-yeri.reddedildi .kart { animation: sars 0.36s ease-in-out; }
 @keyframes sars { 0%, 100% { transform: none; } 25% { transform: translateX(-3px); } 50% { transform: translateX(3px); } 75% { transform: translateX(-2px); } }

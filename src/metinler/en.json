@@ -77,6 +77,8 @@
   "ayar.sayaclariGizle.aciklama": "Time and moves are hidden",
   "ayar.puaniGoster": "Show score after every move",
   "ayar.puaniGoster.aciklama": "Score and stage at the top of the table",
+  "ayar.koyulastir": "Dim unplayable cards",
+  "ayar.koyulastir.aciklama": "Face-up cards that cannot move anywhere look slightly darker",
   "ayar.bolum.dil": "Language and deck",
   "ayar.dil": "Language",
   "ayar.dil.tr": "Türkçe",

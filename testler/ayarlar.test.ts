@@ -25,6 +25,16 @@ test('ayar yoksa varsayılanlar gelir', () => {
   assert.deepEqual(ayarlariOku(bellek()), VARSAYILAN_AYARLAR);
 });
 
+test('oynanamayan kartları koyulaştır: varsayılanı açık, kapatılınca saklanır (Kemal, 15 Kasım)', () => {
+  assert.equal(VARSAYILAN_AYARLAR.koyulastir, true);
+  const depo = bellek();
+  ayarlariYaz(depo, { ...VARSAYILAN_AYARLAR, koyulastir: false });
+  assert.equal(ayarlariOku(depo).koyulastir, false);
+  // Eski kayıtta alan yoksa açık gelir
+  depo.setItem(AYAR_ANAHTARI, JSON.stringify({ solEl: true }));
+  assert.equal(ayarlariOku(depo).koyulastir, true);
+});
+
 test('ayarlar saklanır ve yeniden açılınca aynen okunur', () => {
   const depo = bellek();
   const a = { ...VARSAYILAN_AYARLAR, solEl: true, sayaclariGizle: true, puaniGoster: false, ses: false, dil: 'en' as const };

@@ -1,4 +1,5 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from 'react';
+import { HAREKET } from '../kart/hareket';
 import { m, sayi } from '../metinler';
 import { geriAlHakkiAl } from '../reklam/geriAlHakki';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
@@ -42,7 +43,8 @@ export function useMasaBlogu() {
   const masaRef = useRef<HTMLElement>(null);
   const blokRef = useRef<HTMLDivElement>(null);
   const alanRef = useRef<HTMLDivElement>(null);
-  const [alan, setAlan] = useState({ en: 360, boy: 500, tamBoy: 500 });
+  // olculdu: ilk ölçüm yapıldı (açılış dağıtımı doğru yerlere uçsun diye ondan sonra başlar)
+  const [alan, setAlan] = useState({ en: 360, boy: 500, tamBoy: 500, olculdu: false });
 
   useLayoutEffect(() => {
     const a = alanRef.current;
@@ -52,8 +54,8 @@ export function useMasaBlogu() {
       const s = b ? getComputedStyle(b) : null;
       const pay = s ? parseFloat(s.paddingTop) + parseFloat(s.paddingBottom) : 0;
       const boy = Math.max(120, a.clientHeight);
-      const yeni = { en: a.clientWidth, boy, tamBoy: boy + pay };
-      setAlan((o) => (o.en === yeni.en && o.boy === yeni.boy && o.tamBoy === yeni.tamBoy ? o : yeni));
+      const yeni = { en: a.clientWidth, boy, tamBoy: boy + pay, olculdu: true };
+      setAlan((o) => (o.olculdu && o.en === yeni.en && o.boy === yeni.boy && o.tamBoy === yeni.tamBoy ? o : yeni));
     };
     olc();
     const g = new ResizeObserver(olc);
@@ -62,6 +64,121 @@ export function useMasaBlogu() {
   }, []);
 
   return { masaRef, blokRef, alanRef, alan };
+}
+
+// ---------------------------------------------------------------------------------------------
+// Kart hareketleri (Kemal'in telefon yorumları, 15 Kasım): teker teker dağıtma, çift dokunuşta
+// kayma, tamamlanan sıranın akışı. Süreler src/kart/hareket.ts'te (ayar dosyasından; öneri).
+// Telefonda akıcı olsun diye kartlar yalnız "transform" ile yer değiştirir (sayfa düzeni yeniden
+// hesaplanmaz). Telefonun "hareketi azalt" tercihi açıksa hareketler atlanır, kartlar hemen yerinde.
+
+export const hareketAzMi = () =>
+  typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Kartın masadaki yeri: sol üst köşesinin oyun alanına göre konumu
+export const konumYazisi = (x: number, y: number) => `translate3d(${x}px, ${y}px, 0)`;
+
+// Bir kartın uçuşu. kimden: kart oradan kendi yerine gelir (dağıtma; o ana kadar görünmez).
+// kime: kart kendi yerinden oraya gider ve orada kalır (tamamlanan sıranın akışı).
+export interface Ucus {
+  id: string;
+  kimden?: { x: number; y: number };
+  kime?: { x: number; y: number };
+  gecikme: number;
+  sure: number;
+}
+
+// Uçuşları başlatır; sürerken masa dokunmaya kapalıdır (kilitli). Masaya tek dokunuş (bitir) hepsini
+// hemen sonuna getirir. Kartlar data-kart özelliğiyle bulunur.
+export function useHareket(alanRef: RefObject<HTMLDivElement | null>) {
+  const [kilitli, setKilitli] = useState(false);
+  const animler = useRef<Animation[]>([]);
+  const parti = useRef(0);
+
+  const bitir = () => {
+    for (const a of animler.current) {
+      try {
+        a.finish();
+      } catch {
+        a.cancel();
+      }
+    }
+  };
+
+  const baslat = (ucuslar: Ucus[], bitince?: () => void) => {
+    const alan = alanRef.current;
+    const no = ++parti.current;
+    bitir(); // önceki hareket yarım kaldıysa sonuna getirilir
+    const yeni: Animation[] = [];
+    if (alan && !hareketAzMi()) {
+      for (const u of ucuslar) {
+        const el = alan.querySelector<HTMLElement>(`[data-kart="${u.id}"]`);
+        if (!el || typeof el.animate !== 'function') continue;
+        const yeri = el.style.transform || 'none';
+        if (u.kimden) {
+          const bas = konumYazisi(u.kimden.x, u.kimden.y);
+          yeni.push(el.animate([{ transform: bas }, { transform: yeri }], { duration: u.sure, delay: u.gecikme, easing: 'ease-out', fill: 'backwards' }));
+          // Sırası gelene kadar görünmez
+          if (u.gecikme > 0) yeni.push(el.animate([{ opacity: 0 }, { opacity: 0 }], { duration: u.gecikme }));
+        } else if (u.kime) {
+          const son = konumYazisi(u.kime.x, u.kime.y);
+          yeni.push(el.animate([{ transform: yeri }, { transform: son }], { duration: u.sure, delay: u.gecikme, easing: 'ease-in-out', fill: 'forwards' }));
+        }
+      }
+    }
+    animler.current = yeni;
+    if (yeni.length === 0) {
+      setKilitli(false);
+      bitince?.();
+      return;
+    }
+    setKilitli(true);
+    Promise.all(yeni.map((a) => a.finished.catch(() => undefined))).then(() => {
+      if (parti.current === no) {
+        animler.current = [];
+        setKilitli(false);
+      }
+      bitince?.();
+    });
+  };
+
+  // Masadan çıkınca yarım kalan hareket durur
+  useEffect(() => () => animler.current.forEach((a) => a.cancel()), []);
+
+  return { kilitli, baslat, bitir };
+}
+
+// Hareket sürerken masanın üstünde görünmez kalkan: dokunuşu kartlara geçirmez, hareketi bitirir
+export function HareketKalkani({ bitir }: { bitir: () => void }) {
+  return (
+    <div
+      className="hareket-kalkani"
+      onPointerDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        bitir();
+      }}
+    />
+  );
+}
+
+// Son hamlede yer değiştiren kartlar kaydıkları sürece öbürlerinin üstünde çizilir (kayarken
+// başka bir kartın altına girmesin). Kartın yeri: hangi yığında (ör. "s3", "t0", "a").
+export function useKayanlar() {
+  const [kayanlar, setKayanlar] = useState<Set<string>>(() => new Set());
+  useEffect(() => {
+    if (kayanlar.size === 0) return;
+    const z = setTimeout(() => setKayanlar(new Set()), HAREKET.kayma + 40);
+    return () => clearTimeout(z);
+  }, [kayanlar]);
+  const isaretle = (once: Map<string, string>, sonra: Map<string, string>) => {
+    const s = new Set<string>();
+    sonra.forEach((yer, id) => {
+      if (once.get(id) !== yer) s.add(id);
+    });
+    if (s.size) setKayanlar(s);
+  };
+  return { kayanlar, isaretle };
 }
 
 // Masa bloğunun üst ve alt payı: birer kart boyu (yukarıda useMasaBlogu)

@@ -94,13 +94,20 @@ function toparla(masa: SpiderMasasi): SpiderMasasi {
   return { ...masa, sutunlar, tamamlanan };
 }
 
-// Kurala uyan taşımayı yapar; uymayanda null döner (ekran kartı yerine geri götürür).
-export function tasi(masa: SpiderMasasi, kaynak: number, sira: number, hedef: number): SpiderMasasi | null {
+// Taşımanın toparlanmadan önceki hâli: dizi yerinde, tamamlanan dizi henüz kalkmadı. Ekran
+// tamamlanan dizinin kartlarını buradaki yerlerinden "Tamamlanan diziler"e akıtır (Kemal 15 Kasım).
+export function tasiToparlamadan(masa: SpiderMasasi, kaynak: number, sira: number, hedef: number): SpiderMasasi | null {
   if (!birakilabilirMi(masa, kaynak, sira, hedef)) return null;
   const sutunlar = masa.sutunlar.map((s) => [...s]);
   const giden = sutunlar[kaynak].splice(sira);
   sutunlar[hedef].push(...giden);
-  return toparla({ ...masa, sutunlar, hamle: masa.hamle + 1 });
+  return { ...masa, sutunlar, hamle: masa.hamle + 1 };
+}
+
+// Kurala uyan taşımayı yapar; uymayanda null döner (ekran kartı yerine geri götürür).
+export function tasi(masa: SpiderMasasi, kaynak: number, sira: number, hedef: number): SpiderMasasi | null {
+  const ara = tasiToparlamadan(masa, kaynak, sira, hedef);
+  return ara && toparla(ara);
 }
 
 // Standart kural: deste bitmediyse ve boş sütun yoksa dağıtılır.
@@ -110,15 +117,21 @@ export function dagitilabilirMi(masa: SpiderMasasi): DagitmaDurumu {
   return 'olur';
 }
 
-// Desteden her sütuna birer açık kart; olmuyorsa null.
-export function destedenDagit(masa: SpiderMasasi): SpiderMasasi | null {
+// Dağıtmanın toparlanmadan önceki hâli (yukarıda tasiToparlamadan gibi)
+export function dagitToparlamadan(masa: SpiderMasasi): SpiderMasasi | null {
   if (dagitilabilirMi(masa) !== 'olur') return null;
   const deste = [...masa.deste];
   const sutunlar = masa.sutunlar.map((s) => {
     const kart = deste.shift();
     return kart ? [...s, { ...kart, acik: true }] : s;
   });
-  return toparla({ ...masa, sutunlar, deste, hamle: masa.hamle + 1 });
+  return { ...masa, sutunlar, deste, hamle: masa.hamle + 1 };
+}
+
+// Desteden her sütuna birer açık kart; olmuyorsa null.
+export function destedenDagit(masa: SpiderMasasi): SpiderMasasi | null {
+  const ara = dagitToparlamadan(masa);
+  return ara && toparla(ara);
 }
 
 export function kazandiMi(masa: SpiderMasasi): boolean {
@@ -177,4 +190,50 @@ export function ipuclari(masa: SpiderMasasi): Ipucu[] {
   const sirali = adaylar.sort((a, b) => b.puan - a.puan).map((a) => a.ipucu);
   if (sirali.length === 0 && dagitilabilirMi(masa) === 'olur') return [{ tur: 'dagit' }];
   return sirali;
+}
+
+// ---------------------------------------------------------------------------------------------
+// Kemal'in telefon yorumları (15 Kasım). Ekrandan ayrı; testleri testler/oynanabilir.test.ts.
+
+// Çift dokunuş: dizi (sütunun sira'dan sonuna kadarki kartları) nereye gider. Öncelik (Kemal):
+// aynı takımdan bir büyük kartın altı, sonra başka takımdan bir büyük kart, en son boş sütun.
+// Aynı öncelikte soldaki sütun. Sütunun tamamını boş sütuna taşımak bir şey değiştirmediği için
+// sayılmaz. Gidecek yer yoksa null (ekran kartı hafifçe sallar).
+export function ciftDokunusHedefi(masa: SpiderMasasi, kaynak: number, sira: number): number | null {
+  if (!tasinabilirMi(masa, kaynak, sira)) return null;
+  const kart = masa.sutunlar[kaynak][sira];
+  let enIyi: number | null = null;
+  let enIyiOncelik = 0;
+  for (let hedef = 0; hedef < masa.sutunlar.length; hedef++) {
+    const h = masa.sutunlar[hedef];
+    if (!birakilabilirMi(masa, kaynak, sira, hedef)) continue;
+    if (h.length === 0 && sira === 0) continue;
+    const ust = h[h.length - 1];
+    const oncelik = !ust ? 1 : ust.takim === kart.takim ? 3 : 2;
+    if (oncelik > enIyiOncelik) {
+      enIyi = hedef;
+      enIyiOncelik = oncelik;
+    }
+  }
+  return enIyi;
+}
+
+// Oynanabilir kartlar (Kemal: "o an hiçbir yere oynanamayan açık kartlar koyulaşsın"). Açık bir
+// kart, kendisi ya da üstünde durduğu birlikte taşınabilir dizi o an kurala uygun bir yere
+// gidebiliyorsa oynanabilir; gidemiyorsa ya da başka bir kartın altında kalıp taşınamıyorsa
+// oynanamaz. Boş sütuna her dizi gidebildiği için boş sütun varken taşınabilir her dizi oynanır.
+// Kapalı kartlar listeye girmez. Dönen: oynanabilir kartların kimlikleri.
+export function oynanabilirKartlar(masa: SpiderMasasi): Set<string> {
+  const sonuc = new Set<string>();
+  masa.sutunlar.forEach((s, kaynak) => {
+    for (let sira = 0; sira < s.length; sira++) {
+      if (!tasinabilirMi(masa, kaynak, sira)) continue;
+      const gider = masa.sutunlar.some((_, hedef) => birakilabilirMi(masa, kaynak, sira, hedef));
+      if (gider) {
+        for (let i = sira; i < s.length; i++) sonuc.add(s[i].id);
+        break; // üstteki kartlar bu diziyle birlikte gider
+      }
+    }
+  });
+  return sonuc;
 }
