@@ -125,6 +125,12 @@ En yeni üstte.
 - **15 Kasım ("Oyuna başlayalım"):** Spider klasik solitaire'den önce gelir; Spider'da 1, 2 ve 4
   renk. Depo `kart-oyunu` adıyla açıldı; ad geçici çalışma adı. Sade Meyhane masasına görseli
   gelince karar verilecek; şimdilik oyunda yok. Teknoloji: Vite + React + TypeScript, 2B.
+- **15 Kasım akşam (desteler):** paket desteler belli oldu: beş mahallenin (Liman, İskele, Çiftlik,
+  Merkez, Stadyum) her biri için ikişer deste (10) ve yalnız renkten oluşan 2 deste, toplam 12;
+  seriler ikişer desteden oluşur. Bir süre yalnız arka yüzler çalışılır, ön yüzlere sonra bakılır;
+  deste arkaları günlük görsel işine de girer. Masa ve deste ayrı paketler. Web deneme sürümünde
+  şimdilik hepsi açık (kilit yok); neyin kilitleneceği ve satılacağı yayın sürümünden önce
+  konuşulacak. Deste ve seri adları [Kemal] (4.2).
 - **15 Kasım gece:** ilk kilitli masa Sade Meyhane; ilk kilitli destenin içeriği sonra; web sürümü
   yalnız deneme, web'de reklam ve satın alma yok.
 - **15 Kasım:** ilk sürümde bir kilitli masa ve bir kilitli deste; ödüllü reklamla deneme bir el
@@ -171,8 +177,9 @@ Sabitler (Kemal'in 14-11-2026 ve 15-11-2026 kararları):
 - **Desteler:** oyunda **birden çok deste** seçeneği olur; **biri Kems'in satacağı fiziksel deste,
   Küçükçetmi Sürek Kulübü destesi** (52 kart + 2 joker; merch destesiyle aynı tasarım) (Kemal,
   14-11-2026). **İlk sürümde iki deste ücretsiz: Sürek Kulübü destesi (varsayılan) ve sade deste**
-  (Kemal, 14 Kasım); **yanında bir kilitli deste paketi** (Kemal, 15 Kasım); içeriğine sonra karar
-  verilecek (Kemal, 15 Kasım gece). Ayrıntı 4. bölüm.
+  (Kemal, 14 Kasım); yanında **12 paket deste**: beş mahallenin her biri için ikişer deste ve
+  yalnız renkten oluşan 2 deste, ikişerli seriler (Kemal, 15 Kasım akşam). Web denemesinde hepsi
+  açık; kilit ve satış yayın sürümünden önce konuşulacak. Ayrıntı 4. bölüm.
 - **Masalar:** **ilk masa Küçükçetmi Çiftliği kulüp evi**, ücretsiz (Kemal, 14-11-2026; deste
   kulübün); **ilk sürümün kilitli masası Sade Meyhane** (Kemal, 15 Kasım ve 15 Kasım gece; 3.2). Masanın
   oyuna nasıl gireceğine **görseli gelince karar verilecek**; şimdilik oyunda yok (Kemal, 15 Kasım).
@@ -351,9 +358,10 @@ bırakılır (öneri).
   bölüm). Oyun ortasında hiç yok; web deneme sürümünde hiç yok. Deneme elinin
   sonunda masa ya da deste kendi seçilene döner; yanında sessiz bir "paketi aç" bağlantısı olabilir
   (öneri; baskı dili yok).
-- **Paketler:** iki sekme, desteler ve masalar. İlk sürümde her sekmede bir kilitli paket var
-  (Kemal, 15 Kasım): masalarda Sade Meyhane (Kemal, 15 Kasım gece), destelerde içeriği sonra
-  belli olacak deste. Her paket büyük önizlemeyle; sahip olunan "kullan", olmayan "aç" (fiyat: veri
+- **Paketler:** iki sekme, desteler ve masalar. Desteler sekmesinde 12 paket deste (beş mahallenin
+  her biri için ikişer, 2 renk destesi; ikişerli seriler halinde), masalarda Sade Meyhane (Kemal,
+  15 Kasım gece). Masa ve deste ayrı paketler. Web denemesinde hepsi açık (Kemal, 15 Kasım akşam);
+  hangilerinin kilitli geleceği yayın sürümünden önce konuşulacak. Her paket büyük önizlemeyle; sahip olunan "kullan", olmayan "aç" (fiyat: veri
   yok) ve yanında sessiz bir "reklam izle, bir el dene" (Kemal, 14 ve 15 Kasım; 5. bölüm).
   Reklamsız paket burada. Web deneme sürümünde "aç" ve "reklam izle" düğmeleri gerçek değildir
   (5. bölüm). Sürek Kulübü destesinin kartında fiziksel desteye küçük, sessiz bir bağlantı olabilir
@@ -474,8 +482,8 @@ Kemal (14-11-2026): "Desteler olsun işte ama biri bizim satacağımız desteler
 birden çok deste seçilebilir; biri Kems'in satacağı fiziksel deste.
 
 **İlk sürümün desteleri:** Sürek Kulübü destesi ücretsiz ve varsayılan + sade deste ücretsiz
-(Kemal, 14 Kasım) + bir kilitli deste paketi (Kemal, 15 Kasım; içeriği sonra, Kemal 15 Kasım gece;
-4.2'de 3. madde).
+(Kemal, 14 Kasım) + 12 paket deste: beş mahallenin her biri için ikişer deste ve 2 renk destesi
+(Kemal, 15 Kasım akşam; 4.2'de 3. madde). Web denemesinde hepsi açık.
 
 ### 4.1 Sürek Kulübü destesi (kesin: Kems'in satacağı deste)
 
@@ -502,14 +510,18 @@ birden çok deste seçilebilir; biri Kems'in satacağı fiziksel deste.
    yalnız minik bir kulüp ya da Kems izi olabilir (öneri).
 2. **Sade destenin dört renkli hâli:** her takım ayrı renk (ayarlarda seçenek); renk ayrımı zor
    olan oyuncu için. Erişilebilirlik ayarı olduğu için kilitlenmez (öneri).
-3. **İlk kilitli deste paketi** (ilk sürümde; Kemal, 15 Kasım): ödüllü reklamla bir el denenir,
-   paket olarak açılır (telefon uygulamasında; fiyat: veri yok). **İçeriğine sonra karar verilecek**
-   (Kemal, 15 Kasım gece: sonra); açık soru olarak 7. bölümde. Ad koyulmadı: [ad: Kemal]. Sürek
-   Kulübü destesi gibi okunurluk kuralına uyar. Karar gelene kadar web deneme sürümünde paketler
-   ekranının deste sekmesinde yer tutucu durur (öneri). Önceki turdaki adaylar karar sırasında
-   yeniden bakılmak üzere kayıtta: kilitli masanın mahallesine (İskele, Sade Meyhane) bağlı bir
-   deste · Sürek Kulübü destesinin ikinci bir arka yüzü ve renk takımı · Sürek Kulübü destesinin
-   çizim stili belli olunca karar.
+3. **Paket desteler: 12 deste** (Kemal, 15 Kasım akşam):
+   - **Mahalle desteleri (10):** Liman, İskele, Çiftlik, Merkez ve Stadyum için ikişer deste. Her
+     mahallenin iki destesi bir seri.
+   - **Renk desteleri (2):** yalnız renkten oluşan iki deste, bir seri.
+   - **Bir süre yalnız arka yüz** çalışılır; ön yüzler (resimli kartlar) sonra. O zamana kadar ön
+     yüz sade deste gibidir. Arka yüzler günlük görsel işine de girer (gece turu).
+   - Öğeler yalnız künyeden; yazı, harf, rakam, logo, gerçek kişi yok. Deste ve seri adları
+     [Kemal]; ajans istenirse yalnız aday listesi getirir.
+   - Masa ve deste **ayrı paketler** (Kemal, 15 Kasım akşam).
+   - **Web deneme sürümünde hepsi açık, kilit yok** (Kemal, 15 Kasım akşam). Hangilerinin kilitli
+     geleceği, satılacağı ve fiyatı yayın sürümünden önce konuşulacak (fiyat: veri yok).
+   - Sürek Kulübü destesi gibi okunurluk kuralına uyar.
 4. **Sonraki paket desteler:** yeni arka yüz ve figür tasarımları. İçerikleri, kaç tane oldukları
    ve hangilerinin fiziksel olarak da satılacağı Kemal'in. Ad koyulmadı.
 
@@ -529,9 +541,10 @@ fiyat [Kemal].
   14 Kasım), kulüp evi masası, ipucu dışındaki yardımcılar (geri al her elde birkaç hakla; 1.3), günlük
   mücadele ve kartpostal etkinliği (öneri). Oyunun kendisi kilitlenmez (öneri).
 - **Paketler:** yeni deste (arka yüz ve figür tasarımları) ve yeni masa (mekân ve sesi). Fiyat: veri
-  yok. Paket içerikleri Kemal'in. **İlk sürümde bir masa ve bir deste paketi kilitli gelir**
-  (Kemal, 15 Kasım): masa Sade Meyhane (Kemal, 15 Kasım gece; 3.2), destenin içeriği sonra (Kemal,
-  15 Kasım gece; 4.2).
+  yok. Paket içerikleri Kemal'in. Masa ve deste ayrı paketler. Paket desteler 12 (Kemal,
+  15 Kasım akşam; 4.2); masa Sade Meyhane (3.2). Web denemesinde hepsi açık; hangilerinin kilitli
+  ve satılık geleceği yayın sürümünden önce konuşulacak (15 Kasım'daki "bir masa ve bir deste
+  kilitli" kararı o konuşmada yeniden ele alınır).
 - **Reklam ilkeleri** (Kemal'in cevabından):
   - Her el arasında reklam yok (14 Kasım). El sonu reklamı **birkaç elde bir** girer (Kemal, 15
     Kasım); kaç elde bir olacağı denenip seçilir: [Kemal].
@@ -557,8 +570,8 @@ fiyat [Kemal].
       ödüllü reklamın karşılığı oldu (1.3). Bir izlemede kaç ipucu: [Kemal].
     - Yeri: deneme için paketler ekranında, kilitli paketin yanında (öneri); ipucu için masadaki
       ipucu düğmesinde, oyuncu dokununca (öneri). Kendiliğinden çıkmaz.
-    - İlk sürümde bir kilitli masa ve bir kilitli deste olduğu için ödüllü reklamın ilk günden
-      karşılığı var (Kemal, 15 Kasım).
+    - Ödüllü reklamla deneme, kilitli paket olduğu zaman anlam kazanır; neyin kilitleneceği yayın
+      sürümünden önce konuşulacak (Kemal, 15 Kasım akşam).
   - **Reklamsız satın alma:** bir kez satın alınınca reklam kalkar (Kemal, 14 ve 15 Kasım; fiyat
     [Kemal], veri yok). İpucu o zaman reklamsız mı gelir, deneme reklamı durur mu: [Kemal]
     (öneri: ipucu reklamsız gelir; deneme isteğe bağlı olduğu için durabilir).
@@ -582,9 +595,9 @@ Ekibin bildiği yol; tarayıcıda denemek kolay.
 Sıra (öneri):
 1. **Web deneme sürümü** (Kemal, 15 Kasım gece: yalnız deneme): iki oyun (önce Spider), iki ücretsiz deste,
    kulüp evi masası, altı yardımcı (ipucu reklamsız), puan, ana ekran ve üç sekme, günlük
-   mücadele, kartpostal etkinliği (8. bölüm), Türkçe ve İngilizce metin dosyaları, dikey düzen. Kilitli masa
-   Sade Meyhane, görseli hazır olunca girer; kilitli destenin yeri yer tutucuyla kurulur (içeriği
-   sonra). Paketler ekranı ve ödüllü reklam düğmesi yalnız yer tutucu; **web'de reklam ve satın
+   mücadele, kartpostal etkinliği (8. bölüm), Türkçe ve İngilizce metin dosyaları, dikey düzen. Sade Meyhane
+   masası görseli hazır olunca girer. Paket desteler (12) arka yüzleri hazır oldukça girer; web'de
+   hepsi açık, kilit yok (Kemal, 15 Kasım akşam). Paketler ekranı ve ödüllü reklam düğmesi yalnız yer tutucu; **web'de reklam ve satın
    alma yok**. Kemal ve yakın çevresi telefonun tarayıcısından bağlantıyla dener (öbür oyunlar
    gibi); herkese açık değil.
 2. **Telefon uygulaması:** web oyunu paketlenir; dikey ekran kilidi, gerçek reklam (el sonu,
@@ -652,7 +665,9 @@ Açık kalanlar:
 - **Geri al hak sayısı:** bir elde kaç ücretsiz hak: [Kemal], web denemesinde seçecek (Kemal, 15
   Kasım soru turu). Kodda deneme varsayılanı var, karar değil; adres sonuna `?geriAlHak=` yazılarak
   denenir (1.3).
-- **İlk kilitli deste:** içeriği ne. Kemal: sonra (15 Kasım gece). Adaylar 4.2'de kayıtta.
+- **Paket desteler:** içerik kapandı (Kemal, 15 Kasım akşam: 5 mahalle × 2 + 2 renk destesi; 4.2).
+  Açık kalan: deste ve seri adları [Kemal]; yayın sürümünde hangilerinin kilitli ve satılık olacağı,
+  fiyat (yayın öncesi konuşulacak).
 - **Sade Meyhane masası:** ne görüneceği ve web denemesinde açık mı duracağı; görseli gelince
   (Kemal, 15 Kasım). Künyede yalnız taş fabrika binası, koya bakan yamaç ve otelin yanı var.
 - **Kartpostal sırası:** yedi yer seçildi (8.2); hangi sırayla açılacağı [Kemal].

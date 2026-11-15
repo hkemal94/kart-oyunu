@@ -110,6 +110,10 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   Ekran görüntüleri: `docs/ekran-goruntuleri/bitir-*.png`.
 - 15 Kasım 2026 (öneri; `ajans/spider-bitir-karari`): yalnız belge. Kemal: Spider'da "Bitir"
   olmasın, önerilen hâl kalıcı (belge 7, soru 15 kapandı). Oyunda değişen bir şey yok.
+- 15 Kasım 2026 (öneri; `ajans/kilitli-deste-kararlari`): yalnız belge. Kemal'in deste kararları:
+  12 paket deste (beş mahallenin her biri için ikişer, 2 renk destesi; ikişerli seriler), bir süre
+  yalnız arka yüzler (günlük görsel işine de girer), masa ve deste ayrı paketler, web denemesinde
+  hepsi açık. Oyunda değişen bir şey yok.
 - Sırada: 9. paket (kartpostal etkinliği).
 
 ## Paketler
