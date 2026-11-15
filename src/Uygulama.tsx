@@ -29,7 +29,7 @@ import { denemeMasasi, gunlukDenemesi, klondikeDenemesi, type DenemeTuru, type K
 type Ekran = 'acilis' | 'sekmeler' | 'secim' | 'spider' | 'klasik';
 
 // Yalnız geliştirmede: adres sonuna ?deneme=kazan, ?deneme=dizi, ?deneme=uzun, ?deneme=cift, ?deneme=klasik-kazan ya da
-// ?deneme=klasik-orta yazılınca hazır bir el doğrudan masada açılır (ekran görüntüsü ve elle
+// ?deneme=klasik-orta (ya da ?deneme=klasik-bitir: bitmeye yakın el, 4. paket) yazılınca hazır bir el doğrudan masada açılır (ekran görüntüsü ve elle
 // deneme için). ?deneme=gunluk-kazan bugünün günlük eli olarak bir hamlede biten Spider'ı açar;
 // ?deneme=takvim takvime hazır yıldızlar koyar (8. paket). Yayındaki oyunda çalışmaz.
 function denemeOku() {
@@ -38,7 +38,7 @@ function denemeOku() {
   if (tur === 'takvim' || tur === 'gunluk-kazan') gunlukYaz(localStorage, gunlukDenemesi(tarihtenBugun()));
   if (tur === 'gunluk-kazan') return { oyun: 'spider' as const, gunluk: true, ...denemeMasasi('kazan') };
   if (tur === 'kazan' || tur === 'dizi' || tur === 'uzun' || tur === 'cift') return { oyun: 'spider' as const, ...denemeMasasi(tur as DenemeTuru) };
-  if (tur === 'klasik-kazan' || tur === 'klasik-orta') {
+  if (tur === 'klasik-kazan' || tur === 'klasik-orta' || tur === 'klasik-bitir') {
     return { oyun: 'klasik' as const, ...klondikeDenemesi(tur as KlondikeDenemeTuru) };
   }
   return null;
