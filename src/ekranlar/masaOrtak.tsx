@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { m, sayi } from '../metinler';
 import { geriAlHakkiAl } from '../reklam/geriAlHakki';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
@@ -28,6 +28,48 @@ export function sureYazisi(saniye: number): string {
   const sa = Math.floor(saniye / 3600);
   const iki = (n: number) => String(n).padStart(2, '0');
   return sa > 0 ? `${sa}:${iki(dk)}:${iki(s)}` : `${dk}:${iki(s)}`;
+}
+
+// Masa bloğu (Kemal, 15 Kasım: "çerçeve + içerik ortada toplansın"). Üst bilgi satırı, kartlar,
+// alt şerit ve düğmeler çerçeveli tek blok; blok dikeyde ortada durur, yüksekliği içeriğe göre.
+// Kart boyu ve aralık (src/kart/duzen.ts) bloğun en çok alabileceği yüksekliğe göre hesaplanır:
+// ekran eksi kenar payı eksi bloğun öbür parçaları. Kartların alanı sütunlar uzadıkça büyür (elin
+// içinde küçülmez, kartlar oynamasın), en çok o yüksekliğe kadar; yeni elde baştan.
+export function useMasaBlogu(el: number) {
+  const masaRef = useRef<HTMLElement>(null);
+  const blokRef = useRef<HTMLDivElement>(null);
+  const alanRef = useRef<HTMLDivElement>(null);
+  const [alan, setAlan] = useState({ en: 360, boy: 500 });
+
+  useLayoutEffect(() => {
+    const olc = () => {
+      const m = masaRef.current;
+      const b = blokRef.current;
+      const a = alanRef.current;
+      if (!m || !b || !a) return;
+      const st = getComputedStyle(m);
+      const ic = m.clientHeight - parseFloat(st.paddingTop) - parseFloat(st.paddingBottom);
+      const digerleri = b.offsetHeight - a.offsetHeight; // bilgi satırı, alt şerit, düğmeler, çerçeve
+      const yeni = { en: a.clientWidth, boy: Math.max(120, Math.floor(ic - digerleri)) };
+      setAlan((o) => (o.en === yeni.en && o.boy === yeni.boy ? o : yeni));
+    };
+    olc();
+    const g = new ResizeObserver(olc);
+    if (masaRef.current) g.observe(masaRef.current);
+    if (blokRef.current) g.observe(blokRef.current);
+    return () => g.disconnect();
+  }, []);
+
+  const enCok = useRef({ anahtar: '', boy: 0 });
+  // Kartların alanının yüksekliği: içerik kadar, elin içinde küçülmez, en çok alan.boy.
+  // Yeni elde ve ekran boyu değişince (ör. telefon döndü) baştan ölçülür.
+  const yukseklik = (icerik: number) => {
+    const anahtar = `${el}-${alan.en}-${alan.boy}`;
+    if (enCok.current.anahtar !== anahtar) enCok.current = { anahtar, boy: 0 };
+    enCok.current.boy = Math.max(enCok.current.boy, Math.ceil(icerik));
+    return Math.min(alan.boy, enCok.current.boy);
+  };
+  return { masaRef, blokRef, alanRef, alan, yukseklik };
 }
 
 // Süre: el başında başlar, el bitince durur; yeni elde sıfırlanır. Kaldığı yerden açılan elde

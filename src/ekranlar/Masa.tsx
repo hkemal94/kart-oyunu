@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
+import { useEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
 import { yarimMi, type YarimEl } from '../oyun/yarimEl';
@@ -12,6 +12,7 @@ import {
   useElBirakma,
   useElKaydi,
   useGeriAlHakki,
+  useMasaBlogu,
   usePuan,
   useSure,
 } from './masaOrtak';
@@ -42,6 +43,7 @@ import {
 // (src/kart/geriAlHakki.ts). İpucu bir hamleyi kısa süre parlatır, arka arkaya basınca sıradaki gelir.
 
 const ARALIK = 2; // sütunlar arası boşluk (piksel)
+const ALT_PAY = 0.35; // en uzun sütunun altında bırakılan boşluk (kart boyunun payı); dokunmak için
 // Kemal, 15 Kasım: kart boyu ve aralık ekran yüksekliğine göre (src/kart/duzen.ts). Kart uzun
 // ekranda en çok bu orana kadar uzar; aralık kartın bu paylarından fazla açılmaz.
 const EN_COK_ORAN = 1.6;
@@ -94,18 +96,8 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
   const geriAlHak = useGeriAlHakki(devam?.hak);
   const [ipucu, setIpucu] = useState<{ ipucu: Ipucu; sayi: number } | null>(null);
   const ipucuSirasi = useRef(0); // arka arkaya basınca sıradaki ipucu
-  const alanRef = useRef<HTMLDivElement>(null);
-  const [alan, setAlan] = useState({ en: 360, boy: 500 });
-
-  useLayoutEffect(() => {
-    const d = alanRef.current;
-    if (!d) return;
-    const olc = () => setAlan({ en: d.clientWidth, boy: d.clientHeight });
-    olc();
-    const g = new ResizeObserver(olc);
-    g.observe(d);
-    return () => g.disconnect();
-  }, []);
+  // Çerçeveli masa bloğu; kart alanının en çok yüksekliği ekrana göre (masaOrtak.tsx)
+  const { masaRef, blokRef, alanRef, alan, yukseklik } = useMasaBlogu(el);
 
   const kazandi = kazandiMi(masa);
   // Süre: el başında başlar, kazanınca durur
@@ -171,6 +163,11 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
       alan.boy,
       kartBoy * EN_AZ_KAPALI,
     ),
+  );
+
+  // Kart alanı içerik kadar: en uzun sütunun altı ve dokunmak için küçük bir pay
+  const alanYuksekligi = yukseklik(
+    Math.max(...konumlar.map((k) => (k.length ? k[k.length - 1] : 0))) + kartBoy * (1 + ALT_PAY),
   );
 
   const sutunX = (c: number) => c * (kartEn + ARALIK);
@@ -308,7 +305,8 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
   const destedenKalan = masa.deste.length / SPIDER_SUTUN_SAYISI;
 
   return (
-    <main className="masa">
+    <main className="masa" ref={masaRef}>
+      <div className="masa-blok" ref={blokRef}>
       <BilgiSatiri
         saniye={saniye}
         baslik={m('masa.baslik', renk)}
@@ -319,7 +317,7 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
         ayarAc={ayarAc}
       />
 
-      <div className="oyun-alani" ref={alanRef} onPointerUp={alaniBirak}>
+      <div className="oyun-alani" ref={alanRef} style={{ height: alanYuksekligi }} onPointerUp={alaniBirak}>
         {masa.sutunlar.map((_, c) => (
           <div
             key={`yuva-${c}`}
@@ -434,6 +432,7 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
         yeniEl={() => birakma.sor(yeniEl)}
         anaEkran={anaEkran}
       />
+      </div>
 
       {birakma.soruAcik && <ElBirakmaSorusu evet={birakma.evet} hayir={birakma.hayir} />}
 

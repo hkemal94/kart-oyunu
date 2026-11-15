@@ -1,14 +1,80 @@
 {
   "oyun": "[Kemal]",
   "kaynak": "https://hkemal94.github.io/kart-oyunu/",
-  "not": "Oyunun adı Kemal'in; 'kart-oyunu' geçici çalışma adı. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ayarlar ve düzen görüntüleri öneri dallarından (ajans/spider-duzen, ajans/ayarlar-dil); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor.",
+  "not": "Oyunun adı Kemal'in; 'kart-oyunu' geçici çalışma adı. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ana ekran, Ben sekmesi ve çerçeveli masa görüntüleri öneri dalından (ajans/ana-ekran); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor.",
   "goruntuler": [
+    {
+      "dosya": "ana-1-ana-ekran.png",
+      "baslik": "Ana ekran (yarım el varken: Oyuna devam et açık)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)",
+      "kapak": true
+    },
+    {
+      "dosya": "ana-2-ben.png",
+      "baslik": "Ben sekmesi",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ana-3-istatistik.png",
+      "baslik": "İstatistik",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ana-4-nasil-oynanir.png",
+      "baslik": "Nasıl oynanır (taslak)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ana-5-mucadeleler.png",
+      "baslik": "Mücadeleler (yer tutucu)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ana-6-ayarlar.png",
+      "baslik": "Ayarlar (Ben sekmesinden, ortada)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ana-7-oyun-secimi.png",
+      "baslik": "Oyun seçimi (İstatistik açık, Paketler yakında)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ana-8-spider-dagitim.png",
+      "baslik": "Spider dağıtım (çerçeveli masa, ortada)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ana-9-klasik-dagitim.png",
+      "baslik": "Klasik solitaire dağıtım (çerçeveli masa, ortada)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ana-10-eli-birakma.png",
+      "baslik": "Ana ekranda Yeni oyun: eli bırakma sorusu",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "ana-11-ana-ekran-en.png",
+      "baslik": "Ana ekran (İngilizce)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
     {
       "dosya": "ayar-5-spider-masa.png",
       "baslik": "Spider masası (yeni düzen, üstte ayar düğmesi)",
       "tarih": "2026-11-15",
-      "cihaz": "telefon (dikey, 390x844)",
-      "kapak": true
+      "cihaz": "telefon (dikey, 390x844)"
     },
     {
       "dosya": "ayar-1-ayarlar-tr.png",

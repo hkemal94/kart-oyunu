@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
+import { useEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
 import { yarimMi, type YarimEl } from '../oyun/yarimEl';
@@ -34,6 +34,7 @@ import {
   useElBirakma,
   useElKaydi,
   useGeriAlHakki,
+  useMasaBlogu,
   usePuan,
   useSure,
 } from './masaOrtak';
@@ -47,6 +48,7 @@ import { klondikeOzeti } from '../kart/puan';
 
 const ARALIK = 4; // sütunlar arası boşluk (piksel)
 const UST_ARALIK = 12; // üst sıra ile sütunlar arası boşluk
+const ALT_PAY = 0.35; // en uzun sütunun altında bırakılan boşluk (kart boyunun payı); dokunmak için
 const SURUKLEME_ESIGI = 8; // bu kadar kayınca dokunuş değil sürükleme sayılır
 const CIFT_DOKUNMA = 350; // iki dokunuş arası bu kadar kısaysa çift dokunuş (milisaniye)
 const UYARI_SURESI = 2600; // uyarı ekranda bu kadar kalır (milisaniye)
@@ -117,18 +119,8 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
   const [ipucu, setIpucu] = useState<{ ipucu: KlondikeIpucu; sayi: number } | null>(null);
   const ipucuSirasi = useRef(0); // arka arkaya basınca sıradaki ipucu
   const sonDokunus = useRef<{ id: string; zaman: number } | null>(null);
-  const alanRef = useRef<HTMLDivElement>(null);
-  const [alan, setAlan] = useState({ en: 360, boy: 560 });
-
-  useLayoutEffect(() => {
-    const d = alanRef.current;
-    if (!d) return;
-    const olc = () => setAlan({ en: d.clientWidth, boy: d.clientHeight });
-    olc();
-    const g = new ResizeObserver(olc);
-    g.observe(d);
-    return () => g.disconnect();
-  }, []);
+  // Çerçeveli masa bloğu; kart alanının en çok yüksekliği ekrana göre (masaOrtak.tsx)
+  const { masaRef, blokRef, alanRef, alan, yukseklik } = useMasaBlogu(el);
 
   const kazandi = kazandiMi(masa);
   const { saniye, sifirla: sureyiSifirla } = useSure(kazandi, devam?.saniye);
@@ -200,6 +192,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
     cizimler.push({ k, yer: ust ? { tur: 'acilan' } : null, x: sutunX(ustSira.acilan) + kay * yelpazeAdim, y: 0, z: i });
   });
   masa.deste.forEach((k, i) => cizimler.push({ k, yer: null, x: sutunX(ustSira.deste), y: 0, z: i }));
+  let enAlt = sutunUstu + kartBoy; // en uzun sütunun altı
   masa.sutunlar.forEach((s, no) => {
     const konum = sutunKonumlari(
       s.map((k) => k.acik),
@@ -211,7 +204,10 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
     s.forEach((k, sira) => {
       cizimler.push({ k, yer: { tur: 'sutun', no, sira }, x: sutunX(no), y: sutunUstu + konum[sira], z: sira });
     });
+    if (s.length) enAlt = Math.max(enAlt, sutunUstu + konum[s.length - 1] + kartBoy);
   });
+  // Kart alanı içerik kadar: en uzun sütunun altı ve dokunmak için küçük bir pay
+  const alanYuksekligi = yukseklik(enAlt + kartBoy * ALT_PAY);
 
   // Ekrandaki noktanın hedefi: üst sırada temel yığınlar, altında sütunlar
   const hedefBul = (istemciX: number, istemciY: number): Hedef | null => {
@@ -376,7 +372,8 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
   const surukIlk = surukleme?.basladi ? cizimler.find((c) => c.yer && icindeMi(c.yer, surukleme.yer) && icindeMi(surukleme.yer, c.yer)) : undefined;
 
   return (
-    <main className="masa">
+    <main className="masa" ref={masaRef}>
+      <div className="masa-blok" ref={blokRef}>
       <BilgiSatiri
         saniye={saniye}
         baslik={m('masa.baslikKlasik', masa.cekme)}
@@ -387,7 +384,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
         ayarAc={ayarAc}
       />
 
-      <div className="oyun-alani" ref={alanRef} onPointerUp={alaniBirak}>
+      <div className="oyun-alani" ref={alanRef} style={{ height: alanYuksekligi }} onPointerUp={alaniBirak}>
         {TEMEL_TAKIMLARI.map((t, no) => (
           <div
             key={`temel-${t}`}
@@ -485,6 +482,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
         yeniEl={() => birakma.sor(yeniEl)}
         anaEkran={anaEkran}
       />
+      </div>
 
       {birakma.soruAcik && <ElBirakmaSorusu evet={birakma.evet} hayir={birakma.hayir} />}
 

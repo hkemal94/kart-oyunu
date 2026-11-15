@@ -64,6 +64,11 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   ayarlar, nasıl oynanır (taslak), yardım, oyun hakkında, gizlilik (yer tutucu). Masadaki dördüncü
   düğme "Ana ekran" oldu. Bilgisayarda telefon boyutunda denendi; gerçek telefonda denenmedi.
   Ekran görüntüleri: `docs/ekran-goruntuleri/ana-*.png`.
+- 15 Kasım 2026 (aynı öneri, `ajans/ana-ekran`; Kemal: "Çerçeve + içerik ortada toplansın"): bütün
+  ekranlarda ortak kenar payı; menü ekranlarında içerik ortada; masa ince çerçeveli tek blok, dikeyde
+  ortada, sütunlar uzayınca büyür. Kart boyu değişmedi. 320x640, 390x844 ve 430x932'de denendi
+  (taşma yok); gerçek telefonda denenmedi. Ekran görüntüleri: `ana-8-spider-dagitim.png`,
+  `ana-9-klasik-dagitim.png`.
 - Sırada: 4. paketten kalan kendiliğinden bitirme; sonra 8. paket (günlük mücadele).
 
 ## Paketler

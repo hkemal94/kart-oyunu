@@ -1,6 +1,8 @@
 // Masa düzeni (Kemal, 15 Kasım: "kartlar büyüsün, aralık açılsın"). Kart boyu ve kapalı / açık
 // kart aralığı ekranın yüksekliğine göre ayarlanır; sütun uzadıkça aralık kendiliğinden sıkışır,
 // alt şeritle çakışmaz. Çizim yok, yalnız hesap; testleri testler/duzen.test.ts.
+// Alan yüksekliği (15 Kasım, çerçeveli masa): masa bloğunun en çok alabileceği kart alanı
+// (ekran eksi kenar payı eksi bilgi satırı, alt şerit ve düğmeler; src/ekranlar/masaOrtak.tsx).
 
 export const KART_ORANI = 1.42; // kartın boyu / eni (standart iskambil)
 

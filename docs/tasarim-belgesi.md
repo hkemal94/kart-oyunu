@@ -23,6 +23,15 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **15 Kasım (kenar payı ve çerçeve):** Kemal: "Ekranlara sayfa kenarı gibi bir şey belirleyelim;
+  ekranın ortası bomboş, her şey kenarlarda." Seçtiği: "Çerçeve + içerik ortada toplansın". Bütün
+  ekranlarda tek ortak kenar payı (ekran boyuna göre ölçeklenir). Menü ekranlarında (ana ekran, Ben,
+  Mücadeleler, oyun seçimi, ayarlar) içerik dikeyde ve yatayda ortada, genişliği sınırlı; alt
+  sekmeler yerinde. Masada üst satır, kartlar, alt şerit ve düğmeler ince krem çizgili, yuvarlak
+  köşeli tek blok; blok dikeyde ortada, yüksekliği içeriğe göre; sütunlar uzayınca büyür, en çok
+  kenar payına kadar. Kart boyu ve aralık bloğun en çok alabileceği yüksekliğe göre hesaplanır.
+  Masada yandaki pay, kartlar küçülmesin diye ortak payın dörtte biri (okunurluk önce). Dekor yok;
+  kulüp evi görseli gelince çerçeve ona uyarlanır.
 - **15 Kasım (ana ekran ve Ben sekmesi, 7. paket):** Kemal: "Ana ekran ve Ben sekmesiyle devam et".
   Altta üç sekme (Ana ekran · Mücadeleler · Ben), ana ekran, Ben sekmesi, kaldığı yerden devam ve
   basit istatistik oyuna girdi (2, 1.3, 8.4). Ajansın önerisi olarak kodda duranlar (Kemal'in onayı
@@ -102,6 +111,8 @@ Sabitler (Kemal'in 14-11-2026 ve 15-11-2026 kararları):
   gibi). Oyun tarayıcıda yazılır ve denenir, sonra mağaza uygulamasına paketlenir (6. bölüm).
 - **Web sürümü:** **yalnız deneme** (Kemal, 15 Kasım gece). Kemal ve yakın çevresi bağlantıyla
   dener; **web'de reklam ve satın alma yok**. Herkese açık web oyunu yok.
+- **Kenar payı ve çerçeve** (Kemal, 15 Kasım): her ekranda ortak kenar payı; içerik ortada toplanır;
+  masa çerçeveli tek blok (2. bölüm, kararların geçmişi).
 - **Ekran yönü:** **dikey** (Kemal, 14-11-2026). Öbür oyunlardan farklı olarak telefon dik tutulur.
 - **Dil:** ilk sürüm **Türkçe ve İngilizce** (Kemal, 14 Kasım). Oyun açılırken telefonun diline
   göre başlar, ayarlardan değiştirilir (öneri; 5. paketle yapıldı: seçim anında bütün ekranı

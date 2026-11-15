@@ -230,3 +230,27 @@ button:disabled { cursor: default; }
 .ben-not { margin: -4px 0 0; font-size: 11px; opacity: 0.6; }
 .kurallar { display: flex; flex-direction: column; gap: 10px; }
 .kural ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 5px; font-size: 13px; line-height: 1.4; }
+
+/* Kenar payı ve çerçeve (Kemal, 15 Kasım: "Ekranlara sayfa kenarı gibi bir şey belirleyelim";
+   seçtiği: "Çerçeve + içerik ortada toplansın"). Tek ortak değer, ekran boyuna göre ölçeklenir.
+   Menü ekranlarında içerik ortada, en çok --icerik-en genişliğinde. Masada yatay pay kartları
+   küçültmesin diye payın dörtte biri (okunurluk önce); masa çerçeveli tek blok, dikeyde ortada. */
+:root { --kenar: clamp(12px, 4vmin, 22px); --icerik-en: 400px; }
+
+.sekme-ekrani, .cerceve > .secim { padding: calc(var(--kenar) + env(safe-area-inset-top)) var(--kenar) var(--kenar); gap: 14px; justify-content: flex-start; }
+.sekme-ekrani > *, .cerceve > .secim > * { width: 100%; max-width: var(--icerik-en); align-self: center; flex: none; }
+/* Dikeyde ortalama: ilk ve son öğedeki otomatik pay; içerik uzunsa pay sıfırlanır, kaydırılır */
+.sekme-ekrani > :first-child, .cerceve > .secim > :first-child { margin-top: auto; }
+.sekme-ekrani > :last-child, .cerceve > .secim > :last-child { margin-bottom: auto; }
+.ana-ekran { justify-content: flex-start; gap: 22px; }
+.acilis { padding: calc(var(--kenar) + env(safe-area-inset-top)) var(--kenar) calc(var(--kenar) + env(safe-area-inset-bottom)); }
+
+.ayarlar-katman { align-items: center; justify-content: center; padding: var(--kenar); }
+.ayarlar { max-width: var(--icerik-en); border-radius: 18px; padding: 16px; }
+
+.masa { justify-content: center; padding: calc(var(--kenar) / 4 + env(safe-area-inset-top)) calc(var(--kenar) / 4) calc(var(--kenar) / 4 + env(safe-area-inset-bottom)); }
+.masa-blok { flex: none; max-height: 100%; display: flex; flex-direction: column; border: 1px solid rgba(243, 239, 232, 0.22); border-radius: 14px; padding: 8px 0 8px; }
+.masa-blok > .masa-bilgi { padding: 0 6px 8px; }
+.masa-blok > .masa-dugmeler { padding: 10px 4px 0; }
+.masa-blok > .masa-alt { padding: 8px 4px 0; }
+.oyun-alani { flex: none; transition: height 0.24s ease-out; }
