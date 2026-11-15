@@ -23,6 +23,13 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **15 Kasım (puan ve günlük mücadele):** Puan kazandıkça birikir: kazanılan elin puanı bir
+  sonraki ele taşınır, aşama bir artar (Aşama 1, 2, 3…), yüksek aşama daha çok puan getirir;
+  kaybedince ya da el yarımken yeni oyuna geçince seri biter, puan sıfırdan başlar; en yüksek seri
+  puanı "en iyi puan" olur. Aşama başına artış ve formül [Kemal]. El yarımken "yeni oyun"a
+  dokununca kısa bir onay sorusu çıkar; evet denirse bırakılan el kaybedilmiş sayılır, seri biter.
+  Günlük mücadelede oyun ve zorluğu oyuncu seçer. Geçmiş günler sonradan oynanabilir; aylık ödül
+  ayın bütün günleri yıldızlanınca gelir (8.1, 8.3).
 - **15 Kasım (örnek oyun):** Kemal sevdiği bir Spider oyununu gösterdi ("bunun gibi bir oyun yapmak
   istiyorum"); belgede "Kemal'in gösterdiği örnek Spider oyunu" diye geçer. Yalnız oynanış şekli
   alınır; adı, görseli, kupa çizimleri, metinleri alınmaz. Eklenecekler (dördü de): günlük mücadele,
@@ -156,7 +163,8 @@ bırakılır (öneri).
 - **Alt sekmeler (Kemal, 15 Kasım):** altta üç sekme: ana ekran, mücadeleler, ben. Masada sekmeler
   görünmez (öneri; oyun alanı dar).
 - **Ana ekran (Kemal, 15 Kasım):** üstte günlük mücadele ve etkinlik kartları; ortada oyunun adı
-  [ad: Kemal] ve en iyi puan; altta "devam et" (yarım el varsa) ve "yeni oyun".
+  [ad: Kemal] ve en iyi puan (en yüksek seri puanı; 8.3); altta "devam et" (yarım el varsa) ve
+  "yeni oyun". El yarımken "yeni oyun"a dokununca önce onay sorusu çıkar (aşağıda, "Eli bırakma").
 - **Oyun seçimi:** "yeni oyun"a dokununca açılır (öneri). Alt alta iki kart: Spider (üstte),
   klasik solitaire (Kemal, 15 Kasım). Her birinin altında zorluk seçimi (1/3 kart; 1/2/4 renk).
 - **Mücadeleler sekmesi:** günlük mücadelenin takvimi ve kartpostal etkinliği (8.1 ve 8.2).
@@ -166,9 +174,16 @@ bırakılır (öneri).
 - **Masa:** üstte ince bilgi satırı (süre, hamle; ayarda açıksa puan; küçük ve sessiz, kapatılabilir), ortada oyun
   alanı, arkada seçili masa (kulüp evi ya da Sade Meyhane), altta başparmak hizasında ince bir
   şerit: geri al, ipucu, yeni el, menü. Deneme elinde bilgi satırında küçük, sessiz bir "deneme"
-  izi (öneri).
+  izi (öneri). Bilgi satırında o anki aşama da görünebilir (öneri; "Aşama 1, 2, 3…", 8.3).
+- **Eli bırakma (Kemal, 15 Kasım):** el yarımken "yeni oyun"a dokununca kısa bir onay sorusu
+  çıkar; anlamı "eli bırakıyor musun, serin biter". Metni [YER TUTUCU: eli bırakma
+  sorusu], Kemal onaylar. "Evet" denirse yeni el başlar; bırakılan el kaybedilmiş sayılır ve seri
+  biter (8.3). "Hayır" denirse oyuncu ele döner. Sessiz ve kısa; uyarı dili, ünlem yok (ton).
+  Masadaki "yeni el" düğmesinin de aynı soruyu sorması öneridir.
 - **Oyun sonu:** kartlar masada kısa bir hareketle toplanır; süre, hamle, puan ve en iyi puan,
-  istatistik; "yeni el" ve "oyun seçimi". Kazanmayınca: "yeniden dene" ve "yeni el"; ceza yok.
+  istatistik; "yeni el" ve "oyun seçimi". Kazanınca puan bir sonraki ele taşınır ve yeni aşama
+  gösterilir (Kemal, 15 Kasım; 8.3); "yeni el" serinin bir sonraki elidir. Kazanmayınca seri biter,
+  puan sıfırdan başlar (Kemal, 15 Kasım); "yeniden dene" ve "yeni el"; başka ceza yok.
   Telefon uygulamasında el bitince reklam burada girer (Kemal, 15 Kasım; sıklığı [Kemal]; 5.
   bölüm). Oyun ortasında hiç yok; web deneme sürümünde hiç yok. Deneme elinin
   sonunda masa ya da deste kendi seçilene döner; yanında sessiz bir "paketi aç" bağlantısı olabilir
@@ -433,6 +448,12 @@ TypeScript, 2B). Ertelenen: Sade Meyhane masası, görseli gelince.
 puan ve en iyi puan, ana ekran ve Ben sekmesi), para modeli (örnekteki gibi: ipucu reklamla, el
 bitince reklam, bir kez satın alınınca reklam kalkar).
 
+15 Kasım (puan ve günlük mücadele) kapananlar (Kemal): puanın yapısı (kazandıkça birikir, aşama
+artar; kaybedince ya da el bırakılınca seri biter; en iyi puan en yüksek seri puanı), el yarımken
+"yeni oyun" (onay sorusu; evet denirse el kaybedilmiş sayılır), günlük mücadelede oyun ve zorluk
+(oyuncu seçer), "ay dolunca" (ayın bütün günleri yıldızlanınca), geçmiş günler (sonradan
+oynanabilir).
+
 Açık kalanlar:
 - **İlk kilitli deste:** içeriği ne. Kemal: sonra (15 Kasım gece). Adaylar 4.2'de kayıtta.
 - **Sade Meyhane masası:** ne görüneceği ve web denemesinde açık mı duracağı; görseli gelince
@@ -442,10 +463,15 @@ Açık kalanlar:
 - **Kartpostal yerleri:** hangi Düzada yerleri, hangi sırayla: [Kemal] (Kemal'e soru 3).
 - **Kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi:** [Kemal] (Kemal'e soru 4).
 - **Aylık ödülün görseli:** [Kemal]; örnekteki kupa kopyalanmaz (Kemal'e soru 5).
-- **Puan formülü ve çarpanlar:** [Kemal]; öneri: standart çözüm sonra seçilir (Kemal'e soru 6).
+- **Puan formülü ve aşama artışı:** yapı belli (8.3); aşama başına artış, süre ve hamlenin payı ve
+  formül [Kemal]; öneri: ajans yapım sırasında aday getirir (Kemal'e soru 6).
+- **En iyi puan:** oyun ve zorluk başına mı, tek mi: [Kemal] (öneri: oyun ve zorluk başına; Kemal'e
+  soru 7).
+- **Eli bırakma sorusunun metni:** [YER TUTUCU], Kemal onaylar (2. bölüm).
 - **El sonu reklamı:** birkaç elde bir (Kemal, 15 Kasım); kaç elde bir ve ilk kaç oyunda hiç
   yok: [Kemal]. Reklamsız satın alınınca ipucu reklamsız mı: [Kemal].
-- **Günlük mücadele:** hangi oyun ve zorluk, "ay dolunca" ne demek, geçmiş günler oynanır mı (8.1).
+- **Günlük mücadele ve seri:** günlük mücadele eli 8.3'teki seriye sayılır mı, ayrı mı: [Kemal]
+  (8.1; Kemal'e soru 8). Aynı gün aynı zorlukta herkese aynı dağıtım: öneri, Kemal'in onayı yok (8.1).
 - **Kart köşesindeki harfler:** dile göre değişsin mi (öneri: değişir). İskelette iki dilde de
   A, J, Q, K; harfler metin dosyasında, karar gelince yalnız orası değişir.
 - **Kartın kırmızısı:** kiremit (#F26B6F) krem kartın küçük köşesinde zor okunuyor; iskelette
@@ -463,11 +489,16 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
 ### 8.1 Günlük mücadele
 
 - Her gün bir el (Kemal). Kazanınca takvimde o güne yıldız konur.
-- Ay dolunca aylık ödül verilir; Ben sekmesindeki "ödüller"de durur. Ödülün görseli [Kemal];
-  örnekteki kupa çizimi kopyalanmaz.
-- "Ay dolunca" ne demek (ayın bütün günleri mi, belli sayıda gün mü): [Kemal].
-- Hangi oyun ve zorluk (öneri: Spider; zorluk her gün aynı ya da günden güne değişen): [Kemal].
-- Geçmiş günler sonradan oynanabilir mi: [Kemal] (öneri: evet, cezasız havaya uyar).
+- **Oyun ve zorluğu oyuncu seçer** (Kemal, 15 Kasım): günün elini oyuncu kendi seçtiği oyun
+  (Spider ya da klasik solitaire) ve zorlukla (1/2/4 renk; 1/3 kart) oynar.
+- Öneri (Kemal'in onayı yok): günün eli seçilen zorluğa göre o günün elidir; aynı gün aynı oyun ve
+  zorlukta herkese aynı dağıtım gelir. Başka gün ya da başka zorlukta dağıtım başkadır.
+- **Geçmiş günler sonradan oynanabilir** (Kemal, 15 Kasım): takvimde geçmiş bir güne dokununca o
+  günün eli açılır. Sonradan kazanılan geçmiş gün de yıldız alır (öneri; aylık ödül bütün günleri
+  istediği için).
+- **Aylık ödül ayın bütün günleri yıldızlanınca gelir** (Kemal, 15 Kasım); Ben sekmesindeki
+  "ödüller"de durur. Ödülün görseli [Kemal]; örnekteki kupa çizimi kopyalanmaz.
+- Günlük mücadele eli 8.3'teki seriye sayılır mı, ayrı mı: [Kemal] (Kemal'e soru 8).
 - Takvim Mücadeleler sekmesinde; ana ekranın üstünde günün kartı.
 
 ### 8.2 Kartpostal etkinliği
@@ -489,9 +520,18 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
 
 - Süre ve hamleye göre çarpanlı puan; "tüm zamanların en iyisi" saklanır ve ana ekranda görünür
   (Kemal).
-- Formül ve çarpanlar [Kemal]. Öneri: standart çözüm sonra seçilir (yaygın solitaire puanlama
-  yollarından biri, yapım sırasında aday olarak Kemal'e getirilir).
-- En iyi puan oyun ve zorluk başına mı, tek mi: [Kemal] (öneri: oyun ve zorluk başına).
+- **Puan kazandıkça birikir** (Kemal, 15 Kasım):
+  - El kazanılınca puan bir sonraki ele taşınır ve aşama bir artar (Aşama 1, 2, 3…). Yüksek aşama
+    daha çok puan getirir.
+  - Kaybedince ya da el yarımken yeni oyuna geçince seri biter, puan sıfırdan başlar ve Aşama 1'e
+    döner. El yarımken yeni oyuna geçmeden önce onay sorusu çıkar (2. bölüm, "Eli bırakma").
+  - **En iyi puan = en yüksek seri puanı** (Kemal, 15 Kasım).
+- Aşama başına artış, süre ve hamlenin payı ve formül: [Kemal] (uydurma sayı yok). Öneri: ajans
+  yapım sırasında aday getirir (yaygın solitaire puanlama yollarından biri), Kemal seçer.
+- En iyi puan oyun ve zorluk başına mı, tek mi: [Kemal] (öneri: oyun ve zorluk başına; Kemal'e
+  soru 7).
+- Kaldığı yerden devam (1.3): uygulama kapanınca seri bitmez; yarım el "devam et" ile sürer (öneri;
+  eli bırakmak yalnız "yeni oyun" ya da "yeni el" ile olur).
 - Ayarlarda "her hamlede puanı göster" (Kemal): açıksa masanın bilgi satırında puan görünür.
 
 ### 8.4 Ana ekran ve Ben sekmesi
@@ -518,6 +558,12 @@ kadar `[YER TUTUCU: …]` durur. Gizlilik metni telefon adımında gerekir (6. b
 5. Kart oyunu: Aylık ödülün görseli ne olsun? Neden: örnekteki kupa kopyalanmaz, bize ait bir şey
    gerek. Adaylar: her ay bir Düzada nesnesi ya da simgesi, Kemal seçer (önerilen) · Sürek Kulübü
    izli tek bir rozet, ay ay rengi değişir · ben söylerim.
-6. Kart oyunu: Puan nasıl hesaplansın? Neden: süre ve hamle çarpanlı puanın formülü yok. Adaylar:
-   standart bir çözüm sonra seçilir, ajans yapım sırasında aday getirir (önerilen) · şimdi ben
-   söylerim.
+6. Kart oyunu: Puan nasıl hesaplansın? Neden: yapı belli (kazandıkça birikir, aşama artar; 15
+   Kasım), ama aşama başına artış ve süre ve hamlenin payı yok. Adaylar: ajans yapım sırasında
+   aday getirir, ben seçerim (önerilen) · şimdi ben söylerim.
+7. Kart oyunu: En iyi puan oyun ve zorluk başına mı olsun, tek mi? Neden: 1 renk Spider ile 4 renk
+   Spider'ın serisi aynı ölçüde değil. Adaylar: oyun ve zorluk başına (önerilen) · tek en iyi puan ·
+   web denemesinden sonra karar veririm.
+8. Kart oyunu: Günlük mücadele eli puan serisine sayılsın mı? Neden: günlük el kazanılınca seri
+   aşama alır mı, kaybedilince seri biter mi belli değil. Adaylar: ayrı tutulsun, seriye
+   dokunmasın (önerilen) · seriye sayılsın · sonra karar veririm.
