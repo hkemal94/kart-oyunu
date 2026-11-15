@@ -23,6 +23,13 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **15 Kasım (örnek oyun):** Kemal sevdiği bir Spider oyununu gösterdi ("bunun gibi bir oyun yapmak
+  istiyorum"); belgede "Kemal'in gösterdiği örnek Spider oyunu" diye geçer. Yalnız oynanış şekli
+  alınır; adı, görseli, kupa çizimleri, metinleri alınmaz. Eklenecekler (dördü de): günlük mücadele,
+  kartpostal etkinliği (Düzada kartpostalları; Kems'in önerisi, Kemal seçti), puan ve en iyi puan,
+  ana ekran ve "Ben" sekmesi (altta üç sekme). Para modeli telefon uygulamasında "örnekteki gibi":
+  ipucu reklam izleyerek alınır, el bitince reklam girer, bir kez satın alınınca reklam kalkar. Web
+  deneme sürümünde reklam ve satın alma yine yok; ipucu web'de reklamsız çalışır (8. bölüm).
 - **15 Kasım ("Oyuna başlayalım"):** Spider klasik solitaire'den önce gelir; Spider'da 1, 2 ve 4
   renk. Depo `kart-oyunu` adıyla açıldı; ad geçici çalışma adı. Sade Meyhane masasına görseli
   gelince karar verilecek; şimdilik oyunda yok. Teknoloji: Vite + React + TypeScript, 2B.
@@ -59,8 +66,12 @@ Sabitler (Kemal'in 14-11-2026 ve 15-11-2026 kararları):
 - **Dil:** ilk sürüm **Türkçe ve İngilizce** (Kemal, 14 Kasım). Oyun açılırken telefonun diline
   göre başlar, ayarlardan değiştirilir (öneri).
 - **Yardımcılar:** geri al, ipucu, kendiliğinden bitirme, kaldığı yerden devam, süre ve hamle
-  sayacı (ayarlardan kapatılabilir), basit istatistik; hepsi ilk sürümde ve ücretsiz (Kemal,
-  14 Kasım; 1.3).
+  sayacı (ayarlardan kapatılabilir), basit istatistik; hepsi ilk sürümde (Kemal, 14 Kasım; 1.3).
+  **İpucu telefon uygulamasında reklam izleyerek alınır** (Kemal, 15 Kasım: "örnekteki gibi");
+  web deneme sürümünde reklamsız. Geri al ücretsiz mi, sınırsız mı açık (7. bölüm).
+- **Örnek oyun:** Kemal'in gösterdiği örnek Spider oyunu (15 Kasım). Yalnız oynanış şekli alınır
+  (günlük mücadele, süreli resim etkinliği, puan, sekmeli ana ekran, para modeli); adı, görseli,
+  kupa çizimleri ve metinleri belgeye ve depoya girmez (8. bölüm).
 - **Desteler:** oyunda **birden çok deste** seçeneği olur; **biri Kems'in satacağı fiziksel deste,
   Küçükçetmi Sürek Kulübü destesi** (52 kart + 2 joker; merch destesiyle aynı tasarım) (Kemal,
   14-11-2026). **İlk sürümde iki deste ücretsiz: Sürek Kulübü destesi (varsayılan) ve sade deste**
@@ -70,13 +81,12 @@ Sabitler (Kemal'in 14-11-2026 ve 15-11-2026 kararları):
   kulübün); **ilk sürümün kilitli masası Sade Meyhane** (Kemal, 15 Kasım ve 15 Kasım gece; 3.2). Masanın
   oyuna nasıl gireceğine **görseli gelince karar verilecek**; şimdilik oyunda yok (Kemal, 15 Kasım).
 - **Hava:** Düzada masası. Deste bir Düzada mekânının masasında; arka planda mahallenin sesi.
-- **Para modeli:** ücretsiz; deste ve masa paketleri satılır; reklam da olur ama **her el
-  arasında değil, seyrek ve ölçülü** (Kemal: "çok reklam görsünler istemiyorum ama para da lazım").
-  **Reklam düzeni:** seyrek geçiş reklamı yalnız oyun sonunda, birkaç elde bir, ilk oyunlarda hiç
-  yok + isteğe bağlı ödüllü reklam (karşılığı kilitli masa ya da desteyi **bir el boyunca**
-  deneme; Kemal, 15 Kasım) + reklamsız paket (Kemal, 14 Kasım). Reklam ve satın alma yalnız telefon
-  uygulamasında; web deneme sürümünde yok (Kemal, 15 Kasım gece). Fiyat ve sayılar sonra (veri yok;
-  5. bölüm).
+- **Para modeli:** ücretsiz; deste ve masa paketleri satılır; reklam da olur (Kemal: "çok reklam
+  görsünler istemiyorum ama para da lazım"). **15 Kasım, "örnekteki gibi":** ipucu reklam izleyerek
+  alınır, el bitince reklam girer, bir kez satın alınınca reklam kalkar. Öncesinden kalan: ödüllü
+  reklamla kilitli masa ya da desteyi **bir el boyunca** deneme (Kemal, 15 Kasım). Reklam ve satın
+  alma yalnız telefon uygulamasında; web deneme sürümünde yok (Kemal, 15 Kasım gece). Reklam
+  sıklığı ve fiyat [Kemal] (veri yok; 5. bölüm).
 - **Ton:** sessiz, dinlendirici; bağıran dil, baskı, ünlem yok (marka kiti).
 - **Yazım:** Düzada (ü), Kemsköy (ö). Ekrandaki her yazı tek bir metin dosyasından gelir, Türkçesi
   ve İngilizcesi ayrı dosyada (öneri; öbür oyunlardaki gibi).
@@ -116,12 +126,15 @@ numaraları eski sırada kaldı.
 
 ### 1.3 İki oyunda ortak yardımcılar (Kemal, 14 Kasım)
 
-İlk sürümde altısı da var, hepsi ücretsiz; reklam ya da paket gerektirmez.
-- **Geri al.** Sınırsız mı sınırlı mı: [Kemal] (öneri: sınırsız; oyunun cezasız havasına uyar).
-- **İpucu:** bir sonraki olası hamleyi gösterir. Ücretsiz olduğu için ödüllü reklamın karşılığı
-  değildir (5. bölüm).
+İlk sürümde altısı da var. 14 Kasım'da altısı da ücretsizdi; 15 Kasım'da (Kemal, "örnekteki gibi")
+ipucu telefon uygulamasında reklam izleyerek alınır hâle geldi. Öbür dördü (kendiliğinden bitirme,
+kaldığı yerden devam, sayaç, istatistik) ücretsiz kalır; geri al açık soru.
+- **Geri al.** Ücretsiz mi, sınırsız mı: [Kemal] (öneri: ücretsiz ve sınırsız; oyunun cezasız
+  havasına uyar). Kemal'in cevabı yok (7. bölüm).
+- **İpucu:** bir sonraki olası hamleyi gösterir. Telefon uygulamasında **reklam izleyerek alınır**
+  (Kemal, 15 Kasım; 5. bölüm). Web deneme sürümünde reklamsız çalışır.
 - **Kendiliğinden bitirme:** bütün kartlar açılınca oyun kalanları kendisi yerleştirir.
-- **Kaldığı yerden devam:** uygulama kapanınca oyun kaybolmaz; oyun seçiminde "devam et" çıkar.
+- **Kaldığı yerden devam:** uygulama kapanınca oyun kaybolmaz; ana ekranda "devam et" çıkar.
 - **Süre ve hamle sayacı:** masanın üst satırında; ayarlardan kapatılabilir.
 - **Basit istatistik:** oynanan, kazanılan, en iyi süre; oyun sonu ekranında ve menüde.
 
@@ -140,16 +153,24 @@ Dikey, kısa ve derli toplu; boş delik kalmaz, ekrana yayılmaz (Kemal'in DK Li
 öneri). Her ekran Türkçe ve İngilizce; İngilizcede yazı uzayabileceği için düğmeler buna göre
 bırakılır (öneri).
 - **Açılış:** Kems Company ve Sürek Kulübü izi (minik, boğmayan), sonra masa. Uzun açılış videosu yok.
-- **Oyun seçimi:** alt alta iki kart: Spider (üstte), klasik solitaire (Kemal, 15 Kasım). Her birinin altında zorluk seçimi
-  (1/3 kart; 1/2/4 renk) ve "devam et" (yarım oyun varsa). Köşede ayarlar, istatistik ve paketler.
-- **Masa:** üstte ince bilgi satırı (süre, hamle; küçük ve sessiz, kapatılabilir), ortada oyun
+- **Alt sekmeler (Kemal, 15 Kasım):** altta üç sekme: ana ekran, mücadeleler, ben. Masada sekmeler
+  görünmez (öneri; oyun alanı dar).
+- **Ana ekran (Kemal, 15 Kasım):** üstte günlük mücadele ve etkinlik kartları; ortada oyunun adı
+  [ad: Kemal] ve en iyi puan; altta "devam et" (yarım el varsa) ve "yeni oyun".
+- **Oyun seçimi:** "yeni oyun"a dokununca açılır (öneri). Alt alta iki kart: Spider (üstte),
+  klasik solitaire (Kemal, 15 Kasım). Her birinin altında zorluk seçimi (1/3 kart; 1/2/4 renk).
+- **Mücadeleler sekmesi:** günlük mücadelenin takvimi ve kartpostal etkinliği (8.1 ve 8.2).
+- **Ben sekmesi (Kemal, 15 Kasım):** ödüller (aylık ödüller ve kartpostal koleksiyonu), ayarlar,
+  nasıl oynanır, yardım, oyun hakkında, gizlilik. İstatistik ve paketlerin yeri: öneri, bu sekme;
+  karar Kemal'in.
+- **Masa:** üstte ince bilgi satırı (süre, hamle; ayarda açıksa puan; küçük ve sessiz, kapatılabilir), ortada oyun
   alanı, arkada seçili masa (kulüp evi ya da Sade Meyhane), altta başparmak hizasında ince bir
   şerit: geri al, ipucu, yeni el, menü. Deneme elinde bilgi satırında küçük, sessiz bir "deneme"
   izi (öneri).
-- **Oyun sonu:** kartlar masada kısa bir hareketle toplanır; süre, hamle, istatistik; "yeni el" ve
-  "oyun seçimi". Kazanmayınca: "yeniden dene" ve "yeni el"; ceza yok. Telefon uygulamasında seyrek
-  geçiş reklamının tek yeri burasıdır; her elde değil, birkaç elde bir, ilk oyunlarda hiç yok
-  (Kemal, 14 Kasım; 5. bölüm). Oyun ortasında hiç yok; web deneme sürümünde hiç yok. Deneme elinin
+- **Oyun sonu:** kartlar masada kısa bir hareketle toplanır; süre, hamle, puan ve en iyi puan,
+  istatistik; "yeni el" ve "oyun seçimi". Kazanmayınca: "yeniden dene" ve "yeni el"; ceza yok.
+  Telefon uygulamasında el bitince reklam burada girer (Kemal, 15 Kasım; sıklığı [Kemal]; 5.
+  bölüm). Oyun ortasında hiç yok; web deneme sürümünde hiç yok. Deneme elinin
   sonunda masa ya da deste kendi seçilene döner; yanında sessiz bir "paketi aç" bağlantısı olabilir
   (öneri; baskı dili yok).
 - **Paketler:** iki sekme, desteler ve masalar. İlk sürümde her sekmede bir kilitli paket var
@@ -160,7 +181,8 @@ bırakılır (öneri).
   (5. bölüm). Sürek Kulübü destesinin kartında fiziksel desteye küçük, sessiz bir bağlantı olabilir
   (öneri; satış yeri ve metni Kemal'in).
 - **Ayarlar (öneri):** ses ve mahalle sesi ayrı ayrı, dil (Türkçe / İngilizce), sol el düzeni,
-  sayaçları gizle, deste seçimi.
+  sayaçları gizle, deste seçimi. **Titreşim** ve **"her hamlede puanı göster"** (Kemal, 15 Kasım).
+  Ayarlar Ben sekmesindedir.
 
 ## 3. Düzada masası
 
@@ -310,41 +332,48 @@ vale) Türkçe ve İngilizcede farklıdır; dile göre değişip değişmeyeceğ
 
 Kemal: "1 ve 3 karışık": ücretsiz + deste ve masa paketleri; reklam da olabilir. 14-11-2026:
 "El aralarında her defasında reklam olmasın, çok reklam görsünler istemiyorum ama para da lazım."
-Fiyat ve sıklık sonra (veri yok).
+Fiyat ve sıklık sonra (veri yok). 15 Kasım (Kemal, örnek oyun için "örnekteki gibi"): ipucu reklam
+izleyerek alınır, el bitince reklam girer, bir kez satın alınınca reklam kalkar. Reklam sıklığı ve
+fiyat [Kemal].
 - **Ücretsiz:** iki oyun, bütün zorluklar, iki deste (Sürek Kulübü destesi ve sade deste; Kemal,
-  14 Kasım), kulüp evi masası, altı yardımcının hepsi (Kemal, 14 Kasım). Oyunun kendisi
-  kilitlenmez (öneri).
+  14 Kasım), kulüp evi masası, ipucu dışındaki yardımcılar (geri al açık soru; 1.3), günlük
+  mücadele ve kartpostal etkinliği (öneri). Oyunun kendisi kilitlenmez (öneri).
 - **Paketler:** yeni deste (arka yüz ve figür tasarımları) ve yeni masa (mekân ve sesi). Fiyat: veri
   yok. Paket içerikleri Kemal'in. **İlk sürümde bir masa ve bir deste paketi kilitli gelir**
   (Kemal, 15 Kasım): masa Sade Meyhane (Kemal, 15 Kasım gece; 3.2), destenin içeriği sonra (Kemal,
   15 Kasım gece; 4.2).
 - **Reklam ilkeleri** (Kemal'in cevabından):
-  - Her el arasında reklam yok.
+  - Her el arasında reklam yok (14 Kasım). 15 Kasım'da "el bitince reklam girer" seçildi; her elde
+    mi, birkaç elde bir mi [Kemal] (7. bölüm).
   - Oyun ortasında reklam yok.
   - Alt şerit reklamı yok (masanın havasını bozar).
-- **Reklam düzeni (Kemal, 14 Kasım):** seyrek geçiş reklamı + isteğe bağlı ödüllü reklam +
-  reklamsız paket.
-  - **Seyrek geçiş reklamı:** yalnız oyun sonu ekranında; her elde değil, [Kemal] elde bir; ilk
-    [Kemal] oyunda hiç yok. Sayılar deneme sonrası, Kemal'in.
+- **Reklam düzeni (Kemal, 14 Kasım; 15 Kasım'da "örnekteki gibi"):** el sonu reklamı + ödüllü
+  reklam (ipucu ve deneme) + reklamsız satın alma.
+  - **El sonu reklamı:** el bitince, oyun sonu ekranında girer (Kemal, 15 Kasım). Kaç elde bir ve
+    ilk kaç oyunda hiç olmadığı [Kemal]; sayılar deneme sonrası.
   - **İsteğe bağlı ödüllü reklam (Kemal, 14 Kasım):** oyuncu isterse izler, izlemezse hiçbir şey
     kaybetmez. Karşılığı:
     - kilitli masayı (Sade Meyhane) bir el boyunca deneme;
     - kilitli desteyi bir el boyunca deneme.
-    - **Süre: bir el** (Kemal, 15 Kasım). Deneme o elin sonunda (kazanınca ya da "yeni el"e
+    - ipucu (Kemal, 15 Kasım: "örnekteki gibi").
+    - Deneme süresi: **bir el** (Kemal, 15 Kasım). Deneme o elin sonunda (kazanınca ya da "yeni el"e
       geçince) biter, masa ya da deste oyuncunun kendi seçtiğine döner.
     - Yarım kalan el (öneri): uygulama kapanıp "devam et" ile dönülürse deneme o el bitene kadar
       sürer; "yeniden dene" aynı eli baştan açtığı için deneme de sürer. Yeni bir el için yeniden
       izlemek gerekir.
-    - İpucu ücretsiz olduğu için ödül listesinden düştü (1.3).
-    - Yeri: paketler ekranında, kilitli paketin yanında (öneri). Oyun ortasında ya da oyun sonunda
-      kendiliğinden çıkmaz.
+    - İpucu 14 Kasım'da ücretsiz olduğu için ödül listesinden düşmüştü; 15 Kasım'da yeniden
+      ödüllü reklamın karşılığı oldu (1.3). Bir izlemede kaç ipucu: [Kemal].
+    - Yeri: deneme için paketler ekranında, kilitli paketin yanında (öneri); ipucu için masadaki
+      ipucu düğmesinde, oyuncu dokununca (öneri). Kendiliğinden çıkmaz.
     - İlk sürümde bir kilitli masa ve bir kilitli deste olduğu için ödüllü reklamın ilk günden
       karşılığı var (Kemal, 15 Kasım).
-  - **Reklamsız paket:** tek seferlik; geçiş reklamını kaldırır (fiyat: veri yok). Ödüllü reklam
-    isteğe bağlı olduğu için reklamsız pakette de durabilir (öneri).
+  - **Reklamsız satın alma:** bir kez satın alınınca reklam kalkar (Kemal, 14 ve 15 Kasım; fiyat
+    [Kemal], veri yok). İpucu o zaman reklamsız mı gelir, deneme reklamı durur mu: [Kemal]
+    (öneri: ipucu reklamsız gelir; deneme isteğe bağlı olduğu için durabilir).
 - **Web sürümü: yalnız deneme** (Kemal, 15 Kasım gece). Kemal ve yakın çevresi bağlantıyla dener;
   **web'de reklam ve satın alma yok**. Gerçek reklam ve satın alma yalnız telefon uygulamasıyla
-  gelir (6. bölüm). Web'de paketler ekranı ve düğmeler yer tutucu olarak durur; deneyenler kilitli
+  gelir (6. bölüm). **İpucu web'de reklamsız çalışır** (Kemal, 15 Kasım). Web'de paketler ekranı
+  ve düğmeler yer tutucu olarak durur; deneyenler kilitli
   masayı görebilsin diye deneme sürümünde Sade Meyhane açık ya da ayarlardan açılabilir olabilir
   (öneri; karar Kemal'in).
 - Gelir, indirme, izlenme tahmini: veri yok.
@@ -358,13 +387,14 @@ Ekibin bildiği yol; tarayıcıda denemek kolay.
 
 Sıra (öneri):
 1. **Web deneme sürümü** (Kemal, 15 Kasım gece: yalnız deneme): iki oyun (önce Spider), iki ücretsiz deste,
-   kulüp evi masası, altı yardımcı, Türkçe ve İngilizce metin dosyaları, dikey düzen. Kilitli masa
+   kulüp evi masası, altı yardımcı (ipucu reklamsız), puan, ana ekran ve üç sekme, günlük
+   mücadele, kartpostal etkinliği (8. bölüm), Türkçe ve İngilizce metin dosyaları, dikey düzen. Kilitli masa
    Sade Meyhane, görseli hazır olunca girer; kilitli destenin yeri yer tutucuyla kurulur (içeriği
    sonra). Paketler ekranı ve ödüllü reklam düğmesi yalnız yer tutucu; **web'de reklam ve satın
    alma yok**. Kemal ve yakın çevresi telefonun tarayıcısından bağlantıyla dener (öbür oyunlar
    gibi); herkese açık değil.
-2. **Telefon uygulaması:** web oyunu paketlenir; dikey ekran kilidi, gerçek reklam, uygulama içi
-   satın alma, mağaza sayfaları bu adımda eklenir.
+2. **Telefon uygulaması:** web oyunu paketlenir; dikey ekran kilidi, gerçek reklam (el sonu,
+   ipucu, deneme), reklamı kaldıran satın alma ve paketler, mağaza sayfaları bu adımda eklenir.
 
 Elenen yollar (kayıt için): baştan telefon uygulaması (React Native / Expo); oyun motoru (Godot ya
 da Unity); herkese açık, reklamlı ve satın almalı web oyunu (Kemal, 15 Kasım gece).
@@ -399,24 +429,95 @@ Kemal ve yakın çevresi bağlantıyla dener; web'de reklam ve satın alma yok).
 klasik solitaire sonra), depo (`kart-oyunu`, geçici çalışma adı), teknoloji (Vite + React +
 TypeScript, 2B). Ertelenen: Sade Meyhane masası, görseli gelince.
 
+15 Kasım (örnek oyun) kapananlar (Kemal): eklenecekler (günlük mücadele, kartpostal etkinliği,
+puan ve en iyi puan, ana ekran ve Ben sekmesi), para modeli (örnekteki gibi: ipucu reklamla, el
+bitince reklam, bir kez satın alınınca reklam kalkar).
+
 Açık kalanlar:
 - **İlk kilitli deste:** içeriği ne. Kemal: sonra (15 Kasım gece). Adaylar 4.2'de kayıtta.
 - **Sade Meyhane masası:** ne görüneceği ve web denemesinde açık mı duracağı; görseli gelince
   (Kemal, 15 Kasım). Künyede yalnız taş fabrika binası, koya bakan yamaç ve otelin yanı var.
-- **Geri al sınırı:** sınırsız mı sınırlı mı: [Kemal] (öneri: sınırsız; Kemal'e soru 1).
+- **Geri al:** ücretsiz mi, sınırsız mı: [Kemal] (öneri: ücretsiz ve sınırsız; Kemal'e soru 1).
+  Kemal'in cevabı yok.
+- **Kartpostal yerleri:** hangi Düzada yerleri, hangi sırayla: [Kemal] (Kemal'e soru 3).
+- **Kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi:** [Kemal] (Kemal'e soru 4).
+- **Aylık ödülün görseli:** [Kemal]; örnekteki kupa kopyalanmaz (Kemal'e soru 5).
+- **Puan formülü ve çarpanlar:** [Kemal]; öneri: standart çözüm sonra seçilir (Kemal'e soru 6).
+- **El sonu reklamı:** her elde mi, birkaç elde bir mi (14 Kasım: her el arasında olmasın) ve
+  ilk kaç oyunda hiç yok: [Kemal]. Reklamsız satın alınınca ipucu reklamsız mı: [Kemal].
+- **Günlük mücadele:** hangi oyun ve zorluk, "ay dolunca" ne demek, geçmiş günler oynanır mı (8.1).
 - **Kart köşesindeki harfler:** dile göre değişsin mi (öneri: değişir). İskelette iki dilde de
   A, J, Q, K; harfler metin dosyasında, karar gelince yalnız orası değişir.
 - **Kartın kırmızısı:** kiremit (#F26B6F) krem kartın küçük köşesinde zor okunuyor; iskelette
   kiremidin koyusu (#B8383D) kullanıldı (öneri; Kemal'e soru 2).
-- **Reklam sayıları:** geçiş reklamı kaç elde bir, ilk kaç oyunda hiç yok: [Kemal], deneme sonrası.
+- **Reklam sayıları ve fiyat:** reklam sıklığı, bir izlemede kaç ipucu, fiyatlar: [Kemal], deneme sonrası.
 - **Oyunun adı:** [ad: Kemal]. İstenirse ajans yalnız aday listesi verir. Oyun logosu ertelendi.
 - **Sonraki masalar:** 3.3'teki adaylar hangi sırayla paket olur.
 
+## 8. Örnek oyundan gelenler (Kemal, 15 Kasım)
+
+Kemal'in gösterdiği örnek Spider oyunundan yalnız oynanış şekli alınır. Örneğin adı, görseli, kupa
+çizimleri ve metinleri bu belgeye, depoya ve oyuna girmez. Ödül ve resim görselleri bizim
+tasarımımızdır; görsel üretimi Kemal onayıyla.
+
+### 8.1 Günlük mücadele
+
+- Her gün bir el (Kemal). Kazanınca takvimde o güne yıldız konur.
+- Ay dolunca aylık ödül verilir; Ben sekmesindeki "ödüller"de durur. Ödülün görseli [Kemal];
+  örnekteki kupa çizimi kopyalanmaz.
+- "Ay dolunca" ne demek (ayın bütün günleri mi, belli sayıda gün mü): [Kemal].
+- Hangi oyun ve zorluk (öneri: Spider; zorluk her gün aynı ya da günden güne değişen): [Kemal].
+- Geçmiş günler sonradan oynanabilir mi: [Kemal] (öneri: evet, cezasız havaya uyar).
+- Takvim Mücadeleler sekmesinde; ana ekranın üstünde günün kartı.
+
+### 8.2 Kartpostal etkinliği
+
+- Süreli etkinlik (Kemal). Bir resim karelere bölünür; kazanılan her el bir kareyi açar.
+- Kare rengi o karenin zorluğunu gösterir (Kemal).
+- Biten resim koleksiyona girer (Ben sekmesi, ödüller). Önceki resim açılmadan sonraki kilitli
+  kalır (Kemal).
+- Resimler **Düzada kartpostalları** (Kems'in önerisi; Kemal "Kartpostal etkinliği"ni seçti).
+  Hangi yerlerin olacağı [Kemal]. Yalnız künyede olan yerler çizilir; her görselden önce yer
+  künyede ve vikide okunur (ortak kurallar, "Çizmeden önce yerine bak"). Kartpostalda yer adı ya
+  da yazı olup olmayacağı [Kemal].
+- Kare sayısı: [Kemal]. Etkinlik süresi: [Kemal]. Renk ve zorluk eşleşmesi: [Kemal]. Uydurma sayı
+  yok.
+- Etkinlik süresi bitince yarım resim ne olur: [Kemal].
+- Görseller ayrı bir görsel paketiyle gelir (yol haritası); o zamana kadar yer tutucu resim.
+
+### 8.3 Puan ve en iyi puan
+
+- Süre ve hamleye göre çarpanlı puan; "tüm zamanların en iyisi" saklanır ve ana ekranda görünür
+  (Kemal).
+- Formül ve çarpanlar [Kemal]. Öneri: standart çözüm sonra seçilir (yaygın solitaire puanlama
+  yollarından biri, yapım sırasında aday olarak Kemal'e getirilir).
+- En iyi puan oyun ve zorluk başına mı, tek mi: [Kemal] (öneri: oyun ve zorluk başına).
+- Ayarlarda "her hamlede puanı göster" (Kemal): açıksa masanın bilgi satırında puan görünür.
+
+### 8.4 Ana ekran ve Ben sekmesi
+
+Ayrıntı 2. bölümde (alt sekmeler, ana ekran, Ben sekmesi, ayarlarda titreşim ve "her hamlede puanı
+göster"). "Nasıl oynanır", "yardım", "oyun hakkında" ve "gizlilik" metinleri Kemal'in; yazılana
+kadar `[YER TUTUCU: …]` durur. Gizlilik metni telefon adımında gerekir (6. bölüm).
+
 ## Kemal'e sorular
 
-1. Kart oyunu: Geri al sınırsız mı olsun? Neden: oyunda ceza yok; sınır koymak denemeyi kısar.
-   Adaylar: sınırsız (önerilen) · zorluğa göre (kolayda sınırsız, klasikte sınırlı) · sonra karar
-   veririm, web denemesinden sonra.
+1. Kart oyunu: Geri al ücretsiz ve sınırsız mı olsun? Neden: ipucu reklama bağlandı, geri al
+   açıkta kaldı; oyunda ceza yok. Adaylar: ücretsiz ve sınırsız (önerilen) · ücretsiz ama sınırlı,
+   fazlası reklamla · sonra karar veririm, web denemesinden sonra.
 2. Kart oyunu: Kartlardaki kırmızı hangi ton olsun? Neden: marka kitinin kiremidi krem kartta
    küçük köşede zor okunuyor. Adaylar: kiremidin koyusu (önerilen; iskelette bu) · kiremidin
    kendisi · klasik iskambil kırmızısı · Sürek Kulübü destesi gelince karar veririm.
+3. Kart oyunu: Kartpostallarda hangi Düzada yerleri olsun? Neden: resimleri çizmeden önce yerin
+   künyede olması gerek. Adaylar (künyede olan yerler): masa adaylarıyla aynı yerler (kulüp evi,
+   Sade Meyhane, Merkez meydanı, Liman, Deniz Feneri; önerilen) · her mahalleden bir yer · ben
+   seçerim.
+4. Kart oyunu: Kartpostal etkinliğinde kare sayısı, etkinlik süresi ve kare renklerinin zorluk
+   karşılığı ne olsun? Neden: sayı uydurulmaz. Adaylar: web denemesinde yer tutucuyla deneyip sonra
+   karar veririm (önerilen) · şimdi ben söylerim.
+5. Kart oyunu: Aylık ödülün görseli ne olsun? Neden: örnekteki kupa kopyalanmaz, bize ait bir şey
+   gerek. Adaylar: her ay bir Düzada nesnesi ya da simgesi, Kemal seçer (önerilen) · Sürek Kulübü
+   izli tek bir rozet, ay ay rengi değişir · ben söylerim.
+6. Kart oyunu: Puan nasıl hesaplansın? Neden: süre ve hamle çarpanlı puanın formülü yok. Adaylar:
+   standart bir çözüm sonra seçilir, ajans yapım sırasında aday getirir (önerilen) · şimdi ben
+   söylerim.
