@@ -19,6 +19,8 @@ import {
 } from './masaOrtak';
 import { spiderOzeti } from '../kart/puan';
 import { KartYuzu } from '../kart/KartYuzu';
+import { gunlukRastgele, type GunlukEl } from '../oyun/gunluk';
+import { tarihYazisi, useGunlukYildiz } from './Gunluk';
 import { ekranaGoreAralik, KART_ORANI, kartOlcusu, sutunKonumlari, yelpazeEni } from '../kart/duzen';
 import type { RenkSayisi } from '../kart/kart';
 import {
@@ -82,10 +84,13 @@ interface Ozellik {
   ayarAc: () => void;
   devam?: YarimEl; // kaldığı yerden açılan el (7. paket)
   baslangic?: SpiderMasasi; // yalnız geliştirmedeki deneme eli için
+  gunluk?: GunlukEl; // günlük mücadele eli (8. paket): dağıtım günün sabit karıştırmasıyla
 }
 
-export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, baslangic }: Ozellik) {
-  const [masa, setMasa] = useState<SpiderMasasi>(() => (devam?.masa as SpiderMasasi | undefined) ?? baslangic ?? spiderDagit(renk));
+export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, baslangic, gunluk }: Ozellik) {
+  // Günlük elde "Yeni el" aynı günün elini baştan dağıtır (8. paket)
+  const dagitim = () => spiderDagit(renk, gunluk ? gunlukRastgele(gunluk) : undefined);
+  const [masa, setMasa] = useState<SpiderMasasi>(() => (devam?.masa as SpiderMasasi | undefined) ?? baslangic ?? dagitim());
   const [el, setEl] = useState(0); // yeni elde kartlar yeniden dağıtılarak gelsin diye
   const [secim, setSecim] = useState<Secim | null>(null);
   const [surukleme, setSurukleme] = useState<Surukleme | null>(null);
@@ -105,7 +110,8 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
   // Puan ve seri (6. paket; src/kart/puan.ts). El yarımken bırakmak seriyi bitirir.
   const puan = usePuan('spider', renk, spiderOzeti(masa, saniye), kazandi);
   // Kaldığı yerden devam ve istatistik (7. paket)
-  const kayit = useElKaydi({ oyun: 'spider', zorluk: renk, masa } as Parameters<typeof useElKaydi>[0], saniye, geriAlHak.hak, kazandi, !!devam);
+  const kayit = useElKaydi({ oyun: 'spider', zorluk: renk, masa } as Parameters<typeof useElKaydi>[0], saniye, geriAlHak.hak, kazandi, !!devam, gunluk?.tarih);
+  const gunlukSonuc = useGunlukYildiz(gunluk, kazandi);
   const birakma = useElBirakma(yarimMi(masa.hamle, kazandi), () => {
     puan.seriyiBitir();
     kayit.birak();
@@ -205,7 +211,7 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
   };
 
   const yeniEl = () => {
-    setMasa(spiderDagit(renk));
+    setMasa(dagitim());
     setEl((e) => e + 1);
     setGecmis([]);
     geriAlHak.yeniEl(); // haklar her elde baştan
@@ -313,6 +319,7 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
         asama={puan.asama}
         ayarlar={ayarlar}
         ayarAc={ayarAc}
+        gunluk={gunluk && tarihYazisi(gunluk.tarih, true)}
       />
 
       <div className="oyun-alani" ref={alanRef} onPointerUp={alaniBirak}>
@@ -437,7 +444,7 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
       {geriAlHak.kutu && <ReklamKutusu kapat={geriAlHak.kutuyuKapat} hakAl={geriAlHak.reklamlaAl} />}
 
       {kazandi && (
-        <OyunSonu altBaslik={m('masa.baslik', renk)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={oyunSecimi} />
+        <OyunSonu altBaslik={m('masa.baslik', renk)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={oyunSecimi} gunluk={gunlukSonuc} />
       )}
     </main>
   );

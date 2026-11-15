@@ -3,6 +3,7 @@ import { m, sayi } from '../metinler';
 import { geriAlHakkiAl } from '../reklam/geriAlHakki';
 import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
 import { yarimElSil, yarimElYaz, yarimMi, type YarimEl } from '../oyun/yarimEl';
+import { GUNLUK_YARIM_ANAHTARI } from '../oyun/gunluk';
 import { elBasladi, elKazanildi as istatistikKazanildi, istatistikGuncelle } from '../oyun/istatistik';
 import { hakBaslat, hakKullan, reklamHakkiEkle, yeniElHakki, type GeriAlHakki } from '../kart/geriAlHakki';
 import {
@@ -166,9 +167,13 @@ export function usePuan(oyun: Oyun, zorluk: number, ozet: ElOzeti, kazandi: bool
 //   telefonun tarayıcısına yazılır (src/oyun/yarimEl.ts). Kazanınca ya da bırakınca silinir.
 // - İstatistik: ilk hamlede "oynanan", kazanınca "kazanılan" ve en iyi süre (src/oyun/istatistik.ts).
 //   Kaldığı yerden açılan el yeniden sayılmaz.
+// - Günlük mücadele eli (8. paket; gunlukTarih verilir) ayrı yerde, tarihiyle saklanır; normal
+//   yarım elle karışmaz (src/oyun/gunluk.ts).
 type ElBilgisi = Omit<YarimEl, 'saniye' | 'hak'>;
-export function useElKaydi(el: ElBilgisi, saniye: number, hak: GeriAlHakki, kazandi: boolean, devam: boolean) {
+export function useElKaydi(el: ElBilgisi, saniye: number, hak: GeriAlHakki, kazandi: boolean, devam: boolean, gunlukTarih?: string) {
   const anahtar = puanAnahtari(el.oyun, el.zorluk);
+  const depoAnahtari = gunlukTarih ? GUNLUK_YARIM_ANAHTARI : undefined;
+  const ek = gunlukTarih ? { tarih: gunlukTarih } : {};
   const sayildi = useRef(devam); // bu elin "oynanan"ı sayıldı mı
   const kazancSayildi = useRef(false);
   const birakildi = useRef(false); // el bırakıldıysa bir daha yazılmaz
@@ -178,7 +183,7 @@ export function useElKaydi(el: ElBilgisi, saniye: number, hak: GeriAlHakki, kaza
   const yaz = () => {
     const s = son.current;
     if (birakildi.current || !yarimMi(s.el.masa.hamle, s.kazandi)) return;
-    yarimElYaz(localStorage, { ...s.el, saniye: s.saniye, hak: s.hak } as YarimEl);
+    yarimElYaz(localStorage, { ...s.el, saniye: s.saniye, hak: s.hak, ...ek } as YarimEl, depoAnahtari);
   };
 
   // Her hamlede ve hak değişince
@@ -192,7 +197,7 @@ export function useElKaydi(el: ElBilgisi, saniye: number, hak: GeriAlHakki, kaza
         kazancSayildi.current = true;
         istatistikGuncelle(localStorage, (i) => istatistikKazanildi(i, anahtar, saniye));
       }
-      yarimElSil(localStorage);
+      yarimElSil(localStorage, depoAnahtari);
     } else yaz();
   }, [el.masa, hak, kazandi]);
 
@@ -214,7 +219,7 @@ export function useElKaydi(el: ElBilgisi, saniye: number, hak: GeriAlHakki, kaza
     // El bırakıldı (eli bırakma sorusunda "Evet"): yarım el silinir
     birak: () => {
       birakildi.current = true;
-      yarimElSil(localStorage);
+      yarimElSil(localStorage, depoAnahtari);
     },
     // Yeni el başlıyor
     yeniEl: () => {
@@ -278,6 +283,7 @@ export function BilgiSatiri(o: {
   asama: number;
   ayarlar: OyuncuAyarlari;
   ayarAc: () => void;
+  gunluk?: string; // günlük mücadele elinde günün tarihi (8. paket): başlığın yanında küçük işaret
 }) {
   const sayac = !o.ayarlar.sayaclariGizle;
   const puan = o.ayarlar.puaniGoster;
@@ -285,7 +291,15 @@ export function BilgiSatiri(o: {
     <header className="masa-bilgi">
       {sayac && <span>{m('masa.sure', sureYazisi(o.saniye))}</span>}
       {sayac && <span>{m('masa.hamle', o.hamle)}</span>}
-      <span className="masa-bilgi-baslik">{o.baslik}</span>
+      <span className="masa-bilgi-baslik">
+        {o.baslik}
+        {o.gunluk && (
+          <small className="gunluk-isaret" aria-label={m('gunluk.masaIsaret', o.gunluk)}>
+            <YildizSimgesi />
+            {o.gunluk}
+          </small>
+        )}
+      </span>
       {puan && <span>{m('masa.puan', sayi(o.puan))}</span>}
       {puan && <span>{m('masa.asama', o.asama)}</span>}
       <button className="ayar-dugmesi" onClick={o.ayarAc} aria-label={m('masa.ayarlar')}>
@@ -365,8 +379,19 @@ export function ReklamKutusu({ kapat, hakAl }: { kapat: () => void; hakAl: () =>
   );
 }
 
+// Yıldız (günlük mücadele, 8. paket): kodla çizilir; örnek oyunun kupası ve görseli kopyalanmaz
+export function YildizSimgesi({ dolu = true }: { dolu?: boolean }) {
+  return (
+    <svg className={`yildiz ${dolu ? 'dolu' : ''}`} viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M8 1.6 9.9 5.6l4.4.5-3.3 3 .9 4.3L8 11.2l-3.9 2.2.9-4.3-3.3-3 4.4-.5z" />
+    </svg>
+  );
+}
+
 // Oyun sonu: süre, hamle, puan (bu el, seri, yeni aşama, yeni en iyi), "Yeni el", "Oyun seçimi"
 // (belge 2 ve 8.3). "Yeni el" serinin bir sonraki elidir.
+// Günlük mücadele elinde (8. paket): "Günün yıldızı" satırı (ay tamamlandıysa ayın ödülü de) ve
+// tek düğme "Takvime dön"; seri sürer, sıradaki el takvimden seçilir.
 export function OyunSonu(o: {
   altBaslik: string;
   saniye: number;
@@ -374,6 +399,7 @@ export function OyunSonu(o: {
   puan: KazancSonucu | null;
   yeniEl: () => void;
   geri: () => void;
+  gunluk?: { tarih: string; ayTamam: boolean } | null;
 }) {
   return (
     <div className="oyun-sonu">
@@ -409,12 +435,28 @@ export function OyunSonu(o: {
             {o.puan.yeniEnIyi && <p className="yeni-en-iyi">{m('sonu.yeniEnIyi')}</p>}
           </>
         )}
-        <button className="dugme ana genis" onClick={o.yeniEl}>
-          {m('sonu.yeniEl')}
-        </button>
-        <button className="dugme ikincil genis" onClick={o.geri}>
-          {m('sonu.oyunSecimi')}
-        </button>
+        {o.gunluk && (
+          <p className="gunun-yildizi">
+            <YildizSimgesi />
+            <span>{m('sonu.gununYildizi')}</span>
+            <small>{o.gunluk.tarih}</small>
+          </p>
+        )}
+        {o.gunluk?.ayTamam && <p className="ayin-odulu-sonu">{m('sonu.ayinOdulu')}</p>}
+        {o.gunluk ? (
+          <button className="dugme ana genis" onClick={o.geri}>
+            {m('sonu.takvim')}
+          </button>
+        ) : (
+          <>
+            <button className="dugme ana genis" onClick={o.yeniEl}>
+              {m('sonu.yeniEl')}
+            </button>
+            <button className="dugme ikincil genis" onClick={o.geri}>
+              {m('sonu.oyunSecimi')}
+            </button>
+          </>
+        )}
       </section>
     </div>
   );

@@ -35,17 +35,19 @@ export type YarimEl =
 // El yarım mı: en az bir hamle yapılmış ve kazanılmamış (eli bırakma sorusuyla aynı kural)
 export const yarimMi = (hamle: number, kazandi: boolean) => hamle > 0 && !kazandi;
 
-export function yarimElYaz(depo: Depo, el: YarimEl): void {
+// Anahtar: normal yarım el için YARIM_EL_ANAHTARI; günlük mücadelenin yarım eli ayrı anahtarda
+// durur (8. paket, src/oyun/gunluk.ts), ikisi karışmaz.
+export function yarimElYaz(depo: Depo, el: YarimEl, anahtar = YARIM_EL_ANAHTARI): void {
   try {
-    depo.setItem(YARIM_EL_ANAHTARI, JSON.stringify({ surum: SURUM, ...el }));
+    depo.setItem(anahtar, JSON.stringify({ surum: SURUM, ...el }));
   } catch {
     // Tarayıcı saklamaya izin vermezse oyun yine oynanır; yalnız sayfa kapanınca el kaybolur.
   }
 }
 
-export function yarimElSil(depo: Depo): void {
+export function yarimElSil(depo: Depo, anahtar = YARIM_EL_ANAHTARI): void {
   try {
-    depo.removeItem(YARIM_EL_ANAHTARI);
+    depo.removeItem(anahtar);
   } catch {
     // saklama kapalıysa silinecek bir şey de yok
   }
@@ -100,9 +102,9 @@ const hakMi = (v: unknown): v is GeriAlHakki => {
   return !!h && sayiMi(h.elBasi) && sayiMi(h.kalan);
 };
 
-export function yarimElOku(depo: Pick<Depo, 'getItem'>): YarimEl | null {
+export function yarimElOku(depo: Pick<Depo, 'getItem'>, anahtar = YARIM_EL_ANAHTARI): YarimEl | null {
   try {
-    const ham = depo.getItem(YARIM_EL_ANAHTARI);
+    const ham = depo.getItem(anahtar);
     if (!ham) return null;
     const v = JSON.parse(ham);
     if (!v || v.surum !== SURUM || !sayiMi(v.saniye) || !hakMi(v.hak)) return null;

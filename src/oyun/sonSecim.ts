@@ -15,9 +15,12 @@ export const SON_SECIM_ANAHTARI = 'kartOyunu.secim';
 // İlk açılışta: Spider (önce gelir; belge 0), 1 renk, 1 kart çekme
 export const ILK_SECIM: SonSecim = { oyun: 'spider', renk: 1, cekme: 1 };
 
-export function sonSecimOku(depo: { getItem(a: string): string | null }): SonSecim {
+// Günlük mücadelenin son seçimi ayrı anahtarda durur (8. paket); ana ekrandaki en iyi puanı değiştirmez.
+export const GUNLUK_SECIM_ANAHTARI = 'kartOyunu.gunlukSecim';
+
+export function sonSecimOku(depo: { getItem(a: string): string | null }, anahtar = SON_SECIM_ANAHTARI): SonSecim {
   try {
-    const v = JSON.parse(depo.getItem(SON_SECIM_ANAHTARI) ?? 'null') as Partial<SonSecim> | null;
+    const v = JSON.parse(depo.getItem(anahtar) ?? 'null') as Partial<SonSecim> | null;
     if (!v) return { ...ILK_SECIM };
     return {
       oyun: v.oyun === 'klasik' ? 'klasik' : 'spider',
@@ -29,9 +32,9 @@ export function sonSecimOku(depo: { getItem(a: string): string | null }): SonSec
   }
 }
 
-export function sonSecimYaz(depo: { setItem(a: string, d: string): void }, s: SonSecim): void {
+export function sonSecimYaz(depo: { setItem(a: string, d: string): void }, s: SonSecim, anahtar = SON_SECIM_ANAHTARI): void {
   try {
-    depo.setItem(SON_SECIM_ANAHTARI, JSON.stringify(s));
+    depo.setItem(anahtar, JSON.stringify(s));
   } catch {
     // saklama kapalıysa seçim yalnız bu açılışta durur
   }

@@ -69,6 +69,15 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   ortada, sütunlar uzayınca büyür. Kart boyu değişmedi. 320x640, 390x844 ve 430x932'de denendi
   (taşma yok); gerçek telefonda denenmedi. Ekran görüntüleri: `ana-8-spider-dagitim.png`,
   `ana-9-klasik-dagitim.png`.
+- 15 Kasım 2026 (öneri; `ajans/gunluk-mucadele`): 8. paket, günlük mücadele (Kemal: "Günlük
+  mücadeleye başla"). Mücadeleler sekmesinde takvim (Pazartesi'den başlar, kazanılan günde yıldız,
+  bugün vurgulu, gelecek günler soluk ve kilitli, önceki aylara ok), altta seçili günün oyunu,
+  zorluğu ve "Oyna". Ana ekrandaki "Günlük mücadele" kartı açıldı (bugünün tarihi ve "Oyna";
+  kazanıldıysa yıldız). Masada üst satırda günün tarihi işareti; kazanınca oyun sonunda "Günün
+  yıldızı". Ayın bütün günleri yıldızlanınca Ben → Ödüller → Aylık ödüller'de yer tutucu rozet
+  (görsel Kemal'de). Bilgisayarda telefon boyutunda denendi; gerçek telefonda denenmedi. Ekran
+  görüntüleri: `docs/ekran-goruntuleri/gunluk-*.png`. Bu öneri birleşince sıradaki iş: 4. paketten kalan
+  kendiliğinden bitirme, sonra 9. paket (kartpostal etkinliği).
 - 15 Kasım 2026 (aynı öneri, `ajans/ana-ekran`; Kemal: "İnce kenar, masa ekranı doldursun", örnek
   ekran için "Bu uygun işte"): çerçeve kalktı, kenar payı inceldi (8-12 piksel); masa ekranın tamamını
   kaplar, kartlar ekran enini doldurur, kapalı kartlar sık; bilgi satırı iki satır ve büyük yazı;
@@ -245,13 +254,38 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   yardım, oyun hakkında ve gizlilik metinleri (Kemal'in).
 - Neye bağlı: 5. ve 6. paket.
 
-### 8. Günlük mücadele (Kemal, 15 Kasım; örnek oyun)
+### 8. Günlük mücadele (Kemal, 15 Kasım; örnek oyun) · bitti (ödül görseli Kemal'de; `ajans/gunluk-mucadele`)
 
 - Her gün bir el; kazanınca takvimde o güne yıldız; ay dolunca aylık ödül (belge 8.1). Takvim
   Mücadeleler sekmesinde.
 - Ödülün görseli [Kemal] (örnekteki kupa kopyalanmaz); ajans 18 adaylık bir liste getirdi, Kemal
   seçecek (15 Kasım soru turu 2. set). O zamana kadar yer tutucu.
-- Neye bağlı: 7. paket; hangi oyun ve zorluk Kemal'in kararı.
+- Yapılan: kurallar `src/oyun/gunluk.ts`'te, ekrandan ayrı; testleri `testler/gunluk.test.ts`
+  (aynı tarih, oyun ve zorlukta aynı dağıtım, başka günde başka dağıtım; yıldızın saklanması;
+  geçmiş gün oynanır, gelecek gün kilitli; ay dolunca ödül; takvimin Pazartesi'den başlaması;
+  günlük yarım elin normalinden ayrı durması; seri sayımı). Ekranlar `src/ekranlar/Gunluk.tsx`.
+- Ekranda: Mücadeleler sekmesinin üstünde ayın adı ve "yıldız/gün sayısı", takvim (kazanılan günde
+  yıldız, bugün kiremit çerçeveli, gelecek günler soluk ve dokunulmaz, yarım el kalan günün altı
+  çizili), sol okla önceki aylar (sağ ok bu ayda kapalı); ayın bütün günleri yıldızlıysa altında
+  "Ay tamamlandı · [YER TUTUCU: ayın ödülü]". Altta seçili günün tarihi, oyun (Spider / Klasik
+  solitaire) ve zorluk (1/2/4 renk; 1/3 kart çekme) ve "Oyna" (yarım el varsa "Devam et",
+  kazanılmış günde "Yeniden oyna"). Gelecek gün seçilemez. Ana ekranda "Günlük mücadele" kartı:
+  bugünün tarihi ve "Oyna" (bugünün yarım eli varsa onu açar, yoksa son günlük seçimle bugünün
+  elini); bugün kazanıldıysa tarihin yanında yıldız ve "Takvim". Masada başlığın yanında küçük
+  yıldızlı tarih işareti. Kazanınca oyun sonu kutusunda "Günün yıldızı" ve tarih; ay o an
+  tamamlandıysa bir satır daha; tek düğme "Takvime dön". Ben → Ödüller → Aylık ödüller'de her
+  tamamlanan ay için "[YER TUTUCU: ayın ödülü]" rozeti.
+- Kodda duranlar (öneri, Kemal'in onayı yok): günlük elin dağıtımı tarih, oyun ve zorluktan
+  türeyen sabit bir karıştırmayla (belgedeki öneri; Kemal "bunu yap" dedi). Gün telefonun kendi
+  saatine göre değişir. Günlük yarım el ayrı yerde saklanır (normal "Oyuna devam et" ile
+  karışmaz); bir tane olur; başka bir günlük el açılırken eli bırakma sorusu çıkar, "Evet" o elin
+  serisini bitirir. Masadaki "Yeni el" günlük elde aynı günün elini baştan dağıtır (eli bırakma
+  sorusuyla). Kazanılmış gün yeniden oynanabilir, yeni yıldız gelmez. Önceki aylara sınır yok.
+  Günlük el istatistiğe de sayılır. Ay ve gün adları metin dosyasında, dile göre.
+- Deneme yolları (yalnız geliştirmede): `?deneme=takvim` (takvime hazır yıldızlar: geçen ay tam,
+  bu ay birkaç boş gün), `?deneme=gunluk-kazan` (bugünün günlük eli olarak bir hamlede biten
+  Spider). Ekran görüntüleri: `docs/ekran-goruntuleri/gunluk-*.png`.
+- Neye bağlı: 7. paket.
 
 ### 9. Kartpostal etkinliği (Kemal, 15 Kasım; örnek oyun)
 
@@ -312,6 +346,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ## Bitenler
 
+- 8. Günlük mücadele (`ajans/gunluk-mucadele`, 15 Kasım 2026; ödül görseli Kemal'de; Kemal
+  birleştirince kesinleşir).
 - 7. Ana ekran ve Ben sekmesi; 4. paketten kaldığı yerden devam ve basit istatistik
   (`ajans/ana-ekran`, 15 Kasım 2026; Kemal birleştirince kesinleşir).
 - 5. Ayarlar ve iki dil, KKM ayar dosyası ve ekran görüntüsü listesiyle (`ajans/ayarlar-dil`,
