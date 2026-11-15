@@ -343,8 +343,8 @@ fiyat [Kemal].
   (Kemal, 15 Kasım): masa Sade Meyhane (Kemal, 15 Kasım gece; 3.2), destenin içeriği sonra (Kemal,
   15 Kasım gece; 4.2).
 - **Reklam ilkeleri** (Kemal'in cevabından):
-  - Her el arasında reklam yok (14 Kasım). 15 Kasım'da "el bitince reklam girer" seçildi; her elde
-    mi, birkaç elde bir mi [Kemal] (7. bölüm).
+  - Her el arasında reklam yok (14 Kasım). El sonu reklamı **birkaç elde bir** girer (Kemal, 15
+    Kasım); kaç elde bir olacağı denenip seçilir: [Kemal].
   - Oyun ortasında reklam yok.
   - Alt şerit reklamı yok (masanın havasını bozar).
 - **Reklam düzeni (Kemal, 14 Kasım; 15 Kasım'da "örnekteki gibi"):** el sonu reklamı + ödüllü
@@ -443,8 +443,8 @@ Açık kalanlar:
 - **Kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi:** [Kemal] (Kemal'e soru 4).
 - **Aylık ödülün görseli:** [Kemal]; örnekteki kupa kopyalanmaz (Kemal'e soru 5).
 - **Puan formülü ve çarpanlar:** [Kemal]; öneri: standart çözüm sonra seçilir (Kemal'e soru 6).
-- **El sonu reklamı:** her elde mi, birkaç elde bir mi (14 Kasım: her el arasında olmasın) ve
-  ilk kaç oyunda hiç yok: [Kemal]. Reklamsız satın alınınca ipucu reklamsız mı: [Kemal].
+- **El sonu reklamı:** birkaç elde bir (Kemal, 15 Kasım); kaç elde bir ve ilk kaç oyunda hiç
+  yok: [Kemal]. Reklamsız satın alınınca ipucu reklamsız mı: [Kemal].
 - **Günlük mücadele:** hangi oyun ve zorluk, "ay dolunca" ne demek, geçmiş günler oynanır mı (8.1).
 - **Kart köşesindeki harfler:** dile göre değişsin mi (öneri: değişir). İskelette iki dilde de
   A, J, Q, K; harfler metin dosyasında, karar gelince yalnız orası değişir.
