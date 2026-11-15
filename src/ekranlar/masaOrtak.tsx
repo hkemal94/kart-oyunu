@@ -34,18 +34,25 @@ export function sureYazisi(saniye: number): string {
 // Çerçeve yok; masa ekranın tamamını kaplar: üstte bilgi satırı, hemen altında kartlar, en altta
 // alt şerit ve düğmeler. Kartların alanı aradaki bütün yükseklik; kart boyu ve aralık
 // (src/kart/duzen.ts) bu alana göre hesaplanır. Kartlar üstten başlar, elin başında alt boş kalır.
+// Üst ve alt pay (Kemal, 15 Kasım: "Altlı üstlü birer kart boyu kadar artırır mısın sayfa kenarını"):
+// bilgi satırının üstünde ve düğmelerin altında birer kart boyu boşluk (masaPayi). Kart boyu payın
+// eklenmediği yükseklikten (tamBoy) hesaplanır, kart değişmez; kartların alanı (boy) pay kadar kısalır.
 export function useMasaBlogu() {
   const masaRef = useRef<HTMLElement>(null);
   const blokRef = useRef<HTMLDivElement>(null);
   const alanRef = useRef<HTMLDivElement>(null);
-  const [alan, setAlan] = useState({ en: 360, boy: 500 });
+  const [alan, setAlan] = useState({ en: 360, boy: 500, tamBoy: 500 });
 
   useLayoutEffect(() => {
     const a = alanRef.current;
     if (!a) return;
     const olc = () => {
-      const yeni = { en: a.clientWidth, boy: Math.max(120, a.clientHeight) };
-      setAlan((o) => (o.en === yeni.en && o.boy === yeni.boy ? o : yeni));
+      const b = blokRef.current;
+      const s = b ? getComputedStyle(b) : null;
+      const pay = s ? parseFloat(s.paddingTop) + parseFloat(s.paddingBottom) : 0;
+      const boy = Math.max(120, a.clientHeight);
+      const yeni = { en: a.clientWidth, boy, tamBoy: boy + pay };
+      setAlan((o) => (o.en === yeni.en && o.boy === yeni.boy && o.tamBoy === yeni.tamBoy ? o : yeni));
     };
     olc();
     const g = new ResizeObserver(olc);
@@ -54,6 +61,11 @@ export function useMasaBlogu() {
   }, []);
 
   return { masaRef, blokRef, alanRef, alan };
+}
+
+// Masa bloğunun üst ve alt payı: birer kart boyu (yukarıda useMasaBlogu)
+export function masaPayi(kartBoy: number) {
+  return { paddingTop: kartBoy, paddingBottom: kartBoy };
 }
 
 // Süre: el başında başlar, el bitince durur; yeni elde sıfırlanır. Kaldığı yerden açılan elde

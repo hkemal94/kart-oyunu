@@ -12,6 +12,7 @@ import {
   useElBirakma,
   useElKaydi,
   useGeriAlHakki,
+  masaPayi,
   useMasaBlogu,
   usePuan,
   useSure,
@@ -141,7 +142,7 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
 
   useEffect(() => setSecim(null), [el]);
 
-  const { en: kartEn, boy: kartBoy } = kartOlcusu(alan.en, alan.boy, SPIDER_SUTUN_SAYISI, ARALIK, KART_ORANI, EN_COK_ORAN);
+  const { en: kartEn, boy: kartBoy } = kartOlcusu(alan.en, alan.tamBoy, SPIDER_SUTUN_SAYISI, ARALIK, KART_ORANI, EN_COK_ORAN);
   const aralik = ekranaGoreAralik(kartBoy, alan.boy, {
     kapaliSayisi: BEKLENEN_KAPALI,
     acikSayisi: BEKLENEN_ACIK,
@@ -303,7 +304,7 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
 
   return (
     <main className="masa" ref={masaRef}>
-      <div className="masa-blok" ref={blokRef}>
+      <div className="masa-blok" ref={blokRef} style={masaPayi(kartBoy)}>
       <BilgiSatiri
         saniye={saniye}
         baslik={m('masa.baslik', renk)}

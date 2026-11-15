@@ -11,6 +11,24 @@
       "kapak": true
     },
     {
+      "dosya": "pay-spider-dagitim.png",
+      "baslik": "Spider masası, üstte ve altta birer kart boyu pay (dağıtım)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "pay-spider-uzun.png",
+      "baslik": "Spider masası, üst ve alt pay; uzun sütun alt şeride değmiyor",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "pay-klasik-dagitim.png",
+      "baslik": "Klasik masa, üstte ve altta birer kart boyu pay (dağıtım)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
       "dosya": "ana-2-ben.png",
       "baslik": "Ben sekmesi",
       "tarih": "2026-11-15",

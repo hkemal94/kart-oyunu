@@ -74,6 +74,12 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   kaplar, kartlar ekran enini doldurur, kapalı kartlar sık; bilgi satırı iki satır ve büyük yazı;
   düğmeler başparmak boyunda. 320x640, 390x844 ve 430x932'de denendi (taşma yok); gerçek telefonda
   denenmedi. Ekran görüntüleri: `ana-*.png` yenilendi.
+- 15 Kasım 2026 (öneri; `ajans/ust-alt-pay`; Kemal: "Altlı üstlü birer kart boyu kadar artırır mısın
+  sayfa kenarını"): iki masada bilgi satırının üstüne ve düğmelerin altına birer kart boyu boşluk
+  (Spider ve klasikte kendi kart boyu). Kart eni ve boyu, yan paylar değişmedi; kartların alanı bu pay
+  kadar kısaldı, uzun Spider sütunu yine alt şeride değmez. Menü ekranları değişmedi. 320x640,
+  390x844 ve 430x932'de denendi (taşma yok); gerçek telefonda denenmedi. Ekran görüntüleri:
+  `pay-*.png`.
 - Sırada: 4. paketten kalan kendiliğinden bitirme; sonra 8. paket (günlük mücadele).
 
 ## Paketler

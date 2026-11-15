@@ -34,6 +34,7 @@ import {
   useElBirakma,
   useElKaydi,
   useGeriAlHakki,
+  masaPayi,
   useMasaBlogu,
   usePuan,
   useSure,
@@ -162,7 +163,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
     return harita;
   }, [el]);
 
-  const { en: kartEn, boy: kartBoy } = kartOlcusu(alan.en, alan.boy, KLONDIKE_SUTUN_SAYISI, ARALIK);
+  const { en: kartEn, boy: kartBoy } = kartOlcusu(alan.en, alan.tamBoy, KLONDIKE_SUTUN_SAYISI, ARALIK);
   const kose = Math.max(3, kartEn * 0.1);
   const sutunUstu = kartBoy + UST_ARALIK;
   const sutunAlani = alan.boy - sutunUstu;
@@ -370,7 +371,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
 
   return (
     <main className="masa" ref={masaRef}>
-      <div className="masa-blok" ref={blokRef}>
+      <div className="masa-blok" ref={blokRef} style={masaPayi(kartBoy)}>
       <BilgiSatiri
         saniye={saniye}
         baslik={m('masa.baslikKlasik', masa.cekme)}
