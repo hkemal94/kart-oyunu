@@ -23,6 +23,14 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **15 Kasım (günlük mücadele, 8. paket):** Kemal: "Günlük mücadeleye başla". Takvim, günün eli,
+  yıldız, aylık ödül yer tutucusu ve ana ekrandaki günün kartı oyuna girdi (8.1, 2). Belgedeki öneri
+  (aynı gün, aynı oyun ve zorlukta herkese aynı dağıtım) Kemal'in "bunu yap"ıyla kodda: dağıtım
+  tarih, oyun ve zorluktan türeyen sabit bir karıştırmayla. Ajansın önerisi olarak kodda duranlar
+  (Kemal'in onayı yok): gün telefonun saatine göre değişir; günlük yarım el normal yarım elden ayrı
+  saklanır, tek tane olur, başka bir günlük el açılırken eli bırakma sorusu çıkar; masadaki "Yeni
+  el" günlük elde aynı günün elini baştan dağıtır; kazanılmış gün yeniden oynanır, yeni yıldız
+  gelmez; günlük oyun sonunda tek düğme "Takvime dön"; önceki aylara sınır yok.
 - **15 Kasım (ince kenar, masa ekranı doldurur):** Çerçeveli ilk hâli görünce Kemal: "Bu inanılmaz
   fazla bir sayfa kenarı, şekli çok fazla bu." Seçtiği: "İnce kenar, masa ekranı doldursun". Örnek bir
   Spider ekranı için de "Bu uygun işte" dedi (yalnız oran ve yerleşim alındı; görseli, rengi, çuhası
@@ -247,7 +255,8 @@ bırakılır (öneri).
   [ad: Kemal] ve en iyi puan (en yüksek seri puanı; 8.3); altta "devam et" (yarım el varsa) ve
   "yeni oyun". El yarımken "yeni oyun"a dokununca önce onay sorusu çıkar (aşağıda, "Eli bırakma").
   **Yapılan (7. paket):** üstte "Günlük mücadele" ve "Kartpostal etkinliği" kartları "Yakında"
-  (8. ve 9. paket); ortada küçük kart yelpazesi, oyunun adı [Kemal], "En iyi puan" ve hangi oyunun
+  (8. ve 9. paket; **8. paketle** "Günlük mücadele" kartında bugünün tarihi ve "Oyna", bugün
+  kazanıldıysa yıldız ve "Takvim"); ortada küçük kart yelpazesi, oyunun adı [Kemal], "En iyi puan" ve hangi oyunun
   puanı olduğu (yarım el varsa onun, yoksa son seçilen oyun ve zorluk; öneri); altta "Oyuna devam
   et" (yarım el yoksa soluk, altında "Yarım el yok") ve "Yeni oyun". Soruya "Evet" denirse yarım
   el silinir, o oyunun serisi biter, oyun seçimi açılır; "Hayır" denirse soru kapanır, ana ekran
@@ -256,7 +265,10 @@ bırakılır (öneri).
   ayarları, "İstatistik" Ben sekmesindeki istatistiği açar; "Paketler" yakında. Altta sekmeler görünür. Alt alta iki kart: Spider (üstte),
   klasik solitaire (Kemal, 15 Kasım). Her birinin altında zorluk seçimi (1/3 kart; 1/2/4 renk).
 - **Mücadeleler sekmesi:** günlük mücadelenin takvimi ve kartpostal etkinliği (8.1 ve 8.2).
-  7. pakette yer tutucu: iki "Yakında" kartı ve "[YER TUTUCU]".
+  7. pakette yer tutucu: iki "Yakında" kartı ve "[YER TUTUCU]". **8. paketle:** üstte ayın adı ve
+  "yıldız/gün sayısı", Pazartesi'den başlayan takvim (kazanılan günde yıldız, bugün vurgulu,
+  gelecek günler soluk ve kilitli), önceki aylara ok; altta seçili günün oyunu, zorluğu ve
+  "Oyna"; en altta "Kartpostal etkinliği · Yakında".
 - **Ben sekmesi (Kemal, 15 Kasım):** ödüller (aylık ödüller ve kartpostal koleksiyonu), ayarlar,
   nasıl oynanır, yardım, oyun hakkında, gizlilik. İstatistik ve paketlerin yeri: öneri, bu sekme;
   karar Kemal'in. **Yapılan (7. paket):** en üstte "Ödüller" (aylık ödüller ve kartpostal
@@ -601,8 +613,13 @@ Açık kalanlar:
 - **Eli bırakma sorusunun metni:** [YER TUTUCU], Kemal onaylar (2. bölüm).
 - **El sonu reklamı:** birkaç elde bir (Kemal, 15 Kasım); kaç elde bir ve ilk kaç oyunda hiç
   yok: [Kemal]. Reklamsız satın alınınca ipucu reklamsız mı: [Kemal].
-- **Günlük mücadelede dağıtım:** aynı gün aynı zorlukta herkese aynı dağıtım: öneri, Kemal'in onayı
-  yok (8.1).
+- **Günlük mücadelede dağıtım:** aynı gün aynı zorlukta herkese aynı dağıtım (8.1). Kemal 15 Kasım'da
+  "bunu yap" dedi; 8. paketle kodda. Kapandı.
+- **Günlük mücadelede önceki aylar:** takvimde ne kadar geriye gidilebilsin? Şimdilik sınır yok
+  (öneri). Adaylar: sınır yok, her geçmiş ay oynanır ve ödül alır (şu anki) · yalnız oyunun ilk
+  açıldığı aydan beri · yalnız son birkaç ay (sayı [Kemal]).
+- **Günlük elde "Yeni el":** şimdi aynı günün elini baştan dağıtıyor (eli bırakma sorusuyla).
+  Adaylar: aynı günün eli baştan (şu anki) · düğme günlük elde gizlensin.
 - **Kart köşesindeki harfler:** dile göre değişsin mi (öneri: değişir). İskelette iki dilde de
   A, J, Q, K; harfler metin dosyasında, karar gelince yalnız orası değişir. 5. pakette de böyle
   kaldı (Türkçe harfler belgede yazılı değil). Değişirse hangi harfler: [Kemal].
@@ -637,6 +654,20 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
 - **Günlük mücadele eli puan serisine sayılır** (Kemal, 15 Kasım soru turu): kazanınca serinin
   aşaması artar, kaybedince seri biter (8.3). Önceki öneri ("ayrı tutulsun") düştü.
 - Takvim Mücadeleler sekmesinde; ana ekranın üstünde günün kartı.
+- **Yapılan (8. paket, `ajans/gunluk-mucadele`; Kemal, 15 Kasım: "Günlük mücadeleye başla"):**
+  - Dağıtım: tarih, oyun ve zorluktan türeyen sabit karıştırma; aynı gün, aynı oyun ve zorlukta
+    her telefonda aynı el, başka gün ya da zorlukta başka el (yukarıdaki öneri, Kemal "bunu yap").
+  - Takvim (Mücadeleler): ayın adı, "yıldız/gün sayısı", Pazartesi'den başlayan haftalar, gün
+    kısaltmaları dile göre; kazanılan günde yıldız (kodla çizilir; örnek oyunun kupası
+    kopyalanmaz), bugün vurgulu, gelecek günler soluk ve dokunulmaz, önceki aylara ok. Altta
+    seçili gün için oyun ve zorluk seçimi ve "Oyna".
+  - Masada başlığın yanında küçük yıldızlı tarih işareti; kazanınca oyun sonunda "Günün yıldızı"
+    ve "Takvime dön".
+  - Aylık ödül: ayın bütün günleri yıldızlanınca Ben → Ödüller → Aylık ödüller'de
+    "[YER TUTUCU: ayın ödülü]" rozeti; görsel Kemal'in seçimini bekliyor.
+  - Günlük yarım el kaldığı yerden devam eder, normal yarım elden ayrı saklanır.
+  - Seri: günlük el normal elle aynı seriye (oyun ve zorluk başına) sayılır; kazanınca aşama
+    artar, bırakınca seri biter.
 
 ### 8.2 Kartpostal etkinliği
 
@@ -735,7 +766,8 @@ Açık kalanlar sayı ya da seçim; web denemesinde ve ilgili paket gelince soru
 3. Kart oyunu: Kartpostal etkinliğinde kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi?
    Web denemesinde ayarlanabilir gelir (9. paket), Kemal seçer.
 4. Kart oyunu: Aylık ödülde hangi ay hangi Düzada nesnesi ya da simgesi? Ajans 18 adaylık bir
-   liste getirdi (15 Kasım soru turu 2. set); Kemal seçecek.
+   liste getirdi (15 Kasım soru turu 2. set); Kemal seçecek. 8. paketle ödülün yeri hazır: Ben →
+   Ödüller → Aylık ödüller'de "[YER TUTUCU: ayın ödülü]" rozeti.
 5. Kart oyunu: Puan hesabı hangi aday olsun? Neden: formülü Kemal seçecek (15 Kasım). Nasıl
    denenir: adres sonuna `?puan=a`, `?puan=b`, `?puan=c`. Adaylar (8.3): a · çarpanlı taban
    (şu anki varsayılan) · b · hamle başı puan · c · bonuslu sabit puan.
@@ -754,3 +786,8 @@ Açık kalanlar sayı ya da seçim; web denemesinde ve ilgili paket gelince soru
    ajans yazdı (7. paket). Adaylar: olduğu gibi kalsın (önerilen) · düzeltmelerimi yazarım.
 12. Kart oyunu: Masadaki dördüncü düğme "Ana ekran" olsun mu (eli bırakmadan çıkar)? Adaylar:
    "Ana ekran" (önerilen, şu anki) · "Menü" adıyla küçük bir menü açılsın.
+13. Kart oyunu: Günlük mücadele takviminde ne kadar geriye gidilebilsin? Neden: geçmiş günler
+   oynanır ve her tamamlanan ay ödül verir; sınır yoksa eski aylar da doldurulabilir. Adaylar: sınır
+   yok (önerilen, şu anki) · oyunun ilk açıldığı aydan beri · son birkaç ay (sayı [Kemal]).
+14. Kart oyunu: Günlük elde masadaki "Yeni el" ne yapsın? Adaylar: aynı günün elini baştan dağıtsın
+   (önerilen, şu anki) · günlük elde gizlensin.

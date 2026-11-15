@@ -4,6 +4,8 @@ import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
 import { yarimMi, type YarimEl } from '../oyun/yarimEl';
 import { ipucuHakkiAl } from '../reklam/ipucuHakki';
 import { KartYuzu } from '../kart/KartYuzu';
+import { gunlukRastgele, type GunlukEl } from '../oyun/gunluk';
+import { tarihYazisi, useGunlukYildiz } from './Gunluk';
 import { ekranaGoreAralik, kartOlcusu, sutunKonumlari } from '../kart/duzen';
 import { TAKIM_SIMGESI, type Kart } from '../kart/kart';
 import {
@@ -104,10 +106,13 @@ interface Ozellik {
   ayarAc: () => void;
   devam?: YarimEl; // kaldığı yerden açılan el (7. paket)
   baslangic?: KlondikeMasasi; // yalnız geliştirmedeki deneme eli için
+  gunluk?: GunlukEl; // günlük mücadele eli (8. paket): dağıtım günün sabit karıştırmasıyla
 }
 
-export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, baslangic }: Ozellik) {
-  const [masa, setMasa] = useState<KlondikeMasasi>(() => (devam?.masa as KlondikeMasasi | undefined) ?? baslangic ?? klondikeDagit(cekme));
+export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, baslangic, gunluk }: Ozellik) {
+  // Günlük elde "Yeni el" aynı günün elini baştan dağıtır (8. paket)
+  const dagitim = () => klondikeDagit(cekme, gunluk ? gunlukRastgele(gunluk) : undefined);
+  const [masa, setMasa] = useState<KlondikeMasasi>(() => (devam?.masa as KlondikeMasasi | undefined) ?? baslangic ?? dagitim());
   const [el, setEl] = useState(0); // yeni elde kartlar yeniden dağıtılarak gelsin diye
   const [secim, setSecim] = useState<Yer | null>(null);
   const [surukleme, setSurukleme] = useState<Surukleme | null>(null);
@@ -126,7 +131,8 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
   // Puan ve seri (6. paket; src/kart/puan.ts). El yarımken bırakmak seriyi bitirir.
   const puan = usePuan('klasik', masa.cekme, klondikeOzeti(masa, saniye), kazandi);
   // Kaldığı yerden devam ve istatistik (7. paket)
-  const kayit = useElKaydi({ oyun: 'klasik', zorluk: masa.cekme, masa } as Parameters<typeof useElKaydi>[0], saniye, geriAlHak.hak, kazandi, !!devam);
+  const kayit = useElKaydi({ oyun: 'klasik', zorluk: masa.cekme, masa } as Parameters<typeof useElKaydi>[0], saniye, geriAlHak.hak, kazandi, !!devam, gunluk?.tarih);
+  const gunlukSonuc = useGunlukYildiz(gunluk, kazandi);
   const birakma = useElBirakma(yarimMi(masa.hamle, kazandi), () => {
     puan.seriyiBitir();
     kayit.birak();
@@ -248,7 +254,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
   };
 
   const yeniEl = () => {
-    setMasa(klondikeDagit(cekme));
+    setMasa(dagitim());
     setEl((e) => e + 1);
     setGecmis([]);
     geriAlHak.yeniEl(); // haklar her elde baştan
@@ -379,6 +385,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
         asama={puan.asama}
         ayarlar={ayarlar}
         ayarAc={ayarAc}
+        gunluk={gunluk && tarihYazisi(gunluk.tarih, true)}
       />
 
       <div className="oyun-alani" ref={alanRef} onPointerUp={alaniBirak}>
@@ -486,7 +493,7 @@ export function KlondikeMasa({ cekme, anaEkran, oyunSecimi, ayarlar, ayarAc, dev
       {geriAlHak.kutu && <ReklamKutusu kapat={geriAlHak.kutuyuKapat} hakAl={geriAlHak.reklamlaAl} />}
 
       {kazandi && (
-        <OyunSonu altBaslik={m('masa.baslikKlasik', masa.cekme)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={oyunSecimi} />
+        <OyunSonu altBaslik={m('masa.baslikKlasik', masa.cekme)} saniye={saniye} hamle={masa.hamle} puan={puan.sonuc} yeniEl={yeniEl} geri={oyunSecimi} gunluk={gunlukSonuc} />
       )}
     </main>
   );

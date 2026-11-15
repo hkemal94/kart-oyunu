@@ -10,5 +10,6 @@ geçici çalışma adıdır; oyunun adı [Kemal].
 
 Çalıştırmak için: `npm install`, sonra `npm run dev`. Derleme: `npm run build`. Kural testleri:
 `npm test`. Geliştirmede hazır deneme elleri: adres sonuna `?deneme=dizi` (oyun ortası) ya da
-`?deneme=kazan` (bir hamlede oyun sonu); yayındaki oyunda çalışmaz.
+`?deneme=kazan` (bir hamlede oyun sonu), `?deneme=takvim` (günlük mücadele takvimine hazır yıldızlar),
+`?deneme=gunluk-kazan` (bugünün günlük eli, bir hamlede oyun sonu); yayındaki oyunda çalışmaz.
 Geri al hakkı sayısını denemek için (yayındaki oyunda da çalışır): `?geriAlHak=5`.

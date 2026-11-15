@@ -8,10 +8,12 @@
 //   (masa düzeni denemesi; Kemal, 15 Kasım).
 // - klasik-kazan: klasik solitaire, 51 kart temelde; papaza çift dokununca oyun biter.
 // - klasik-orta: klasik solitaire, 3 kart çekme; hep aynı el, ipucunun ilk önerisiyle 40 hamle oynanmış.
+// - takvim, gunluk-kazan: günlük mücadele için hazır yıldızlar (aşağıda gunlukDenemesi).
 
 import type { Kart, RenkSayisi } from './kart';
 import { karistir, spiderKartlari, type SpiderMasasi } from './spider';
 import { cek, ipuclari, klondikeDagit, tasi, TEMEL_TAKIMLARI, type KlondikeMasasi } from './klondike';
+import { ayinGunSayisi, oncekiAy, tarihOku, tarihYaz, type GunlukKaydi } from '../oyun/gunluk';
 
 export type DenemeTuru = 'kazan' | 'dizi' | 'uzun';
 
@@ -93,4 +95,16 @@ export function klondikeDenemesi(tur: KlondikeDenemeTuru): { masa: KlondikeMasas
     masa = (ip.tur === 'cek' ? cek(masa) : tasi(masa, ip.yer, ip.hedef)) ?? masa;
   }
   return { masa };
+}
+
+// Günlük mücadele (8. paket): takvimde gerçekçi görünsün diye hazır yıldızlar. Yalnız geliştirmede
+// (?deneme=takvim, ?deneme=gunluk-kazan). Geçen ayın bütün günleri yıldızlı (Ben → Aylık ödüller'de
+// bir rozet), bu ayda bugünden önceki günlerin çoğu yıldızlı, birkaçı boş; bugün boş.
+export function gunlukDenemesi(bugun: string): GunlukKaydi {
+  const { yil, ay, gun } = tarihOku(bugun);
+  const once = oncekiAy(yil, ay);
+  const yildizlar: string[] = [];
+  for (let g = 1; g <= ayinGunSayisi(once.yil, once.ay); g++) yildizlar.push(tarihYaz(once.yil, once.ay, g));
+  for (let g = 1; g < gun; g++) if (g % 5 !== 3) yildizlar.push(tarihYaz(yil, ay, g));
+  return { yildizlar };
 }

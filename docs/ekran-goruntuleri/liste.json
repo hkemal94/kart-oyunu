@@ -1,14 +1,68 @@
 {
   "oyun": "[Kemal]",
   "kaynak": "https://hkemal94.github.io/kart-oyunu/",
-  "not": "Oyunun adı Kemal'in; 'kart-oyunu' geçici çalışma adı. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ana ekran, Ben sekmesi ve ince kenarlı masa görüntüleri öneri dalından (ajans/ana-ekran); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor.",
+  "not": "Oyunun adı Kemal'in; 'kart-oyunu' geçici çalışma adı. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ana ekran, Ben sekmesi ve ince kenarlı masa görüntüleri öneri dalından (ajans/ana-ekran); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor. Günlük mücadele görüntüleri (gunluk-*.png) öneri dalından (ajans/gunluk-mucadele); saat 15 Kasım 2026'ya sabitlendi, takvimdeki yıldızlar yalnız geliştirmede çalışan hazır veriden (?deneme=takvim).",
   "goruntuler": [
+    {
+      "dosya": "gunluk-1-takvim.png",
+      "baslik": "Mücadeleler: günlük mücadele takvimi (birkaç yıldızlı gün, bugün vurgulu, gelecek günler soluk)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)",
+      "kapak": true
+    },
+    {
+      "dosya": "gunluk-2-ana-ekran.png",
+      "baslik": "Ana ekran: Günlük mücadele kartı (bugünün tarihi ve Oyna)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "gunluk-3-masa.png",
+      "baslik": "Günlük el masası (üst satırda günün tarihi işareti)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "gunluk-4-oyun-sonu.png",
+      "baslik": "Günlük el oyun sonu: Günün yıldızı satırı",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "gunluk-5-ben-odul.png",
+      "baslik": "Ben → Ödüller → Aylık ödüller (tamamlanan ay, yer tutucu rozet)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "gunluk-6-onceki-ay.png",
+      "baslik": "Takvim: önceki ay (bütün günler yıldızlı, ay tamamlandı)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "gunluk-7-takvim-sonra.png",
+      "baslik": "Takvim: bugün kazanıldıktan sonra",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "gunluk-8-ana-yildizli.png",
+      "baslik": "Ana ekran: bugün kazanıldı, kartta yıldız",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "gunluk-9-takvim-en.png",
+      "baslik": "Takvim İngilizce (ay ve gün adları dile göre)",
+      "tarih": "2026-11-15",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
     {
       "dosya": "ana-1-ana-ekran.png",
       "baslik": "Ana ekran (yarım el varken: Oyuna devam et açık; ince kenar)",
       "tarih": "2026-11-15",
-      "cihaz": "telefon (dikey, 390x844)",
-      "kapak": true
+      "cihaz": "telefon (dikey, 390x844)"
     },
     {
       "dosya": "ana-2-ben.png",

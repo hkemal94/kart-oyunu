@@ -31,20 +31,4 @@ export function SekmeCubugu({ secili, sec }: { secili: Sekme; sec: (s: Sekme) =>
   );
 }
 
-// Mücadeleler sekmesi: günlük mücadele (8. paket) ve kartpostal etkinliği (9. paket) gelene kadar yer tutucu.
-export function Mucadeleler() {
-  return (
-    <main className="sekme-ekrani mucadeleler">
-      <h1 className="sekme-baslik">{m('mucadele.baslik')}</h1>
-      <div className="ana-kartlar dikey">
-        {(['ana.gunluk', 'ana.etkinlik'] as const).map((a) => (
-          <div key={a} className="ana-kart kapali" aria-disabled="true">
-            <span className="ana-kart-ad">{m(a)}</span>
-            <small>{m('ana.yakinda')}</small>
-          </div>
-        ))}
-      </div>
-      <p className="yer-tutucu-yazi">{m('mucadele.yerTutucu')}</p>
-    </main>
-  );
-}
+// Mücadeleler sekmesi (8. paket): src/ekranlar/Gunluk.tsx

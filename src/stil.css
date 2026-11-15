@@ -275,3 +275,53 @@ button:disabled { cursor: default; }
 .masa-dugmeler .dugme { position: relative; flex: 1 1 0; flex-direction: column; gap: 3px; min-height: 60px; padding: 8px 2px 6px; border-radius: 16px; font-size: clamp(12px, 3.3vw, 14px); }
 .masa-dugmeler .simge { width: 22px; height: 22px; }
 .masa-dugmeler .hak { position: absolute; top: 5px; right: 6px; }
+
+/* Günlük mücadele (8. paket): yıldız, takvim, günün seçimi, ana ekrandaki günün kartı, masadaki
+   küçük işaret, oyun sonundaki "Günün yıldızı", aylık ödül rozetleri. Yıldız kodla çizilir. */
+.yildiz { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linejoin: round; }
+.yildiz.dolu { fill: var(--kiremit); stroke: var(--kiremit); }
+
+.takvim { background: var(--lacivert); color: var(--krem); border-radius: 16px; padding: 10px 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.takvim-ust { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.takvim-ok { flex: none; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(243, 239, 232, 0.25); border-radius: 50%; background: transparent; color: var(--krem); }
+.takvim-ok:disabled { opacity: 0.25; }
+.takvim-ok .simge { width: 18px; height: 18px; }
+.takvim-baslik { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.takvim-baslik strong { font-size: 18px; font-weight: 600; }
+.takvim-baslik span { display: flex; align-items: center; gap: 4px; font-size: 12px; opacity: 0.75; font-variant-numeric: tabular-nums; }
+.takvim-izgara { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.takvim-gun-adi { text-align: center; font-size: 11px; font-weight: 600; opacity: 0.55; padding-bottom: 2px; }
+.takvim-gun { aspect-ratio: 1; max-height: clamp(36px, 5.6vh, 52px); width: 100%; justify-self: center; display: flex; align-items: center; justify-content: center; border: none; border-radius: 10px; background: rgba(243, 239, 232, 0.08); color: var(--krem); font-size: 14px; font-variant-numeric: tabular-nums; padding: 0; }
+.takvim-gun .yildiz { width: 22px; height: 22px; }
+.takvim-gun.gelecek { opacity: 0.3; background: transparent; }
+.takvim-gun.bugun { box-shadow: inset 0 0 0 2px var(--kiremit); font-weight: 600; }
+.takvim-gun.secili { background: var(--krem); color: var(--lacivert); font-weight: 600; }
+.takvim-gun.yarim span { text-decoration: underline; text-decoration-color: var(--kiremit); text-underline-offset: 3px; text-decoration-thickness: 2px; }
+.takvim-odul { margin: 0; text-align: center; font-size: 12px; font-weight: 600; opacity: 0.85; }
+
+.gunluk-secim { background: rgba(14, 28, 79, 0.06); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.gunluk-secim-ust { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.gunluk-secim-ust strong { font-size: 16px; font-weight: 600; margin-right: auto; }
+.rozet-acik { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; background: var(--lacivert); color: var(--krem); padding: 3px 8px; border-radius: 999px; }
+.gunluk-secim .secenekler button { border-color: rgba(14, 28, 79, 0.25); color: var(--lacivert); padding: 8px 4px; font-size: 13px; }
+.gunluk-secim .secenekler button.secili { background: var(--lacivert); color: var(--krem); border-color: var(--lacivert); }
+.gunluk-kilitli { margin: 0; padding: 14px; text-align: center; font-size: 13px; opacity: 0.6; border: 1px dashed rgba(14, 28, 79, 0.25); border-radius: 12px; }
+.mucadeleler .gunluk-etkinlik { flex-direction: row; align-items: center; min-height: 0; padding: 12px 14px; }
+
+.ana-kart.gunluk-kart { border: none; text-align: left; font: inherit; color: var(--krem); }
+.gunluk-kart-tarih { display: flex; align-items: center; gap: 5px; font-size: 13px; opacity: 0.85; }
+.ana-kart.gunluk-kart small { background: var(--kiremit); color: var(--krem); padding: 3px 12px; }
+.ana-kart.gunluk-kart.kazanildi small { background: rgba(243, 239, 232, 0.18); }
+
+.gunluk-isaret { display: inline-flex; align-items: center; gap: 3px; margin-left: 8px; padding: 1px 8px; border-radius: 999px; background: rgba(243, 239, 232, 0.14); font-size: 0.8em; font-weight: 600; vertical-align: 1px; }
+.gunluk-isaret .yildiz { width: 11px; height: 11px; }
+
+.gunun-yildizi { display: flex; align-items: center; justify-content: center; gap: 6px; margin: -2px 0 2px; font-size: 15px; font-weight: 600; }
+.gunun-yildizi .yildiz { width: 20px; height: 20px; }
+.gunun-yildizi small { font-weight: 400; opacity: 0.6; font-size: 12px; }
+.ayin-odulu-sonu { margin: -4px 0 4px; font-size: 12px; opacity: 0.75; }
+
+.aylik-oduller { display: flex; flex-wrap: wrap; gap: 6px; }
+.aylik-rozet { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 6px 8px; border-radius: 10px; background: rgba(243, 239, 232, 0.12); font-size: 11px; }
+.aylik-rozet b { font-weight: 600; }
+.aylik-rozet small { font-size: 9px; opacity: 0.7; }

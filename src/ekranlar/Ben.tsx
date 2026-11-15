@@ -3,9 +3,10 @@ import { sureYazisi } from './masaOrtak';
 import { istatistikOku, istatistikYukle } from '../oyun/istatistik';
 import { puanAnahtari } from '../kart/puan';
 import { oyunAdi } from './AnaEkran';
+import { AylikOduller } from './Gunluk';
 
 // Ben sekmesi (yol haritası 7; belge 2 ve 8.4; Kemal, 15 Kasım):
-// ödüller (aylık ödüller ve kartpostal koleksiyonu; şimdilik boş yer tutucu), istatistik, ayarlar
+// ödüller (aylık ödüller, 8. paketle; kartpostal koleksiyonu şimdilik boş yer tutucu), istatistik, ayarlar
 // (mevcut ayarlar ekranı üstüne açılır), nasıl oynanır, yardım, oyun hakkında, gizlilik (son üçü
 // yer tutucu). Satıra dokununca alt sayfa açılır; "Geri" listeye döner.
 
@@ -39,12 +40,15 @@ export function Ben({ sayfa, sayfaAc, ayarAc }: Ozellik) {
       <section className="ben-bolum">
         <h2>{m('ben.oduller')}</h2>
         <div className="odul-kartlari">
-          {(['ben.aylik', 'ben.koleksiyon'] as const).map((a) => (
-            <div key={a} className="odul-karti">
-              <span>{m(a)}</span>
-              <small>{m('ben.bos')}</small>
-            </div>
-          ))}
+          {/* Aylık ödüller (8. paket): bütün günleri yıldızlanan aylar; görsel [Kemal] */}
+          <div className="odul-karti">
+            <span>{m('ben.aylik')}</span>
+            <AylikOduller />
+          </div>
+          <div className="odul-karti">
+            <span>{m('ben.koleksiyon')}</span>
+            <small>{m('ben.bos')}</small>
+          </div>
         </div>
       </section>
 
