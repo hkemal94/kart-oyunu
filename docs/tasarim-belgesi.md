@@ -23,6 +23,17 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **15 Kasım (soru turu):** Geri al sınırlı: her elde birkaç ücretsiz hak, fazlası telefon
+  uygulamasında reklamla; web denemesinde haklar bitince "[YER TUTUCU: burada reklam olacak]"
+  kutusu ve bir düğme çıkar, dokununca bir hak gelir. Hak sayısını Kemal web denemesinde seçer
+  (sayı kodda tek yerde, adresle değişir). Geri almak hamle sayılır. İpucu sırası: önce diziyi
+  tamamlayan, sonra aynı takıma konan, sonra kapalı kartı açan, sonra öbürleri. Kartın kırmızısına
+  Sürek Kulübü destesi çizilince karar verilecek; o zamana kadar koyu kiremit. En iyi puan oyun ve
+  zorluk başına ayrı. Günlük mücadele eli puan serisine sayılır. Puan hesabı: ajans puan paketinde
+  2-3 aday getirir, Kemal seçer. Aylık ödül: her ay bir Düzada nesnesi ya da simgesi, hangileri
+  [Kemal]. Kartpostal yerlerini Kemal seçer. Kare sayısı, etkinlik süresi, renk ve zorluk web
+  denemesinde ayarlanabilir gelir, Kemal seçer (1.3, 5, 7, 8.1–8.3; kayıt:
+  `docs/soru-cevap/kart-oyunu-1.md`).
 - **15 Kasım (puan ve günlük mücadele):** Puan kazandıkça birikir: kazanılan elin puanı bir
   sonraki ele taşınır, aşama bir artar (Aşama 1, 2, 3…), yüksek aşama daha çok puan getirir;
   kaybedince ya da el yarımken yeni oyuna geçince seri biter, puan sıfırdan başlar; en yüksek seri
@@ -75,7 +86,8 @@ Sabitler (Kemal'in 14-11-2026 ve 15-11-2026 kararları):
 - **Yardımcılar:** geri al, ipucu, kendiliğinden bitirme, kaldığı yerden devam, süre ve hamle
   sayacı (ayarlardan kapatılabilir), basit istatistik; hepsi ilk sürümde (Kemal, 14 Kasım; 1.3).
   **İpucu telefon uygulamasında reklam izleyerek alınır** (Kemal, 15 Kasım: "örnekteki gibi");
-  web deneme sürümünde reklamsız. Geri al ücretsiz mi, sınırsız mı açık (7. bölüm).
+  web deneme sürümünde reklamsız. **Geri al sınırlı:** her elde birkaç ücretsiz hak, fazlası
+  telefon uygulamasında reklamla (Kemal, 15 Kasım soru turu; 1.3).
 - **Örnek oyun:** Kemal'in gösterdiği örnek Spider oyunu (15 Kasım). Yalnız oynanış şekli alınır
   (günlük mücadele, süreli resim etkinliği, puan, sekmeli ana ekran, para modeli); adı, görseli,
   kupa çizimleri ve metinleri belgeye ve depoya girmez (8. bölüm).
@@ -134,12 +146,21 @@ numaraları eski sırada kaldı.
 ### 1.3 İki oyunda ortak yardımcılar (Kemal, 14 Kasım)
 
 İlk sürümde altısı da var. 14 Kasım'da altısı da ücretsizdi; 15 Kasım'da (Kemal, "örnekteki gibi")
-ipucu telefon uygulamasında reklam izleyerek alınır hâle geldi. Öbür dördü (kendiliğinden bitirme,
-kaldığı yerden devam, sayaç, istatistik) ücretsiz kalır; geri al açık soru.
-- **Geri al.** Ücretsiz mi, sınırsız mı: [Kemal] (öneri: ücretsiz ve sınırsız; oyunun cezasız
-  havasına uyar). Kemal'in cevabı yok (7. bölüm).
+ipucu telefon uygulamasında reklam izleyerek alınır hâle geldi; 15 Kasım soru turunda geri al
+sınırlı oldu. Öbür dördü (kendiliğinden bitirme, kaldığı yerden devam, sayaç, istatistik) ücretsiz
+kalır.
+- **Geri al (Kemal, 15 Kasım soru turu):** sınırlı. Her elde birkaç ücretsiz hak var; yeni elde
+  haklar baştan başlar. Haklar bitince telefon uygulamasında reklam izleyerek bir hak daha alınır
+  (5. bölüm). Web denemesinde reklam yok: geri al'a basınca kısa bir kutu çıkar
+  ("[YER TUTUCU: burada reklam olacak]" ve bir düğme); düğmeye dokununca bir hak gelir. Bu,
+  telefon uygulamasındaki akışın denemesidir. Geri almak bir hamle sayılır (Kemal). Bir eldeki
+  hak sayısı [Kemal]: web denemesinde seçecek. Sayı kodda tek yerde tanımlı ve deneme için adres
+  sonuna `?geriAlHak=` yazılarak değişir; koddaki sayı yalnız deneme varsayılanıdır, karar değildir
+  (7. bölüm).
 - **İpucu:** bir sonraki olası hamleyi gösterir. Telefon uygulamasında **reklam izleyerek alınır**
-  (Kemal, 15 Kasım; 5. bölüm). Web deneme sürümünde reklamsız çalışır.
+  (Kemal, 15 Kasım; 5. bölüm). Web deneme sürümünde reklamsız çalışır. **Sıra (Kemal, 15 Kasım
+  soru turu):** önce diziyi tamamlayan hamle (papazdan asa aynı takım diziyi kuran), sonra aynı
+  takıma konan, sonra kapalı kartı açan, sonra öbürleri.
 - **Kendiliğinden bitirme:** bütün kartlar açılınca oyun kalanları kendisi yerleştirir.
 - **Kaldığı yerden devam:** uygulama kapanınca oyun kaybolmaz; ana ekranda "devam et" çıkar.
 - **Süre ve hamle sayacı:** masanın üst satırında; ayarlardan kapatılabilir.
@@ -150,8 +171,8 @@ uygun yere kendisi gider; sürüklemek de olur. Dikey ekranda tek başparmakla o
 dokunarak taşıma ana yol olur.
 
 Oyuncu ne yapar, neden eğlenceli: kısa, kendi hızında bir düzen kurma işi; her el yeni bir
-bulmaca, kaybetmenin cezası yok, yeni el bir dokunuş uzakta. Geri al ve ipucunun serbest olması
-takılınca bırakmak yerine denemeyi sürdürtür. Kulüp evinin masası ve çiftliğin sesi bunu "bir
+bulmaca, kaybetmenin cezası yok, yeni el bir dokunuş uzakta. Her elin ücretsiz geri al hakları ve
+ipucu takılınca bırakmak yerine denemeyi sürdürtür. Kulüp evinin masası ve çiftliğin sesi bunu "bir
 yerde oturup oyun açmak" hissine çevirir.
 
 ## 2. Ekranlar
@@ -351,7 +372,7 @@ Fiyat ve sıklık sonra (veri yok). 15 Kasım (Kemal, örnek oyun için "örnekt
 izleyerek alınır, el bitince reklam girer, bir kez satın alınınca reklam kalkar. Reklam sıklığı ve
 fiyat [Kemal].
 - **Ücretsiz:** iki oyun, bütün zorluklar, iki deste (Sürek Kulübü destesi ve sade deste; Kemal,
-  14 Kasım), kulüp evi masası, ipucu dışındaki yardımcılar (geri al açık soru; 1.3), günlük
+  14 Kasım), kulüp evi masası, ipucu dışındaki yardımcılar (geri al her elde birkaç hakla; 1.3), günlük
   mücadele ve kartpostal etkinliği (öneri). Oyunun kendisi kilitlenmez (öneri).
 - **Paketler:** yeni deste (arka yüz ve figür tasarımları) ve yeni masa (mekân ve sesi). Fiyat: veri
   yok. Paket içerikleri Kemal'in. **İlk sürümde bir masa ve bir deste paketi kilitli gelir**
@@ -371,6 +392,8 @@ fiyat [Kemal].
     - kilitli masayı (Sade Meyhane) bir el boyunca deneme;
     - kilitli desteyi bir el boyunca deneme.
     - ipucu (Kemal, 15 Kasım: "örnekteki gibi").
+    - geri al hakkı (Kemal, 15 Kasım soru turu): elin ücretsiz hakları bitince bir izlemede bir
+      hak daha. Yeri masadaki geri al düğmesi; haklar bitince oyuncu dokununca kısa kutu çıkar.
     - Deneme süresi: **bir el** (Kemal, 15 Kasım). Deneme o elin sonunda (kazanınca ya da "yeni el"e
       geçince) biter, masa ya da deste oyuncunun kendi seçtiğine döner.
     - Yarım kalan el (öneri): uygulama kapanıp "devam et" ile dönülürse deneme o el bitene kadar
@@ -387,7 +410,9 @@ fiyat [Kemal].
     (öneri: ipucu reklamsız gelir; deneme isteğe bağlı olduğu için durabilir).
 - **Web sürümü: yalnız deneme** (Kemal, 15 Kasım gece). Kemal ve yakın çevresi bağlantıyla dener;
   **web'de reklam ve satın alma yok**. Gerçek reklam ve satın alma yalnız telefon uygulamasıyla
-  gelir (6. bölüm). **İpucu web'de reklamsız çalışır** (Kemal, 15 Kasım). Web'de paketler ekranı
+  gelir (6. bölüm). **İpucu web'de reklamsız çalışır** (Kemal, 15 Kasım). Geri al hakları bitince
+  web'de reklam yerine "[YER TUTUCU: burada reklam olacak]" kutusu çıkar; düğmesi bir hak verir
+  (Kemal, 15 Kasım soru turu; 1.3). Web'de paketler ekranı
   ve düğmeler yer tutucu olarak durur; deneyenler kilitli
   masayı görebilsin diye deneme sürümünde Sade Meyhane açık ya da ayarlardan açılabilir olabilir
   (öneri; karar Kemal'in).
@@ -454,28 +479,40 @@ artar; kaybedince ya da el bırakılınca seri biter; en iyi puan en yüksek ser
 (oyuncu seçer), "ay dolunca" (ayın bütün günleri yıldızlanınca), geçmiş günler (sonradan
 oynanabilir).
 
+15 Kasım (soru turu) kapananlar (Kemal; kayıt `docs/soru-cevap/kart-oyunu-1.md`): geri al (sınırlı;
+her elde birkaç ücretsiz hak, fazlası telefon uygulamasında reklamla; web'de "reklam yerine" kutusu
+bir hak verir), geri almak hamle sayılır mı (evet), ipucu sırası (diziyi tamamlayan, aynı takım,
+kapalı kartı açan, öbürleri), en iyi puan (oyun ve zorluk başına ayrı), günlük mücadele eli seriye
+sayılır mı (evet; kazanınca aşama artar, kaybedince seri biter), aylık ödülün türü (her ay bir
+Düzada nesnesi ya da simgesi), puan hesabının yolu (ajans 2-3 aday getirir, Kemal seçer).
+Ertelenen: kartın kırmızısı (Sürek Kulübü destesi çizilince).
+
 Açık kalanlar:
+- **Geri al hak sayısı:** bir elde kaç ücretsiz hak: [Kemal], web denemesinde seçecek (Kemal, 15
+  Kasım soru turu). Kodda deneme varsayılanı var, karar değil; adres sonuna `?geriAlHak=` yazılarak
+  denenir (1.3).
 - **İlk kilitli deste:** içeriği ne. Kemal: sonra (15 Kasım gece). Adaylar 4.2'de kayıtta.
 - **Sade Meyhane masası:** ne görüneceği ve web denemesinde açık mı duracağı; görseli gelince
   (Kemal, 15 Kasım). Künyede yalnız taş fabrika binası, koya bakan yamaç ve otelin yanı var.
-- **Geri al:** ücretsiz mi, sınırsız mı: [Kemal] (öneri: ücretsiz ve sınırsız; Kemal'e soru 1).
-  Kemal'in cevabı yok.
-- **Kartpostal yerleri:** hangi Düzada yerleri, hangi sırayla: [Kemal] (Kemal'e soru 3).
-- **Kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi:** [Kemal] (Kemal'e soru 4).
-- **Aylık ödülün görseli:** [Kemal]; örnekteki kupa kopyalanmaz (Kemal'e soru 5).
-- **Puan formülü ve aşama artışı:** yapı belli (8.3); aşama başına artış, süre ve hamlenin payı ve
-  formül [Kemal]; öneri: ajans yapım sırasında aday getirir (Kemal'e soru 6).
-- **En iyi puan:** oyun ve zorluk başına mı, tek mi: [Kemal] (öneri: oyun ve zorluk başına; Kemal'e
-  soru 7).
+- **Kartpostal yerleri:** hangi Düzada yerleri, hangi sırayla: [Kemal seçecek] (Kemal, 15 Kasım
+  soru turu: "ben seçerim"; ad vermedi).
+- **Kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi:** web denemesinde ayarlanabilir gelir,
+  Kemal seçer (Kemal, 15 Kasım soru turu). Sayılar [Kemal].
+- **Aylık ödül nesneleri:** her ay bir Düzada nesnesi ya da simgesi (Kemal, 15 Kasım soru turu);
+  hangileri olacağı [Kemal]. Örnekteki kupa kopyalanmaz.
+- **Puan adayları:** yapı belli (8.3); aşama başına artış, süre ve hamlenin payı ve formül için
+  ajans puan paketi (yol haritası 6) yapılırken 2-3 aday getirir, Kemal seçer (Kemal, 15 Kasım soru
+  turu).
 - **Eli bırakma sorusunun metni:** [YER TUTUCU], Kemal onaylar (2. bölüm).
 - **El sonu reklamı:** birkaç elde bir (Kemal, 15 Kasım); kaç elde bir ve ilk kaç oyunda hiç
   yok: [Kemal]. Reklamsız satın alınınca ipucu reklamsız mı: [Kemal].
-- **Günlük mücadele ve seri:** günlük mücadele eli 8.3'teki seriye sayılır mı, ayrı mı: [Kemal]
-  (8.1; Kemal'e soru 8). Aynı gün aynı zorlukta herkese aynı dağıtım: öneri, Kemal'in onayı yok (8.1).
+- **Günlük mücadelede dağıtım:** aynı gün aynı zorlukta herkese aynı dağıtım: öneri, Kemal'in onayı
+  yok (8.1).
 - **Kart köşesindeki harfler:** dile göre değişsin mi (öneri: değişir). İskelette iki dilde de
   A, J, Q, K; harfler metin dosyasında, karar gelince yalnız orası değişir.
-- **Kartın kırmızısı:** kiremit (#F26B6F) krem kartın küçük köşesinde zor okunuyor; iskelette
-  kiremidin koyusu (#B8383D) kullanıldı (öneri; Kemal'e soru 2).
+- **Kartın kırmızısı:** kiremit (#F26B6F) krem kartın küçük köşesinde zor okunuyor. Kemal (15 Kasım
+  soru turu): Sürek Kulübü destesi çizilince karar verilecek; o zamana kadar kiremidin koyusu
+  (#B8383D) kalır.
 - **Reklam sayıları ve fiyat:** reklam sıklığı, bir izlemede kaç ipucu, fiyatlar: [Kemal], deneme sonrası.
 - **Oyunun adı:** [ad: Kemal]. İstenirse ajans yalnız aday listesi verir. Oyun logosu ertelendi.
 - **Sonraki masalar:** 3.3'teki adaylar hangi sırayla paket olur.
@@ -497,8 +534,11 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
   günün eli açılır. Sonradan kazanılan geçmiş gün de yıldız alır (öneri; aylık ödül bütün günleri
   istediği için).
 - **Aylık ödül ayın bütün günleri yıldızlanınca gelir** (Kemal, 15 Kasım); Ben sekmesindeki
-  "ödüller"de durur. Ödülün görseli [Kemal]; örnekteki kupa çizimi kopyalanmaz.
-- Günlük mücadele eli 8.3'teki seriye sayılır mı, ayrı mı: [Kemal] (Kemal'e soru 8).
+  "ödüller"de durur. **Her ay bir Düzada nesnesi ya da simgesi** (Kemal, 15 Kasım soru turu);
+  hangileri olacağı [Kemal]. Örnekteki kupa çizimi kopyalanmaz. Yalnız künyede olan nesne ve
+  simgeler çizilir; görsel üretimi Kemal onayıyla.
+- **Günlük mücadele eli puan serisine sayılır** (Kemal, 15 Kasım soru turu): kazanınca serinin
+  aşaması artar, kaybedince seri biter (8.3). Önceki öneri ("ayrı tutulsun") düştü.
 - Takvim Mücadeleler sekmesinde; ana ekranın üstünde günün kartı.
 
 ### 8.2 Kartpostal etkinliği
@@ -508,11 +548,12 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
 - Biten resim koleksiyona girer (Ben sekmesi, ödüller). Önceki resim açılmadan sonraki kilitli
   kalır (Kemal).
 - Resimler **Düzada kartpostalları** (Kems'in önerisi; Kemal "Kartpostal etkinliği"ni seçti).
-  Hangi yerlerin olacağı [Kemal]. Yalnız künyede olan yerler çizilir; her görselden önce yer
+  Hangi yerlerin olacağı [Kemal seçecek] (Kemal, 15 Kasım soru turu: "ben seçerim"). Yalnız künyede olan yerler çizilir; her görselden önce yer
   künyede ve vikide okunur (ortak kurallar, "Çizmeden önce yerine bak"). Kartpostalda yer adı ya
   da yazı olup olmayacağı [Kemal].
-- Kare sayısı: [Kemal]. Etkinlik süresi: [Kemal]. Renk ve zorluk eşleşmesi: [Kemal]. Uydurma sayı
-  yok.
+- Kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi **web denemesinde ayarlanabilir gelir,
+  Kemal seçer** (Kemal, 15 Kasım soru turu). Sayılar [Kemal]; kodda yalnız işaretli deneme
+  varsayılanı durur. Uydurma sayı yok.
 - Etkinlik süresi bitince yarım resim ne olur: [Kemal].
 - Görseller ayrı bir görsel paketiyle gelir (yol haritası); o zamana kadar yer tutucu resim.
 
@@ -526,10 +567,12 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
   - Kaybedince ya da el yarımken yeni oyuna geçince seri biter, puan sıfırdan başlar ve Aşama 1'e
     döner. El yarımken yeni oyuna geçmeden önce onay sorusu çıkar (2. bölüm, "Eli bırakma").
   - **En iyi puan = en yüksek seri puanı** (Kemal, 15 Kasım).
-- Aşama başına artış, süre ve hamlenin payı ve formül: [Kemal] (uydurma sayı yok). Öneri: ajans
-  yapım sırasında aday getirir (yaygın solitaire puanlama yollarından biri), Kemal seçer.
-- En iyi puan oyun ve zorluk başına mı, tek mi: [Kemal] (öneri: oyun ve zorluk başına; Kemal'e
-  soru 7).
+- Aşama başına artış, süre ve hamlenin payı ve formül: [Kemal] (uydurma sayı yok). **Ajans puan
+  paketi (yol haritası 6) yapılırken 2-3 aday getirir, Kemal seçer** (Kemal, 15 Kasım soru turu).
+- **En iyi puan oyun ve zorluk başına ayrı** (Kemal, 15 Kasım soru turu): ör. 1 renk Spider ile
+  4 renk Spider'ın en iyi puanı ayrı saklanır.
+- **Günlük mücadele eli seriye sayılır** (Kemal, 15 Kasım soru turu; 8.1): kazanınca aşama artar,
+  kaybedince seri biter.
 - Kaldığı yerden devam (1.3): uygulama kapanınca seri bitmez; yarım el "devam et" ile sürer (öneri;
   eli bırakmak yalnız "yeni oyun" ya da "yeni el" ile olur).
 - Ayarlarda "her hamlede puanı göster" (Kemal): açıksa masanın bilgi satırında puan görünür.
@@ -542,28 +585,16 @@ kadar `[YER TUTUCU: …]` durur. Gizlilik metni telefon adımında gerekir (6. b
 
 ## Kemal'e sorular
 
-1. Kart oyunu: Geri al ücretsiz ve sınırsız mı olsun? Neden: ipucu reklama bağlandı, geri al
-   açıkta kaldı; oyunda ceza yok. Adaylar: ücretsiz ve sınırsız (önerilen) · ücretsiz ama sınırlı,
-   fazlası reklamla · sonra karar veririm, web denemesinden sonra.
-2. Kart oyunu: Kartlardaki kırmızı hangi ton olsun? Neden: marka kitinin kiremidi krem kartta
-   küçük köşede zor okunuyor. Adaylar: kiremidin koyusu (önerilen; iskelette bu) · kiremidin
-   kendisi · klasik iskambil kırmızısı · Sürek Kulübü destesi gelince karar veririm.
-3. Kart oyunu: Kartpostallarda hangi Düzada yerleri olsun? Neden: resimleri çizmeden önce yerin
-   künyede olması gerek. Adaylar (künyede olan yerler): masa adaylarıyla aynı yerler (kulüp evi,
-   Sade Meyhane, Merkez meydanı, Liman, Deniz Feneri; önerilen) · her mahalleden bir yer · ben
-   seçerim.
-4. Kart oyunu: Kartpostal etkinliğinde kare sayısı, etkinlik süresi ve kare renklerinin zorluk
-   karşılığı ne olsun? Neden: sayı uydurulmaz. Adaylar: web denemesinde yer tutucuyla deneyip sonra
-   karar veririm (önerilen) · şimdi ben söylerim.
-5. Kart oyunu: Aylık ödülün görseli ne olsun? Neden: örnekteki kupa kopyalanmaz, bize ait bir şey
-   gerek. Adaylar: her ay bir Düzada nesnesi ya da simgesi, Kemal seçer (önerilen) · Sürek Kulübü
-   izli tek bir rozet, ay ay rengi değişir · ben söylerim.
-6. Kart oyunu: Puan nasıl hesaplansın? Neden: yapı belli (kazandıkça birikir, aşama artar; 15
-   Kasım), ama aşama başına artış ve süre ve hamlenin payı yok. Adaylar: ajans yapım sırasında
-   aday getirir, ben seçerim (önerilen) · şimdi ben söylerim.
-7. Kart oyunu: En iyi puan oyun ve zorluk başına mı olsun, tek mi? Neden: 1 renk Spider ile 4 renk
-   Spider'ın serisi aynı ölçüde değil. Adaylar: oyun ve zorluk başına (önerilen) · tek en iyi puan ·
-   web denemesinden sonra karar veririm.
-8. Kart oyunu: Günlük mücadele eli puan serisine sayılsın mı? Neden: günlük el kazanılınca seri
-   aşama alır mı, kaybedilince seri biter mi belli değil. Adaylar: ayrı tutulsun, seriye
-   dokunmasın (önerilen) · seriye sayılsın · sonra karar veririm.
+15 Kasım soru turunda sekiz sorunun hepsi cevaplandı (kayıt: `docs/soru-cevap/kart-oyunu-1.md`).
+Açık kalanlar sayı ya da seçim; web denemesinde ve ilgili paket gelince sorulur:
+
+1. Kart oyunu: Bir elde kaç ücretsiz geri al hakkı olsun? Neden: geri al sınırlı (15 Kasım); sayı
+   uydurulmaz, kodda yalnız deneme varsayılanı var. Nasıl denenir: adres sonuna `?geriAlHak=` ve
+   bir sayı. Adaylar: web denemesinde birkaç sayıyı deneyip seçerim (önerilen) · şimdi ben söylerim.
+2. Kart oyunu: Kartpostallarda hangi Düzada yerleri olsun? Kemal: "ben seçerim"; seçimi bekleniyor
+   (künyede olan yerlerden).
+3. Kart oyunu: Kartpostal etkinliğinde kare sayısı, etkinlik süresi, renk ve zorluk eşleşmesi?
+   Web denemesinde ayarlanabilir gelir (9. paket), Kemal seçer.
+4. Kart oyunu: Aylık ödülde hangi ay hangi Düzada nesnesi ya da simgesi? Günlük mücadele paketi
+   (8. paket) gelince sorulur.
+5. Kart oyunu: Puan hesabı: puan paketi (6. paket) yapılırken ajans 2-3 aday getirir, Kemal seçer.

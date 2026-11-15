@@ -3,6 +3,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import type { Kart, Takim } from '../src/kart/kart.ts';
 import { destedenDagit, geriAl, ipuclari, tasi, type SpiderMasasi } from '../src/kart/spider.ts';
+import {
+  GERI_AL_HAK_DENEME_VARSAYILANI,
+  geriAlHakSayisi,
+  hakBaslat,
+  hakKullan,
+  reklamHakkiEkle,
+  yeniElHakki,
+} from '../src/kart/geriAlHakki.ts';
 
 let sayac = 0;
 const k = (deger: number, takim: Takim = 'maca', acik = true): Kart => ({
@@ -119,4 +127,53 @@ test('ipucu: hamle yoksa ve deste doluysa "Dağıt"; hiçbir şey yoksa boş lis
   const deste = Array.from({ length: 10 }, () => k(2, 'maca', false));
   assert.deepEqual(ipuclari(masaKur(tikali(), { deste })), [{ tur: 'dagit' }]);
   assert.deepEqual(ipuclari(masaKur(tikali())), []);
+});
+
+test('ipucu: diziyi tamamlayan hamle, aynı takıma konandan önce gelir', () => {
+  const s = tikali();
+  s[0] = [k(4, 'kupa', false), ...dizi(2)]; // papazdan ikiliye maça; as konunca dizi kalkar
+  s[1] = [k(9, 'kupa', false), k(1)]; // as maça
+  s[2] = [k(7, 'kupa')];
+  s[3] = [k(5, 'sinek', false), k(6, 'kupa')]; // 6 kupa, 7 kupaya konabilir (aynı takım)
+  const masa = masaKur(s);
+  const liste = ipuclari(masa);
+  assert.deepEqual(liste[0], { tur: 'tasi', kaynak: 1, sira: 1, hedef: 0 });
+  const sonra = tasi(masa, 1, 1, 0);
+  assert.ok(sonra);
+  assert.deepEqual(sonra.tamamlanan, ['maca']);
+  assert.deepEqual(liste[1], { tur: 'tasi', kaynak: 3, sira: 1, hedef: 2 });
+});
+
+test('ipucu: zaten uygun kartın üstündeki as da diziyi tamamlıyorsa önerilir', () => {
+  const s = tikali();
+  s[0] = [...dizi(2)]; // papazdan ikiliye maça
+  s[1] = [k(2, 'kupa'), k(1)]; // as maça, uygun bir ikilinin (kupa) üstünde
+  const liste = ipuclari(masaKur(s));
+  assert.deepEqual(liste[0], { tur: 'tasi', kaynak: 1, sira: 1, hedef: 0 });
+});
+
+test('geri al hakkı: adresten okunur; yoksa ya da bozuksa deneme varsayılanı', () => {
+  assert.equal(geriAlHakSayisi('?geriAlHak=5'), 5);
+  assert.equal(geriAlHakSayisi('?dil=en&geriAlHak=0'), 0);
+  assert.equal(geriAlHakSayisi(''), GERI_AL_HAK_DENEME_VARSAYILANI);
+  assert.equal(geriAlHakSayisi('?geriAlHak=-2'), GERI_AL_HAK_DENEME_VARSAYILANI);
+  assert.equal(geriAlHakSayisi('?geriAlHak=iki'), GERI_AL_HAK_DENEME_VARSAYILANI);
+});
+
+test('geri al hakkı: haklar biter, reklam yerine verilen hak eklenir, yeni elde baştan başlar', () => {
+  const ilk = hakBaslat('?geriAlHak=2');
+  assert.deepEqual(ilk, { elBasi: 2, kalan: 2 });
+  const bir = hakKullan(ilk);
+  assert.ok(bir);
+  const iki = hakKullan(bir);
+  assert.ok(iki);
+  assert.equal(iki.kalan, 0);
+  assert.equal(hakKullan(iki), null); // hak bitti: geri al yapılmaz, kutu açılır
+  const reklamla = reklamHakkiEkle(iki);
+  assert.equal(reklamla.kalan, 1);
+  const son = hakKullan(reklamla); // reklamla gelen hak kullanılır
+  assert.ok(son);
+  assert.equal(son.kalan, 0);
+  assert.deepEqual(yeniElHakki(son), { elBasi: 2, kalan: 2 }); // yeni elde baştan
+  assert.deepEqual(yeniElHakki(reklamHakkiEkle(ilk)), { elBasi: 2, kalan: 2 }); // fazlası taşınmaz
 });

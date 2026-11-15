@@ -27,6 +27,10 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 - 15 Kasım 2026 (öneri; `ajans/geri-al-ipucu`): 4. paketin ilk iki maddesi, geri al ve ipucu
   (Kemal: "Geri al ve ipucunu yap"). Masanın altında tek satır: Geri al, İpucu, Yeni el, Oyun
   seçimi. Bilgisayarda telefon boyutunda denendi; gerçek telefonda denenmedi.
+- 15 Kasım 2026 (aynı öneri, soru turu sonrası): Kemal'in 15 Kasım soru turu işlendi (kayıt
+  `docs/soru-cevap/kart-oyunu-1.md`). Geri al artık her elde sınırlı hakla; haklar bitince
+  "reklam yerine" kutusu bir hak verir. İpucunda diziyi tamamlayan hamle önce gelir. Belge 1.3, 5,
+  7, 8.1–8.3 güncellendi.
 - Sırada: 3. paket, klasik solitaire; 4. paketin kalan maddeleri.
 
 ## Paketler
@@ -73,18 +77,27 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   ikinci kart açılır.
 - Neye bağlı: 2. paket.
 
-### 4. Yardımcılar · geri al ve ipucu bitti (`ajans/geri-al-ipucu`), kalanlar bekliyor
+### 4. Yardımcılar · geri al (hakla) ve ipucu bitti (`ajans/geri-al-ipucu`), kalanlar bekliyor
 
 - Geri al, ipucu, kendiliğinden bitirme, kaldığı yerden devam (telefonun tarayıcısında saklanır),
   süre ve hamle sayacı, basit istatistik. Alt şeritte geri al, ipucu, yeni el, menü; üstte ince
   sayaç satırı.
-- Geri al sınırı karar değil; karar gelene kadar sınırsız (öneri; belge 7).
+- Geri al sınırlı (Kemal, 15 Kasım soru turu): her elde birkaç ücretsiz hak, fazlası telefon
+  uygulamasında reklamla. Hak sayısı [Kemal], web denemesinde seçecek.
 - İpucu web'de reklamsız çalışır (Kemal, 15 Kasım); reklamla alınması telefon adımında.
 - **Geri al · bitti (Spider).** Son hamleyi geri getirir: taşıma, dağıtma, kendiliğinden açılan
-  kart, kalkan dizi. Arka arkaya basılabilir; Kemal'in kararına kadar sınırsız. Geri almak da
-  bir hamle sayılır (öneri; standart çözüm). Yeni elde geçmiş sıfırlanır.
+  kart, kalkan dizi. Geri almak bir hamle sayılır (Kemal, 15 Kasım soru turu). Yeni elde geçmiş
+  sıfırlanır.
+- **Geri al hakkı · bitti (Spider; Kemal, 15 Kasım soru turu).** Düğmenin yanında kalan hak
+  yazar. Haklar bitince geri al'a basınca kısa kutu çıkar: "[YER TUTUCU: burada reklam olacak]"
+  ve "Bir hak al"; dokununca bir hak gelir (telefon uygulamasındaki reklam akışının denemesi).
+  Yeni elde haklar baştan başlar. Hak sayısı kodda tek yerde (`src/kart/geriAlHakki.ts`); oradaki
+  sayı yalnız deneme varsayılanı, Kemal seçecek. Deneme için adres sonuna `?geriAlHak=5` gibi
+  yazılır. Reklamın takılacağı yer `src/reklam/geriAlHakki.ts` (ipucununkiyle aynı biçimde).
+  Ekran görüntüsü: `docs/ekran-goruntuleri/yardim-3-hak-bitti.png`.
 - **İpucu · bitti (Spider).** Bir hamleyi kısa süre parlatır (taşınacak kart ya da dizi ve
-  gideceği sütun). Sıra (öneri): aynı takıma konan, kapalı kartı açan, öbürleri; bir şey
+  gideceği sütun). Sıra (Kemal, 15 Kasım soru turu): diziyi tamamlayan, aynı takıma konan, kapalı
+  kartı açan, öbürleri; bir şey
   kazandırmayan hamle önerilmez. Arka arkaya basınca sıradaki ipucu gelir. Hamle yoksa "Dağıt"
   parlar; o da yoksa kısa uyarı. Reklamın takılacağı yer ayrıldı (`src/reklam/ipucuHakki.ts`);
   web'de hep serbest. Kurallar `src/kart/spider.ts`'te, testleri `testler/yardimcilar.test.ts`.
@@ -106,7 +119,9 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 - Süre ve hamleye göre çarpanlı puan, "tüm zamanların en iyisi"; oyun sonu ekranında ve ayar açıksa
   masanın bilgi satırında (belge 8.3).
-- Formül ve çarpanlar [Kemal]; standart çözüm sonra seçilir, ajans aday getirir.
+- Formül ve çarpanlar [Kemal]; bu paket yapılırken ajans 2-3 aday getirir, Kemal seçer (Kemal,
+  15 Kasım soru turu). En iyi puan oyun ve zorluk başına ayrı; günlük mücadele eli seriye sayılır
+  (Kemal, 15 Kasım soru turu).
 - Neye bağlı: 4. paket (süre ve hamle sayacı), Kemal'in formül kararı.
 
 ### 7. Ana ekran ve Ben sekmesi (Kemal, 15 Kasım; örnek oyun)

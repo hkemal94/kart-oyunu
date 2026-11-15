@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
 import { ipucuHakkiAl } from '../reklam/ipucuHakki';
+import { geriAlHakkiAl } from '../reklam/geriAlHakki';
+import { hakBaslat, hakKullan, reklamHakkiEkle, yeniElHakki } from '../kart/geriAlHakki';
 import { KartYuzu } from '../kart/KartYuzu';
 import type { RenkSayisi } from '../kart/kart';
 import {
@@ -22,7 +24,8 @@ import {
 // Üstte ince bilgi satırı (süre, hamle), ortada kartlar, altta tamamlanan diziler ve deste,
 // en altta düğmeler. Karta dokun, sonra sütuna dokun; ya da sürükle. Kurala uymayan taşımada
 // kart yerine döner ve hafifçe sallanır. Altta "Geri al" ve "İpucu" (4. paket): geri al son
-// hamleyi geri getirir; ipucu bir hamleyi kısa süre parlatır, arka arkaya basınca sıradaki gelir.
+// hamleyi geri getirir; her elde sınırlı hak var, bitince "reklam yerine" kutusu bir hak daha verir
+// (src/kart/geriAlHakki.ts). İpucu bir hamleyi kısa süre parlatır, arka arkaya basınca sıradaki gelir.
 
 const ARALIK = 3; // sütunlar arası boşluk (piksel)
 const SURUKLEME_ESIGI = 8; // bu kadar kayınca dokunuş değil sürükleme sayılır
@@ -66,6 +69,9 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
   const [red, setRed] = useState<Secim | null>(null);
   const [uyari, setUyari] = useState<MetinAnahtari | null>(null);
   const [gecmis, setGecmis] = useState<SpiderMasasi[]>([]); // geri al için önceki masalar
+  // Bir eldeki ücretsiz geri al hakkı; deneme için adresten değişir (?geriAlHak=)
+  const [geriAlHak, setGeriAlHak] = useState(() => hakBaslat(location.search));
+  const [reklamKutusu, setReklamKutusu] = useState(false); // haklar bitince "reklam yerine" kutusu
   const [ipucu, setIpucu] = useState<{ ipucu: Ipucu; sayi: number } | null>(null);
   const ipucuSirasi = useRef(0); // arka arkaya basınca sıradaki ipucu
   const [basladi, setBasladi] = useState(() => Date.now());
@@ -165,8 +171,21 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
     setSecim(null);
     const sonuc = geriAl(masa, gecmis);
     if (!sonuc) return;
+    const hak = hakKullan(geriAlHak);
+    if (!hak) {
+      setReklamKutusu(true);
+      return;
+    }
+    setGeriAlHak(hak);
     setMasa(sonuc.masa);
     setGecmis(sonuc.gecmis);
+  };
+
+  // Telefon uygulamasında burada reklam izlenir; web'de düğmeye dokununca hak gelir
+  // (src/reklam/geriAlHakki.ts)
+  const reklamHakkiAl = async () => {
+    if (await geriAlHakkiAl()) setGeriAlHak((h) => reklamHakkiEkle(h));
+    setReklamKutusu(false);
   };
 
   const ipucuBas = async () => {
@@ -187,6 +206,8 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
     setMasa(spiderDagit(renk));
     setEl((e) => e + 1);
     setGecmis([]);
+    setGeriAlHak(yeniElHakki); // haklar her elde baştan
+    setReklamKutusu(false);
     setSurukleme(null);
     setUyari(null);
     setBitis(null);
@@ -394,6 +415,9 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
             <path d="M5.5 3.5 2.5 6.5l3 3M3 6.5h6.5a4 4 0 0 1 0 8H7" />
           </svg>
           {m('masa.geriAl')}
+          <span className="hak" aria-label={m('masa.geriAlHak', geriAlHak.kalan)}>
+            {geriAlHak.kalan}
+          </span>
         </button>
         <button className="dugme ince" onClick={ipucuBas}>
           <svg className="simge" viewBox="0 0 16 16" aria-hidden="true">
@@ -408,6 +432,23 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
           {m('masa.geri')}
         </button>
       </nav>
+
+      {reklamKutusu && (
+        <div className="oyun-sonu hizli" onClick={() => setReklamKutusu(false)}>
+          <section
+            className="oyun-sonu-kutu"
+            role="dialog"
+            aria-label={m('masa.reklam.baslik')}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="kucuk">{m('masa.reklam.baslik')}</h2>
+            <p className="reklam-yeri">{m('masa.reklam.yerTutucu')}</p>
+            <button className="dugme ana genis" onClick={reklamHakkiAl}>
+              {m('masa.reklam.hakAl')}
+            </button>
+          </section>
+        </div>
+      )}
 
       {kazandi && (
         <div className="oyun-sonu">

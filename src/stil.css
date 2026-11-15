@@ -121,3 +121,9 @@ button:disabled { cursor: default; }
 .oyun-sonu-kutu dt { font-size: 12px; opacity: 0.6; }
 .oyun-sonu-kutu dd { margin: 2px 0 0; font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .dugme.ikincil { background: transparent; color: var(--lacivert); border: 1px solid rgba(14, 28, 79, 0.3); padding: 11px 36px; font-size: 15px; }
+
+/* Geri al hakkı (4. paket; Kemal, 15 Kasım soru turu): düğmedeki kalan hak ve "reklam yerine" kutusu */
+.masa-dugmeler .hak { min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; background: rgba(243, 239, 232, 0.18); font-size: 11px; line-height: 16px; font-variant-numeric: tabular-nums; }
+.oyun-sonu.hizli { animation-delay: 0s; animation-duration: 0.2s; }
+.oyun-sonu-kutu h2.kucuk { font-size: 18px; }
+.reklam-yeri { margin: 0 0 4px; padding: 26px 12px; border: 1px dashed rgba(14, 28, 79, 0.35); border-radius: 12px; font-size: 13px; opacity: 0.75; }

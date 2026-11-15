@@ -134,8 +134,8 @@ export function kazandiMi(masa: SpiderMasasi): boolean {
 // Yardımcılar (yol haritası, 4. paket; belge 1.3): geri al ve ipucu. Ekrandan ayrı.
 
 // Geri al: her hamleden önceki masa saklanır. Taşıma ya da dağıtma, kendiliğinden açılan kart ve
-// kalkan dizi aynı adımın içindedir; geri alınca hepsi birlikte geri gelir. Sınır yok (Kemal'in
-// kararına kadar; belge 7). Geri almak da bir hamle sayılır (öneri; standart çözüm).
+// kalkan dizi aynı adımın içindedir; geri alınca hepsi birlikte geri gelir. Geri almak da bir hamle
+// sayılır (Kemal, 15 Kasım soru turu). Hak sınırı burada değil, src/kart/geriAlHakki.ts'te.
 export interface GeriAlSonucu {
   masa: SpiderMasasi;
   gecmis: SpiderMasasi[];
@@ -152,8 +152,9 @@ export type Ipucu =
   | { tur: 'tasi'; kaynak: number; sira: number; hedef: number }
   | { tur: 'dagit' };
 
-// Masadaki işe yarar hamleler, öncelik sırasıyla (öneri): önce aynı takıma konan, sonra kapalı
-// kartı açan, sonra öbürleri. Hiç taşıma yoksa ve dağıtılabiliyorsa yalnız "Dağıt". Boş liste:
+// Masadaki işe yarar hamleler, öncelik sırasıyla (Kemal, 15 Kasım soru turu): önce diziyi
+// tamamlayan (papazdan asa aynı takım dizi kurup masadan kaldıran), sonra aynı takıma konan, sonra
+// kapalı kartı açan, sonra öbürleri. Hiç taşıma yoksa ve dağıtılabiliyorsa yalnız "Dağıt". Boş liste:
 // yapılacak bir şey yok. Bir şey kazandırmayan hamleler (sütunu olduğu gibi boş sütuna taşımak,
 // zaten uygun bir kartın üstündeki diziyi başka takıma taşımak) önerilmez.
 export function ipuclari(masa: SpiderMasasi): Ipucu[] {
@@ -172,8 +173,11 @@ export function ipuclari(masa: SpiderMasasi): Ipucu[] {
         const ust = h[h.length - 1];
         const ayniTakim = !!ust && ust.takim === kart.takim;
         if (h.length === 0 && sira === 0) return; // sütunu boş sütuna taşımak bir şey değiştirmez
-        if (altUygun && !(ayniTakim && alt.takim !== kart.takim)) return;
-        const puan = (ayniTakim ? 4 : 0) + (kartAcar ? 2 : 0) + (h.length > 0 ? 1 : 0);
+        // Taşıma bir diziyi tamamlıyor mu: tamamlanan dizi sayısı artar
+        const sonuc = tasi(masa, kaynak, sira, hedef);
+        const diziTamamlar = !!sonuc && sonuc.tamamlanan.length > masa.tamamlanan.length;
+        if (!diziTamamlar && altUygun && !(ayniTakim && alt.takim !== kart.takim)) return;
+        const puan = (diziTamamlar ? 8 : 0) + (ayniTakim ? 4 : 0) + (kartAcar ? 2 : 0) + (h.length > 0 ? 1 : 0);
         adaylar.push({ ipucu: { tur: 'tasi', kaynak, sira, hedef }, puan });
       });
     }
