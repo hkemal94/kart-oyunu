@@ -49,6 +49,13 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   yuvası yok, yalnız "2/8" sayacı. Klasik solitaire'de aralık da ekrana göre; düzeni aynı.
   Bilgisayarda 320x640, 390x844 ve 430x932 boyutlarında denendi (taşma yok); gerçek telefonda
   denenmedi. Ekran görüntüleri: `docs/ekran-goruntuleri/duzen-*.png`.
+- 15 Kasım 2026 (öneri; `ajans/ayarlar-dil`, `ajans/spider-duzen`'in üstünde): 5. paket, ayarlar
+  ve iki dil. Oyun seçimindeki "Ayarlar" açıldı, masada küçük ayar düğmesi; ses, mahalle sesi ve
+  titreşim anahtarları (ses paketi gelince), sol el düzeni, sayaçları gizle, her hamlede puanı
+  göster, dil (Türkçe / English), deste (sade). Dil anında değişir, ayarlar saklanır. KKM için
+  `docs/ekran-goruntuleri/liste.json` ve `src/oyun/ayarlar.json` (geri al hakkı, puan adayı ve
+  adayların sayıları; oyun bu dosyadan okur). Bilgisayarda telefon boyutunda denendi; gerçek
+  telefonda denenmedi.
 - Sırada: 4. paketin kalan maddeleri (kendiliğinden bitirme, kaldığı yerden devam, istatistik).
 
 ## Paketler
@@ -146,12 +153,26 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   5. pakette.
 - Neye bağlı: 2. ve 3. paket.
 
-### 5. Ayarlar ve iki dil
+### 5. Ayarlar ve iki dil · bitti (`ajans/ayarlar-dil`; Kemal birleştirince kesinleşir)
 
 - Ayarlar ekranı (ses ve mahalle sesi ayrı, dil, sol el düzeni, sayaçları gizle, deste seçimi).
   Dil seçimi ekrandan (şimdilik telefonun diline göre). Sade destenin dört renkli hâli (öneri).
   Kart köşesindeki harflerin dile göre değişmesi açık soru. Titreşim ve "her hamlede puanı göster"
   (Kemal, 15 Kasım; puan 6. pakette gelince çalışır).
+- Yapılan: ayarlar ekranı `src/ekranlar/Ayarlar.tsx`; ayarların saklanması ve açılış dili
+  `src/oyun/oyuncuAyarlari.ts`; testleri `testler/ayarlar.test.ts` (saklama, bozuk kayıt, dil
+  değişimi, iki dil dosyasının aynı anahtarları). Oyun seçimindeki "Ayarlar" ve masanın üst
+  satırındaki küçük düğme açar; kapanınca el sürer. Ses, mahalle sesi, titreşim: anahtar duruyor,
+  "Ses paketi gelince" yazıyor (12. paket). Sol el: alt şeritteki düğmeler ve deste yer değiştirir;
+  klasik solitaire'de üst sıra ayna gibi. Sayaçları gizle: süre ve hamle görünmez. Puanı göster
+  kapalıysa puan ve aşama görünmez. Dil: Türkçe / English, anında bütün ekran. Deste: yalnız sade
+  deste. Ekran görüntüleri: `docs/ekran-goruntuleri/ayar-*.png`.
+- KKM için (Kemal, 15 Kasım): `docs/ekran-goruntuleri/liste.json` (KKM'nin Ekran görüntüleri
+  sekmesi) ve `src/oyun/ayarlar.json` (KKM'nin Ayarlar sekmesi: geri al hakkı, puan adayı, üç
+  adayın sayıları). Oyun bu sayıları dosyadan okur; `?geriAlHak=` ve `?puan=` deneme için çalışır.
+- Bu pakette yok: sade destenin dört renkli hâli (öneri; deste seçimine ikinci seçenek olarak
+  sonra), kart köşesindeki harflerin dile göre değişmesi (Kemal'e soru; şimdilik iki dilde A, J,
+  Q, K), seslerin kendisi (12. paket).
 
 ### 6. Puan ve en iyi puan (Kemal, 15 Kasım; örnek oyun) · bitti (formül seçimi Kemal'de; `ajans/puan`)
 
@@ -250,6 +271,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ## Bitenler
 
+- 5. Ayarlar ve iki dil, KKM ayar dosyası ve ekran görüntüsü listesiyle (`ajans/ayarlar-dil`,
+  15 Kasım 2026; önce `ajans/spider-duzen`, sonra bu birleşince kesinleşir).
 - Spider düzeni (Kemal 15 Kasım): büyüyen kartlar, ekrana göre aralık, dar yelpaze alt şerit;
   klasik solitaire'de ekrana göre aralık (`ajans/spider-duzen`, 15 Kasım 2026; Kemal birleştirince
   kesinleşir).

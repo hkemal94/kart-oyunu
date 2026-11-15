@@ -96,7 +96,8 @@ Sabitler (Kemal'in 14-11-2026 ve 15-11-2026 kararları):
   dener; **web'de reklam ve satın alma yok**. Herkese açık web oyunu yok.
 - **Ekran yönü:** **dikey** (Kemal, 14-11-2026). Öbür oyunlardan farklı olarak telefon dik tutulur.
 - **Dil:** ilk sürüm **Türkçe ve İngilizce** (Kemal, 14 Kasım). Oyun açılırken telefonun diline
-  göre başlar, ayarlardan değiştirilir (öneri).
+  göre başlar, ayarlardan değiştirilir (öneri; 5. paketle yapıldı: seçim anında bütün ekranı
+  değiştirir ve saklanır).
 - **Yardımcılar:** geri al, ipucu, kendiliğinden bitirme, kaldığı yerden devam, süre ve hamle
   sayacı (ayarlardan kapatılabilir), basit istatistik; hepsi ilk sürümde (Kemal, 14 Kasım; 1.3).
   **İpucu telefon uygulamasında reklam izleyerek alınır** (Kemal, 15 Kasım: "örnekteki gibi");
@@ -215,7 +216,7 @@ bırakılır (öneri).
 - **Ben sekmesi (Kemal, 15 Kasım):** ödüller (aylık ödüller ve kartpostal koleksiyonu), ayarlar,
   nasıl oynanır, yardım, oyun hakkında, gizlilik. İstatistik ve paketlerin yeri: öneri, bu sekme;
   karar Kemal'in.
-- **Masa:** üstte ince bilgi satırı (süre, hamle; ayarda açıksa puan ve aşama; küçük ve sessiz, kapatılabilir; ayarlar gelene kadar puan hep görünür, 6. paket), ortada oyun
+- **Masa:** üstte ince bilgi satırı (süre, hamle; ayarda açıksa puan ve aşama; küçük ve sessiz, kapatılabilir; sonunda küçük ayar düğmesi, 5. paket), ortada oyun
   alanı, arkada seçili masa (kulüp evi ya da Sade Meyhane), altta başparmak hizasında ince bir
   şerit: geri al, ipucu, yeni el, menü. Deneme elinde bilgi satırında küçük, sessiz bir "deneme"
   izi (öneri). Bilgi satırında o anki aşama da görünebilir (öneri; "Aşama 1, 2, 3…", 8.3).
@@ -243,6 +244,17 @@ bırakılır (öneri).
 - **Ayarlar (öneri):** ses ve mahalle sesi ayrı ayrı, dil (Türkçe / İngilizce), sol el düzeni,
   sayaçları gizle, deste seçimi. **Titreşim** ve **"her hamlede puanı göster"** (Kemal, 15 Kasım).
   Ayarlar Ben sekmesindedir.
+  **Yapılan (5. paket, `ajans/ayarlar-dil`):** Ben sekmesi gelene kadar ayarlar oyun seçimindeki
+  "Ayarlar" düğmesinden ve masanın üst satırındaki küçük düğmeden açılır; ekranın üstüne gelir,
+  kapanınca el kaldığı yerden sürer. Üç bölüm: ses ve titreşim (ses, mahalle sesi, titreşim; ses
+  paketi gelince çalışır, anahtarlar şimdiden duruyor), masa (sol el düzeni, sayaçları gizle, her
+  hamlede puanı göster), dil ve deste (Türkçe / English; deste şimdilik yalnız sade deste).
+  Değişiklik anında geçerli olur ve telefonun tarayıcısında saklanır. Sol el düzeninde alt şeritteki
+  düğmeler ve deste yer değiştirir (Spider'da deste sola, tamamlanan diziler sağa; klasik
+  solitaire'de üst sıra ayna gibi: deste solda, temel yığınlar sağda). Sayaçları gizle: süre ve
+  hamle görünmez. Puanı göster kapalıysa puan ve aşama görünmez (oyun sonu kutusunda puan yine
+  görünür). Varsayılanlar (öneri): sesler açık, sağ el, sayaçlar ve puan görünür; dil telefonun
+  diline göre.
 
 ## 3. Düzada masası
 
@@ -544,7 +556,8 @@ Açık kalanlar:
 - **Günlük mücadelede dağıtım:** aynı gün aynı zorlukta herkese aynı dağıtım: öneri, Kemal'in onayı
   yok (8.1).
 - **Kart köşesindeki harfler:** dile göre değişsin mi (öneri: değişir). İskelette iki dilde de
-  A, J, Q, K; harfler metin dosyasında, karar gelince yalnız orası değişir.
+  A, J, Q, K; harfler metin dosyasında, karar gelince yalnız orası değişir. 5. pakette de böyle
+  kaldı (Türkçe harfler belgede yazılı değil). Değişirse hangi harfler: [Kemal].
 - **Kartın kırmızısı:** kiremit (#F26B6F) krem kartın küçük köşesinde zor okunuyor. Kemal (15 Kasım
   soru turu): Sürek Kulübü destesi çizilince karar verilecek; o zamana kadar kiremidin koyusu
   (#B8383D) kalır.

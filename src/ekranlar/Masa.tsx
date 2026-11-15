@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
 import { m, type MetinAnahtari } from '../metinler';
+import type { OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
 import { ipucuHakkiAl } from '../reklam/ipucuHakki';
 import {
   BilgiSatiri,
@@ -72,10 +73,12 @@ interface Surukleme extends Secim {
 interface Ozellik {
   renk: RenkSayisi;
   geri: () => void;
+  ayarlar: OyuncuAyarlari;
+  ayarAc: () => void;
   baslangic?: SpiderMasasi; // yalnız geliştirmedeki deneme eli için
 }
 
-export function Masa({ renk, geri, baslangic }: Ozellik) {
+export function Masa({ renk, geri, ayarlar, ayarAc, baslangic }: Ozellik) {
   const [masa, setMasa] = useState<SpiderMasasi>(() => baslangic ?? spiderDagit(renk));
   const [el, setEl] = useState(0); // yeni elde kartlar yeniden dağıtılarak gelsin diye
   const [secim, setSecim] = useState<Secim | null>(null);
@@ -296,7 +299,15 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
 
   return (
     <main className="masa">
-      <BilgiSatiri saniye={saniye} baslik={m('masa.baslik', renk)} hamle={masa.hamle} puan={puan.puan} asama={puan.asama} />
+      <BilgiSatiri
+        saniye={saniye}
+        baslik={m('masa.baslik', renk)}
+        hamle={masa.hamle}
+        puan={puan.puan}
+        asama={puan.asama}
+        ayarlar={ayarlar}
+        ayarAc={ayarAc}
+      />
 
       <div className="oyun-alani" ref={alanRef} onPointerUp={alaniBirak}>
         {masa.sutunlar.map((_, c) => (
@@ -352,8 +363,8 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
       </div>
 
       {/* Alt şerit (Kemal, 15 Kasım): solda tamamlanan diziler, sağda deste; ikisi de dar yelpaze.
-          Boş dizi yuvası çizilmez, yalnız sayaç kalır. */}
-      <section className="masa-alt">
+          Boş dizi yuvası çizilmez, yalnız sayaç kalır. Sol el düzeninde ikisi yer değiştirir. */}
+      <section className={`masa-alt ${ayarlar.solEl ? 'sol-el' : ''}`}>
         <div className="masa-alt-sira">
           <div className="tamamlanan" aria-label={`${m('masa.tamamlanan')} ${masa.tamamlanan.length}/${SPIDER_DIZI}`}>
             {masa.tamamlanan.length > 0 && (
@@ -405,6 +416,7 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
       </section>
 
       <MasaDugmeleri
+        solEl={ayarlar.solEl}
         geriAl={geriAlBas}
         geriAlKapali={gecmis.length === 0}
         kalanHak={geriAlHak.hak.kalan}

@@ -1,5 +1,6 @@
-import tr from './tr.json';
-import enHam from './en.json';
+import tr from './tr.json' with { type: 'json' };
+import enHam from './en.json' with { type: 'json' };
+import type { Dil } from '../oyun/oyuncuAyarlari.ts';
 
 // Ekrandaki bütün yazılar buradan gelir; koda yazı gömülmez.
 // İki dil: Türkçe ve İngilizce. Yeni yazı iki dosyaya birden eklenir;
@@ -7,18 +8,19 @@ import enHam from './en.json';
 export type MetinAnahtari = keyof typeof tr;
 const en: Record<MetinAnahtari, string> = enHam;
 
-export type Dil = 'tr' | 'en';
+export type { Dil };
 const SOZLUKLER: Record<Dil, Record<MetinAnahtari, string>> = { tr, en };
 
-// Dil seçimi ekranı 5. pakette. Şimdilik telefonun dili Türkçeyse Türkçe,
-// değilse İngilizce açılır; adres sonuna ?dil=en yazılırsa İngilizce.
-function ilkDil(): Dil {
-  const adres = new URLSearchParams(location.search).get('dil');
-  if (adres === 'tr' || adres === 'en') return adres;
-  return (navigator.language || 'tr').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+// Seçili dil (5. paket): açılışta Uygulama ayarlardan belirler; ayarlardan değişince dilSec
+// çağrılır ve ekran yeniden çizilir.
+let dil: Dil = 'tr';
+
+export function dilSec(yeni: Dil): void {
+  dil = yeni;
+  if (typeof document !== 'undefined') document.documentElement.lang = yeni;
 }
-const dil: Dil = ilkDil();
-document.documentElement.lang = dil;
+
+export const seciliDil = (): Dil => dil;
 
 // Metni seçili dilde verir; {0}, {1} yerine verilen değerler gelir.
 export function m(anahtar: MetinAnahtari, ...degerler: (string | number)[]): string {
