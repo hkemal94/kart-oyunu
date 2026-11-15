@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEven
 import { m, type MetinAnahtari } from '../metinler';
 import { ipucuHakkiAl } from '../reklam/ipucuHakki';
 import { KartYuzu } from '../kart/KartYuzu';
+import { ekranaGoreAralik, kartOlcusu, sutunKonumlari } from '../kart/duzen';
 import { TAKIM_SIMGESI, type Kart } from '../kart/kart';
 import {
   cek,
@@ -50,6 +51,14 @@ const RED_SURESI = 380; // reddedilen kartın sallanma süresi (milisaniye)
 const IPUCU_SURESI = 1600; // ipucunun parlama süresi (milisaniye)
 const ACILAN_SUTUNU = 4; // açılan kartlar 5. ve 6. sütunun üstünde, deste 7.nin üstünde
 const DESTE_SUTUNU = 6;
+// Kemal, 15 Kasım: aralık ekran yüksekliğine göre (src/kart/duzen.ts); düzen ve kart boyu aynı.
+// Aralık bu uzunluktaki sütun sıkışmadan sığacak kadar açılır (6 kapalı, 8 açık), ama kartın bu
+// paylarından fazla açılmaz.
+const BEKLENEN_KAPALI = 6;
+const BEKLENEN_ACIK = 8;
+const EN_COK_ACIK = 0.42;
+const EN_COK_KAPALI = 0.24;
+const EN_AZ_KAPALI = 0.08;
 
 interface Surukleme {
   yer: Yer;
@@ -146,12 +155,16 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
     return harita;
   }, [el]);
 
-  const kartEn = Math.floor((alan.en - ARALIK * (KLONDIKE_SUTUN_SAYISI - 1)) / KLONDIKE_SUTUN_SAYISI);
-  const kartBoy = kartEn * 1.42;
+  const { en: kartEn, boy: kartBoy } = kartOlcusu(alan.en, alan.boy, KLONDIKE_SUTUN_SAYISI, ARALIK);
   const kose = Math.max(3, kartEn * 0.1);
   const sutunUstu = kartBoy + UST_ARALIK;
-  const kapaliAdim = kartBoy * 0.15;
-  const acikAdim = kartBoy * 0.32;
+  const sutunAlani = alan.boy - sutunUstu;
+  const aralik = ekranaGoreAralik(kartBoy, sutunAlani, {
+    kapaliSayisi: BEKLENEN_KAPALI,
+    acikSayisi: BEKLENEN_ACIK,
+    enCokAcik: EN_COK_ACIK,
+    enCokKapali: EN_COK_KAPALI,
+  });
   const yelpazeAdim = kartEn * 0.32; // 3 kart çekmede açılan son üç kart yan yana kayar
   const sutunX = (c: number) => c * (kartEn + ARALIK);
 
@@ -170,14 +183,15 @@ export function KlondikeMasa({ cekme, geri, baslangic }: Ozellik) {
   });
   masa.deste.forEach((k, i) => cizimler.push({ k, yer: null, x: sutunX(DESTE_SUTUNU), y: 0, z: i }));
   masa.sutunlar.forEach((s, no) => {
-    const adimlar = s.slice(0, -1).map((k) => (k.acik ? acikAdim : kapaliAdim));
-    const toplam = adimlar.reduce((a, b) => a + b, 0);
-    const sigan = Math.max(0, alan.boy - sutunUstu - kartBoy);
-    const oran = toplam > sigan && toplam > 0 ? sigan / toplam : 1;
-    let y = sutunUstu;
+    const konum = sutunKonumlari(
+      s.map((k) => k.acik),
+      aralik,
+      kartBoy,
+      sutunAlani,
+      kartBoy * EN_AZ_KAPALI,
+    );
     s.forEach((k, sira) => {
-      cizimler.push({ k, yer: { tur: 'sutun', no, sira }, x: sutunX(no), y, z: sira });
-      if (sira < adimlar.length) y += adimlar[sira] * oran;
+      cizimler.push({ k, yer: { tur: 'sutun', no, sira }, x: sutunX(no), y: sutunUstu + konum[sira], z: sira });
     });
   });
 

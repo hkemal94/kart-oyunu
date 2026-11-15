@@ -4,6 +4,8 @@
 // - kazan: yedi dizi tamam; asa dokunup papazlı sütuna dokununca sekizinci dizi kalkar, oyun biter.
 // - dizi: 2 renk, oyun ortası; kupa asını 4. sütundan 1. sütuna taşıyınca bir dizi kalkar.
 //   Son sütun boş: "Dağıt"a dokununca uyarı çıkar.
+// - uzun: Spider, 1 renk, ileri el: üç dizi tamam, desteden iki dağıtım kaldı, sütunlar uzun
+//   (masa düzeni denemesi; Kemal, 15 Kasım).
 // - klasik-kazan: klasik solitaire, 51 kart temelde; papaza çift dokununca oyun biter.
 // - klasik-orta: klasik solitaire, 3 kart çekme; hep aynı el, ipucunun ilk önerisiyle 40 hamle oynanmış.
 
@@ -11,7 +13,7 @@ import type { Kart, RenkSayisi } from './kart';
 import { karistir, spiderKartlari, type SpiderMasasi } from './spider';
 import { cek, ipuclari, klondikeDagit, tasi, TEMEL_TAKIMLARI, type KlondikeMasasi } from './klondike';
 
-export type DenemeTuru = 'kazan' | 'dizi';
+export type DenemeTuru = 'kazan' | 'dizi' | 'uzun';
 
 // Her seferinde aynı eli veren basit sayı üreteci
 function sabitRastgele(tohum: number): () => number {
@@ -35,6 +37,26 @@ export function denemeMasasi(tur: DenemeTuru): { renk: RenkSayisi; masa: SpiderM
     sutunlar[0] = son.slice(0, 12); // papazdan ikiliye
     sutunlar[1] = [son[12]]; // as
     return { renk: 1, masa: { sutunlar, deste: [], tamamlanan: Array(7).fill('maca'), hamle: 0 } };
+  }
+  if (tur === 'uzun') {
+    const kartlar = spiderKartlari(1);
+    const a = dizisi(kartlar, 3).map(ac); // papazdan asa
+    const b = dizisi(kartlar, 4).map(ac);
+    const kalan = karistir(
+      kartlar.filter((k) => ['0-', '1-', '2-', '3-', '4-'].every((on) => !k.id.startsWith(on))),
+      sabitRastgele(5),
+    );
+    const deste = kalan.splice(0, 20);
+    const adetler = [6, 2, 1, 5, 1, 1, 1, 1, 1, 0]; // kalan 19 kart
+    const sutunlar = adetler.map((n) => kalan.splice(0, n));
+    sutunlar.forEach((s) => {
+      if (s.length) s[s.length - 1] = ac(s[s.length - 1]);
+    });
+    sutunlar[0].push(...a.slice(0, 12)); // papazdan ikiliye uzun açık dizi
+    sutunlar[3].push(...b.slice(0, 12));
+    sutunlar[9].push(b[12]);
+    sutunlar[7].push(a[12]);
+    return { renk: 1, masa: { sutunlar, deste, tamamlanan: ['maca', 'maca', 'maca'], hamle: 0 } };
   }
   const kartlar = spiderKartlari(2);
   const hazir = dizisi(kartlar, 3).map(ac); // kupa dizisi
