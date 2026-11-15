@@ -1,28 +1,34 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as TepkiOlayi } from 'react';
-import { m } from '../metinler';
+import { m, type MetinAnahtari } from '../metinler';
+import { ipucuHakkiAl } from '../reklam/ipucuHakki';
 import { KartYuzu } from '../kart/KartYuzu';
 import type { RenkSayisi } from '../kart/kart';
 import {
   dagitilabilirMi,
   destedenDagit,
+  geriAl,
+  ipuclari,
   kazandiMi,
   spiderDagit,
   SPIDER_DIZI,
   SPIDER_SUTUN_SAYISI,
   tasi,
   tasinabilirMi,
+  type Ipucu,
   type SpiderMasasi,
 } from '../kart/spider';
 
 // Masa (yol haritası, 2. paket): Spider kurallarıyla oynanır (kurallar src/kart/spider.ts).
 // Üstte ince bilgi satırı (süre, hamle), ortada kartlar, altta tamamlanan diziler ve deste,
 // en altta düğmeler. Karta dokun, sonra sütuna dokun; ya da sürükle. Kurala uymayan taşımada
-// kart yerine döner ve hafifçe sallanır.
+// kart yerine döner ve hafifçe sallanır. Altta "Geri al" ve "İpucu" (4. paket): geri al son
+// hamleyi geri getirir; ipucu bir hamleyi kısa süre parlatır, arka arkaya basınca sıradaki gelir.
 
 const ARALIK = 3; // sütunlar arası boşluk (piksel)
 const SURUKLEME_ESIGI = 8; // bu kadar kayınca dokunuş değil sürükleme sayılır
 const UYARI_SURESI = 2600; // boş sütun uyarısı ekranda bu kadar kalır (milisaniye)
 const RED_SURESI = 380; // reddedilen kartın sallanma süresi (milisaniye)
+const IPUCU_SURESI = 1600; // ipucunun parlama süresi (milisaniye)
 
 interface Secim {
   sutun: number;
@@ -58,7 +64,10 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
   const [secim, setSecim] = useState<Secim | null>(null);
   const [surukleme, setSurukleme] = useState<Surukleme | null>(null);
   const [red, setRed] = useState<Secim | null>(null);
-  const [uyari, setUyari] = useState(false);
+  const [uyari, setUyari] = useState<MetinAnahtari | null>(null);
+  const [gecmis, setGecmis] = useState<SpiderMasasi[]>([]); // geri al için önceki masalar
+  const [ipucu, setIpucu] = useState<{ ipucu: Ipucu; sayi: number } | null>(null);
+  const ipucuSirasi = useRef(0); // arka arkaya basınca sıradaki ipucu
   const [basladi, setBasladi] = useState(() => Date.now());
   const [simdi, setSimdi] = useState(() => Date.now());
   const [bitis, setBitis] = useState<number | null>(null);
@@ -91,9 +100,19 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
   // Uyarı ve sallanma kendiliğinden kaybolur
   useEffect(() => {
     if (!uyari) return;
-    const z = setTimeout(() => setUyari(false), UYARI_SURESI);
+    const z = setTimeout(() => setUyari(null), UYARI_SURESI);
     return () => clearTimeout(z);
   }, [uyari]);
+  useEffect(() => {
+    if (!ipucu) return;
+    const z = setTimeout(() => setIpucu(null), IPUCU_SURESI);
+    return () => clearTimeout(z);
+  }, [ipucu]);
+  // Masa değişince ipucu baştan sayılır
+  useEffect(() => {
+    ipucuSirasi.current = 0;
+    setIpucu(null);
+  }, [masa]);
   useEffect(() => {
     if (!red) return;
     const z = setTimeout(() => setRed(null), RED_SURESI);
@@ -136,11 +155,40 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
     return Math.min(SPIDER_SUTUN_SAYISI - 1, Math.max(0, c));
   };
 
+  // Her hamlede önceki masa geçmişe girer
+  const hamleYap = (yeni: SpiderMasasi) => {
+    setGecmis((g) => [...g, masa]);
+    setMasa(yeni);
+  };
+
+  const geriAlBas = () => {
+    setSecim(null);
+    const sonuc = geriAl(masa, gecmis);
+    if (!sonuc) return;
+    setMasa(sonuc.masa);
+    setGecmis(sonuc.gecmis);
+  };
+
+  const ipucuBas = async () => {
+    setSecim(null);
+    // Telefon uygulamasında burada reklam izlenir; web'de hep serbest (src/reklam/ipucuHakki.ts)
+    if (!(await ipucuHakkiAl())) return;
+    const liste = ipuclari(masa);
+    if (liste.length === 0) {
+      setUyari('masa.uyari.hamleYok');
+      return;
+    }
+    const sira = ipucuSirasi.current % liste.length;
+    ipucuSirasi.current = sira + 1;
+    setIpucu((o) => ({ ipucu: liste[sira], sayi: (o?.sayi ?? 0) + 1 }));
+  };
+
   const yeniEl = () => {
     setMasa(spiderDagit(renk));
     setEl((e) => e + 1);
+    setGecmis([]);
     setSurukleme(null);
-    setUyari(false);
+    setUyari(null);
     setBitis(null);
     setBasladi(Date.now());
     setSimdi(Date.now());
@@ -151,7 +199,7 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
     setSecim(null);
     if (kaynak === hedef) return;
     const sonuc = tasi(masa, kaynak, sira, hedef);
-    if (sonuc) setMasa(sonuc);
+    if (sonuc) hamleYap(sonuc);
     else setRed({ sutun: kaynak, sira });
   };
 
@@ -159,11 +207,11 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
     setSecim(null);
     const durum = dagitilabilirMi(masa);
     if (durum === 'bosSutun') {
-      setUyari(true);
+      setUyari('masa.uyari.bosSutun');
       return;
     }
     const sonuc = destedenDagit(masa);
-    if (sonuc) setMasa(sonuc);
+    if (sonuc) hamleYap(sonuc);
   };
 
   const kartBas = (e: TepkiOlayi<HTMLDivElement>, sutun: number, sira: number) => {
@@ -224,6 +272,10 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
   const tasinanMi = (c: number, i: number) => surukleme?.basladi && surukleme.sutun === c && i >= surukleme.sira;
   const seciliMi = (c: number, i: number) => secim && secim.sutun === c && i >= secim.sira;
   const reddedildiMi = (c: number, i: number) => red && red.sutun === c && i >= red.sira;
+  // İpucu: taşınacak dizi ve gideceği sütunun üstteki kartı (boşsa yuvası) parlar
+  const ip = ipucu?.ipucu.tur === 'tasi' ? ipucu.ipucu : null;
+  const ipucuMu = (c: number, i: number) =>
+    !!ip && ((ip.kaynak === c && i >= ip.sira) || (ip.hedef === c && i === masa.sutunlar[c].length - 1));
 
   const alanR = alanRef.current?.getBoundingClientRect();
   const destedenKalan = masa.deste.length / SPIDER_SUTUN_SAYISI;
@@ -240,7 +292,9 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
         {masa.sutunlar.map((_, c) => (
           <div
             key={`yuva-${c}`}
-            className={`yuva ${secim && secim.sutun !== c ? 'hedef' : ''}`}
+            className={`yuva ${secim && secim.sutun !== c ? 'hedef' : ''} ${
+              ip && ip.hedef === c && masa.sutunlar[c].length === 0 ? 'ipucu' : ''
+            }`}
             style={{ left: sutunX(c), width: kartEn, height: kartBoy, borderRadius: kose }}
           />
         ))}
@@ -262,6 +316,7 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
                 tasinan ? 'tasiniyor' : '',
                 seciliMi(c, i) ? 'secili' : '',
                 reddedildiMi(c, i) ? 'reddedildi' : '',
+                ipucuMu(c, i) ? 'ipucu' : '',
               ].join(' ');
               return (
                 <div
@@ -278,7 +333,8 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
                   onPointerUp={(e) => kartBirak(e, c, i)}
                   onPointerCancel={() => setSurukleme(null)}
                 >
-                  <KartYuzu kart={k} genislik={kartEn} />
+                  {/* İpucu her basışta yeniden parlasın diye kart yeniden çizilir */}
+                  <KartYuzu key={ipucuMu(c, i) ? `ip-${ipucu?.sayi}` : 'k'} kart={k} genislik={kartEn} />
                 </div>
               );
             })}
@@ -304,7 +360,8 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
             );
           })}
           <button
-            className="deste"
+            key={ipucu?.ipucu.tur === 'dagit' ? `deste-${ipucu.sayi}` : 'deste'}
+            className={`deste ${ipucu?.ipucu.tur === 'dagit' ? 'ipucu' : ''}`}
             style={{ width: kartEn * 2 + ARALIK, height: kartBoy }}
             disabled={masa.deste.length === 0}
             onClick={dagit}
@@ -325,17 +382,30 @@ export function Masa({ renk, geri, baslangic }: Ozellik) {
         </div>
         {uyari && (
           <p className="uyari" role="status">
-            {m('masa.uyari.bosSutun')}
+            {m(uyari)}
           </p>
         )}
       </section>
 
+      {/* Alt şerit (yol haritası 4): geri al, ipucu, yeni el, oyun seçimi. Simgeler kodla çizilir. */}
       <nav className="masa-dugmeler">
-        <button className="dugme ince" onClick={geri}>
-          ‹ {m('masa.geri')}
+        <button className="dugme ince" onClick={geriAlBas} disabled={gecmis.length === 0}>
+          <svg className="simge" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M5.5 3.5 2.5 6.5l3 3M3 6.5h6.5a4 4 0 0 1 0 8H7" />
+          </svg>
+          {m('masa.geriAl')}
+        </button>
+        <button className="dugme ince" onClick={ipucuBas}>
+          <svg className="simge" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M6 12.5h4M6.5 14.5h3M8 1.5a4.5 4.5 0 0 0-2.5 8.2c.4.3.5.7.5 1.3v.5h4V11c0-.6.1-1 .5-1.3A4.5 4.5 0 0 0 8 1.5Z" />
+          </svg>
+          {m('masa.ipucu')}
         </button>
         <button className="dugme ince" onClick={yeniEl}>
           {m('masa.yeniEl')}
+        </button>
+        <button className="dugme ince" onClick={geri}>
+          {m('masa.geri')}
         </button>
       </nav>
 

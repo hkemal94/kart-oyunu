@@ -20,11 +20,14 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   telefonda denenmedi.
 - 15 Kasım 2026 (öneri; `ajans/ornek-oyun-kararlari`): yalnız belge. Kemal'in gösterdiği örnek
   Spider oyunundan gelen kararlar belgeye (8. bölüm) ve buraya işlendi; oyunda bir şey değişmedi.
-- 15 Kasım 2026 (öneri; `ajans/spider-kurallari`): 2. paket, Spider kuralları. Kurala uymayan
+- 15 Kasım 2026 (ana dalda, PR #3): 2. paket, Spider kuralları. Kurala uymayan
   taşıma reddedilir, kart yerine döner; tamamlanan dizi kalkar; boş sütun varken dağıtma uyarısı;
   üstte süre ve hamle; 8 dizide oyun sonu ekranı. Bilgisayarda telefon boyutunda denendi; gerçek
   telefonda denenmedi.
-- Sırada: 3. paket, klasik solitaire.
+- 15 Kasım 2026 (öneri; `ajans/geri-al-ipucu`): 4. paketin ilk iki maddesi, geri al ve ipucu
+  (Kemal: "Geri al ve ipucunu yap"). Masanın altında tek satır: Geri al, İpucu, Yeni el, Oyun
+  seçimi. Bilgisayarda telefon boyutunda denendi; gerçek telefonda denenmedi.
+- Sırada: 3. paket, klasik solitaire; 4. paketin kalan maddeleri.
 
 ## Paketler
 
@@ -45,7 +48,7 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   dokun, sonra sütuna dokun; ya da sürükle. Uzun sütun alana sığsın diye sıkışır.
 - Kural kontrolü yok: her açık kart her sütuna gider; sütunda en üstte kalan kapalı kart açılır.
 
-### 2. Spider (Kemal, 15 Kasım: önce Spider) · bitti (`ajans/spider-kurallari`)
+### 2. Spider (Kemal, 15 Kasım: önce Spider) · bitti (PR #3)
 
 - Standart kurallar (belge 1.2), 1 / 2 / 4 renk, iki deste. Doğru diziyi taşıma, tamamlanan
   dizinin masadan kalkması, kazanma, oyun sonu ekranı (yeni el, oyun seçimi).
@@ -70,13 +73,26 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   ikinci kart açılır.
 - Neye bağlı: 2. paket.
 
-### 4. Yardımcılar
+### 4. Yardımcılar · geri al ve ipucu bitti (`ajans/geri-al-ipucu`), kalanlar bekliyor
 
 - Geri al, ipucu, kendiliğinden bitirme, kaldığı yerden devam (telefonun tarayıcısında saklanır),
   süre ve hamle sayacı, basit istatistik. Alt şeritte geri al, ipucu, yeni el, menü; üstte ince
   sayaç satırı.
 - Geri al sınırı karar değil; karar gelene kadar sınırsız (öneri; belge 7).
 - İpucu web'de reklamsız çalışır (Kemal, 15 Kasım); reklamla alınması telefon adımında.
+- **Geri al · bitti (Spider).** Son hamleyi geri getirir: taşıma, dağıtma, kendiliğinden açılan
+  kart, kalkan dizi. Arka arkaya basılabilir; Kemal'in kararına kadar sınırsız. Geri almak da
+  bir hamle sayılır (öneri; standart çözüm). Yeni elde geçmiş sıfırlanır.
+- **İpucu · bitti (Spider).** Bir hamleyi kısa süre parlatır (taşınacak kart ya da dizi ve
+  gideceği sütun). Sıra (öneri): aynı takıma konan, kapalı kartı açan, öbürleri; bir şey
+  kazandırmayan hamle önerilmez. Arka arkaya basınca sıradaki ipucu gelir. Hamle yoksa "Dağıt"
+  parlar; o da yoksa kısa uyarı. Reklamın takılacağı yer ayrıldı (`src/reklam/ipucuHakki.ts`);
+  web'de hep serbest. Kurallar `src/kart/spider.ts`'te, testleri `testler/yardimcilar.test.ts`.
+  Ekran görüntüleri: `docs/ekran-goruntuleri/yardim-*.png`.
+- Alt şerit: Geri al, İpucu, Yeni el, Oyun seçimi (tek satır; "menü" 7. pakette ana ekranla gelir).
+- **Bekliyor:** kendiliğinden bitirme, kaldığı yerden devam, basit istatistik; klasik solitaire
+  için geri al ve ipucu (3. paketle). Süre ve hamle sayacı 2. pakette geldi; ayardan kapatma
+  5. pakette.
 - Neye bağlı: 2. ve 3. paket.
 
 ### 5. Ayarlar ve iki dil
@@ -166,4 +182,6 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 ## Bitenler
 
 - 0. Depo ve iskelet ve 1. Kart ve masa (PR #1, 15 Kasım 2026).
-- 2. Spider kuralları (`ajans/spider-kurallari`, 15 Kasım 2026; Kemal birleştirince kesinleşir).
+- 2. Spider kuralları (PR #3, 15 Kasım 2026).
+- 4. Yardımcılar: geri al ve ipucu, Spider (`ajans/geri-al-ipucu`, 15 Kasım 2026; Kemal
+  birleştirince kesinleşir).

@@ -129,3 +129,57 @@ export function destedenDagit(masa: SpiderMasasi): SpiderMasasi | null {
 export function kazandiMi(masa: SpiderMasasi): boolean {
   return masa.tamamlanan.length >= SPIDER_DIZI;
 }
+
+// ---------------------------------------------------------------------------------------------
+// Yardımcılar (yol haritası, 4. paket; belge 1.3): geri al ve ipucu. Ekrandan ayrı.
+
+// Geri al: her hamleden önceki masa saklanır. Taşıma ya da dağıtma, kendiliğinden açılan kart ve
+// kalkan dizi aynı adımın içindedir; geri alınca hepsi birlikte geri gelir. Sınır yok (Kemal'in
+// kararına kadar; belge 7). Geri almak da bir hamle sayılır (öneri; standart çözüm).
+export interface GeriAlSonucu {
+  masa: SpiderMasasi;
+  gecmis: SpiderMasasi[];
+}
+
+export function geriAl(masa: SpiderMasasi, gecmis: SpiderMasasi[]): GeriAlSonucu | null {
+  if (gecmis.length === 0) return null;
+  const onceki = gecmis[gecmis.length - 1];
+  return { masa: { ...onceki, hamle: masa.hamle + 1 }, gecmis: gecmis.slice(0, -1) };
+}
+
+// İpucu: ya bir taşıma (hangi sütunun hangi kartından itibaren, hangi sütuna) ya da "Dağıt".
+export type Ipucu =
+  | { tur: 'tasi'; kaynak: number; sira: number; hedef: number }
+  | { tur: 'dagit' };
+
+// Masadaki işe yarar hamleler, öncelik sırasıyla (öneri): önce aynı takıma konan, sonra kapalı
+// kartı açan, sonra öbürleri. Hiç taşıma yoksa ve dağıtılabiliyorsa yalnız "Dağıt". Boş liste:
+// yapılacak bir şey yok. Bir şey kazandırmayan hamleler (sütunu olduğu gibi boş sütuna taşımak,
+// zaten uygun bir kartın üstündeki diziyi başka takıma taşımak) önerilmez.
+export function ipuclari(masa: SpiderMasasi): Ipucu[] {
+  const adaylar: { ipucu: Ipucu; puan: number }[] = [];
+  const ilkBos = masa.sutunlar.findIndex((s) => s.length === 0);
+  masa.sutunlar.forEach((s, kaynak) => {
+    for (let sira = 0; sira < s.length; sira++) {
+      if (!tasinabilirMi(masa, kaynak, sira)) continue;
+      const kart = s[sira];
+      const alt = s[sira - 1]; // dizinin altında kalan kart
+      const altUygun = alt && alt.acik && alt.deger === kart.deger + 1;
+      const kartAcar = !!alt && !alt.acik;
+      masa.sutunlar.forEach((h, hedef) => {
+        if (h.length === 0 && hedef !== ilkBos) return; // boş sütunlar birbirinin aynısı
+        if (!birakilabilirMi(masa, kaynak, sira, hedef)) return;
+        const ust = h[h.length - 1];
+        const ayniTakim = !!ust && ust.takim === kart.takim;
+        if (h.length === 0 && sira === 0) return; // sütunu boş sütuna taşımak bir şey değiştirmez
+        if (altUygun && !(ayniTakim && alt.takim !== kart.takim)) return;
+        const puan = (ayniTakim ? 4 : 0) + (kartAcar ? 2 : 0) + (h.length > 0 ? 1 : 0);
+        adaylar.push({ ipucu: { tur: 'tasi', kaynak, sira, hedef }, puan });
+      });
+    }
+  });
+  // Sıralama kararlı: aynı puanda soldaki sütun önce gelir
+  const sirali = adaylar.sort((a, b) => b.puan - a.puan).map((a) => a.ipucu);
+  if (sirali.length === 0 && dagitilabilirMi(masa) === 'olur') return [{ tur: 'dagit' }];
+  return sirali;
+}

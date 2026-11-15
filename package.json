@@ -7,7 +7,7 @@
     "dev": "vite --host",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host",
-    "test": "node --test testler/spider.test.ts"
+    "test": "node --test testler/spider.test.ts testler/yardimcilar.test.ts"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.3.0",

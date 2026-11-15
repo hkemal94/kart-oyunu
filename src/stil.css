@@ -92,7 +92,7 @@ button:disabled { cursor: default; }
 .masa-alt-sira { display: flex; gap: 3px; align-items: flex-end; }
 .masa-alt-sira .yuva { position: static; flex: none; }
 .deste { position: relative; flex: none; border: none; background: transparent; padding: 0; display: flex; align-items: center; gap: 4px; color: var(--krem); }
-.deste-yigin { position: relative; flex: none; }
+.deste-yigin { position: relative; flex: none; border-radius: 4px; }
 .deste-yazi { font-size: 11px; font-weight: 600; line-height: 1.1; text-align: left; }
 .deste:disabled .deste-yazi { opacity: 0.5; }
 /* Tamamlanan dizi alana gelince kısa bir büyüme */
@@ -101,9 +101,15 @@ button:disabled { cursor: default; }
 /* Boş sütun uyarısı: destenin üstünde kısa süre durur */
 .uyari { position: absolute; left: 4px; right: 4px; bottom: calc(100% + 6px); margin: 0; background: var(--krem); color: var(--lacivert); border-radius: 10px; padding: 8px 12px; font-size: 12px; text-align: center; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35); animation: belir 0.2s ease-out; z-index: 700; }
 @keyframes belir { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-/* Altta başparmak hizasında düğmeler */
-.masa-dugmeler { display: flex; justify-content: space-between; gap: 8px; padding: 10px 2px 0; }
-.masa-dugmeler .dugme { flex: 1; padding: 9px 10px; }
+/* İpucu: taşınacak dizi ve gideceği yer kısa süre parlar (kiremit halka, krem ışık, iki nabız) */
+.kart-yeri.ipucu .kart, .yuva.ipucu, .deste.ipucu .deste-yigin { animation: ipucu 0.8s ease-in-out 2; }
+.yuva.ipucu { border-style: solid; }
+@keyframes ipucu { 0%, 100% { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); } 50% { box-shadow: 0 0 0 2px var(--kiremit), 0 0 14px 4px rgba(243, 239, 232, 0.85); } }
+/* Altta başparmak hizasında düğmeler: tek satır, dört düğme */
+.masa-dugmeler { display: flex; justify-content: space-between; gap: 6px; padding: 10px 2px 0; }
+.masa-dugmeler .dugme { flex: 1 1 auto; min-width: 0; min-height: 40px; padding: 8px 6px; font-size: clamp(12px, 3.4vw, 13px); display: flex; align-items: center; justify-content: center; gap: 5px; white-space: nowrap; }
+.masa-dugmeler .dugme:disabled { opacity: 0.4; }
+.simge { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 /* Oyun sonu */
 .oyun-sonu { position: absolute; inset: 0; z-index: 900; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(14, 28, 79, 0.72); animation: belir 0.35s ease-out 0.35s both; }
 .oyun-sonu-kutu { width: 100%; max-width: 320px; background: var(--krem); color: var(--lacivert); border-radius: 18px; padding: 20px 18px; display: flex; flex-direction: column; gap: 10px; text-align: center; }
