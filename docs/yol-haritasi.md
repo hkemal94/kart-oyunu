@@ -144,6 +144,13 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   zaten ekranın üstüne açılan kutu, değişmedi. Ana ekran, Mücadeleler, oyun seçimi ve masa
   değişmedi. Bilgisayarda iPhone 13 boyutunda denendi; gerçek telefonda denenmedi. Ekran
   görüntüleri: `docs/ekran/ben-ust-bosluk/` (önce-sonra). Bu iş bitti.
+- 16 Kasım 2026 (öneri; `ajans/mucadeleler-ust-bosluk`; Kemal onayladı): aynı düzeltme Mücadeleler
+  sekmesine ve oyun seçimine. İçerik artık ekranın ortasına inmiyor; başlığın hemen altından
+  başlıyor, kalan boşluk altta. Kural genelleşti: menü ekranları arasında yalnız Ana ekran ortalı
+  kalıyor. Ana ekran ve masa değişmedi. Fark içeriğin ekrandan kısa kaldığı uzun ekranlarda görünür
+  (bilgisayarda iPad Mini boyutunda denendi); iPhone 13 boyutunda içerik ekrandan uzun olduğu için
+  görüntü önce ve sonra aynı. Gerçek telefonda denenmedi. Ekran görüntüleri:
+  `docs/ekran/mucadeleler-ust-bosluk/` (önce-sonra).
 - Sırada: 9. paket (kartpostal etkinliği); pul görselleri tasarlandıkça tek tek.
 
 ## Paketler
@@ -411,6 +418,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ## Bitenler
 
+- Mücadeleler ve oyun seçiminde içerik başlığın hemen altından başlar (`ajans/mucadeleler-ust-bosluk`,
+  16 Kasım 2026; Kemal birleştirince kesinleşir).
 - Oyunun adı (Düzada Cards Club) ve en öndeki kartın koyu olmaması (`ajans/kemal-notlari-15-11`,
   15 Kasım 2026 gece; Kemal birleştirince kesinleşir).
 - Pul koleksiyonu, yer tutucu pullarla (`ajans/pul-koleksiyonu`, 15 Kasım 2026; pul görselleri
