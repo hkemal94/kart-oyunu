@@ -1,6 +1,6 @@
 import { m, sayi } from '../metinler';
 import { KartYuzu } from '../kart/KartYuzu';
-import { enIyiOku, kayitOku, puanAdayi, puanAnahtari } from '../kart/puan';
+import { enIyiOku, kayitOku, puanAnahtari } from '../kart/puan';
 import type { SonSecim } from '../oyun/sonSecim';
 import type { YarimEl } from '../oyun/yarimEl';
 import { GununKarti } from './Gunluk';
@@ -25,7 +25,7 @@ export const oyunAdi = (oyun: 'spider' | 'klasik', zorluk: number) =>
 export function AnaEkran({ secim, yarimEl, devamEt, yeniOyun, gunlukOyna, takvim }: Ozellik) {
   const oyun = yarimEl?.oyun ?? secim.oyun;
   const zorluk = yarimEl?.zorluk ?? (oyun === 'spider' ? secim.renk : secim.cekme);
-  const enIyi = enIyiOku(kayitOku(localStorage, puanAdayi(location.search)), puanAnahtari(oyun, zorluk));
+  const enIyi = enIyiOku(kayitOku(localStorage), puanAnahtari(oyun, zorluk));
 
   return (
     <main className="sekme-ekrani ana-ekran">

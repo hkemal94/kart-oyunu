@@ -12,7 +12,6 @@ import {
   elPuani,
   kayitOku,
   kayitYaz,
-  puanAdayi,
   puanAnahtari,
   seriBitir,
   seriOku,
@@ -241,24 +240,23 @@ export function useGeriAlHakki(baslangic?: GeriAlHakki) {
   };
 }
 
-// Puan ve seri (yol haritası 6; belge 8.3). Kurallar ve üç aday src/kart/puan.ts'te; aday adresten
-// seçilir (?puan=a|b|c). Seri ve en iyi puan telefonun tarayıcısında saklanır.
+// Puan ve seri (yol haritası 6; belge 8.3). Kurallar ve formül (a · çarpanlı taban) src/kart/puan.ts'te.
+// Seri ve en iyi puan telefonun tarayıcısında saklanır.
 export function usePuan(oyun: Oyun, zorluk: number, ozet: ElOzeti, kazandi: boolean) {
-  const [aday] = useState(() => puanAdayi(location.search));
   const anahtar = puanAnahtari(oyun, zorluk);
-  const [kayit, setKayit] = useState(() => kayitOku(localStorage, aday));
+  const [kayit, setKayit] = useState(() => kayitOku(localStorage));
   const [sonuc, setSonuc] = useState<KazancSonucu | null>(null);
   const yazildi = useRef(false); // bir el yalnız bir kez kazanılır
 
   const kaydet = (k: typeof kayit) => {
     setKayit(k);
-    kayitYaz(localStorage, aday, k);
+    kayitYaz(localStorage, k);
   };
 
   useEffect(() => {
     if (!kazandi || yazildi.current) return;
     yazildi.current = true;
-    const s = elKazanildi(kayitOku(localStorage, aday), anahtar, aday, ozet);
+    const s = elKazanildi(kayitOku(localStorage), anahtar, ozet);
     kaydet(s.kayit);
     setSonuc(s);
   }, [kazandi]);
@@ -267,10 +265,10 @@ export function usePuan(oyun: Oyun, zorluk: number, ozet: ElOzeti, kazandi: bool
   return {
     sonuc,
     // Masada görünen: biriken seri puanı ve bu elin "şimdi bitse" puanı; el kazanılınca kesin puan
-    puan: sonuc ? sonuc.seriPuani : seri.puan + elPuani(aday, ozet, seri.asama, false),
+    puan: sonuc ? sonuc.seriPuani : seri.puan + elPuani(ozet, seri.asama),
     asama: seri.asama,
     // El yarımken bırakıldı (ya da kaybedildi): seri biter
-    seriyiBitir: () => kaydet(seriBitir(kayitOku(localStorage, aday), anahtar)),
+    seriyiBitir: () => kaydet(seriBitir(kayitOku(localStorage), anahtar)),
     // Yeni el: kazanılan elden sonra seri sürer
     yeniEl: () => {
       yazildi.current = false;

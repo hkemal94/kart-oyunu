@@ -24,6 +24,10 @@ reklam sıklığı sayısı yok: "veri yok".
 
 En yeni üstte.
 
+- **16 Kasım (puan formülü):** Kemal formülü seçti: **a · çarpanlı taban (aşama çarpanlı)**. b ve c
+  adayları kalktı; adresle aday denemesi (`?puan=`) artık bir şey yapmaz. Kemal yalnız formülü
+  seçti, sayıları onaylamadı: 2000 taban, hamle başı 2, dakikada 30, en az 200 deneme varsayılanı
+  olarak kalır (8.3). Deneme günlerinde a ile toplanan seri ve en iyi puan korunur.
 - **15 Kasım gece (oyunun adı ve koyulaştırma):** Kemal oyunun adını seçti: **Düzada Cards Club**;
   adın altındaki tanıtıcı satır "Solitaire · Spider" (İngilizcede de aynen). Açılışta, ana ekranda,
   oyun seçiminde ve sayfa başlığında bu ad. Depo adı `kart-oyunu` çalışma adı olarak kalır. 7.
@@ -670,6 +674,8 @@ sayılır mı (evet; kazanınca aşama artar, kaybedince seri biter), aylık öd
 Düzada nesnesi ya da simgesi), puan hesabının yolu (ajans 2-3 aday getirir, Kemal seçer).
 Ertelenen: kartın kırmızısı (Sürek Kulübü destesi çizilince).
 
+16 Kasım kapananlar (Kemal): puan formülü (a · çarpanlı taban, aşama çarpanlı; 8.3).
+
 15 Kasım (soru turu 2. set) kapananlar (Kemal): kartpostal yerleri (İskele ve The Imperial Kemsköy; Liman ve Deniz Feneri; Dirlik Stadı; Küçükçetmi Çiftliği; Merkez ve Belediye; Ada Tepesi ve sırtlar (Kuzey Sırtı, Çetmi Sırtı); Sahil Yolu ve Güney Burnu), kartpostalda yazı
 (yok, yazısız).
 
@@ -692,8 +698,8 @@ Açık kalanlar:
 - **Pul koleksiyonu:** kazanma, yer ve yazı kapandı (Kemal, 15 Kasım akşam; 8.1). Açık kalan: her
   pulun tasarımı (her biri ayrı çalışılır; ilk pullar hangi aylardan başlar ve konuları [Kemal]);
   4. pulun ne kadar büyük ve süslü olacağı tasarımla birlikte. Eski 18 adaylık nesne listesi düştü.
-- **Puan formülü:** a / b / c (8.3; puan paketi, 15 Kasım). Kodda varsayılan a; adres sonuna
-  `?puan=b` yazılarak denenir. Sayılar da adaydır, seçilen adayın sayıları ayrıca değişebilir.
+- **Puan sayıları:** formül a seçildi (16 Kasım, 8.3); taban, hamle ve süre payı, en az puan deneme
+  varsayılanı, [Kemal] (KKM → Oyunlar → Ayarlar).
 - **Kaybetme:** el ne zaman kaybedilmiş sayılır? Şimdilik yalnız eli bırakınca (8.3). Adaylar:
   yalnız eli bırakınca (şu anki) · Spider ve klasik solitaire'de yapılacak hamle kalmayınca da
   (o an "yeniden dene" kutusu çıkar).
@@ -824,25 +830,15 @@ tasarımımızdır; görsel üretimi Kemal onayıyla.
   - **En iyi puan = en yüksek seri puanı** (Kemal, 15 Kasım).
 - Aşama başına artış, süre ve hamlenin payı ve formül: [Kemal] (uydurma sayı yok). **Ajans puan
   paketi (yol haritası 6) yapılırken 2-3 aday getirir, Kemal seçer** (Kemal, 15 Kasım soru turu).
-- **Adaylar (puan paketi, 15 Kasım; Kemal seçecek).** Üçü de yaygın solitaire puanlama yollarına
-  dayanır; hiçbiri başka bir oyunun tablosu değildir. Kodda tek yerde: `src/kart/puan.ts`. Bütün
-  sayılar **aday**dır, karar değil. Deneme: adres sonuna `?puan=a`, `?puan=b` ya da `?puan=c`;
-  yazılmazsa a. Deneme sırasında her adayın serisi ve en iyi puanı ayrı saklanır.
-  - **a · Çarpanlı taban (varsayılan):** her el 2000'den başlar; her hamle 2, her dakika 30 puan
-    düşer; kazanılan el en az 200 getirir. Sonuç aşamayla çarpılır (Aşama 2'de iki katı).
-  - **b · Hamle başı puan:** puan oynarken toplanır. Spider'da tamamlanan her dizi 100, klasik
-    solitaire'de temele giden her kart 15, açılan her kapalı kart 5 getirir; her hamle 1 götürür.
-    Kazanınca süre bonusu: 20 dakikadan önce biterse kalan her saniye 1 puan. Aşama başına yarım
-    kat artar (Aşama 2'de 1,5 katı, Aşama 3'te 2 katı).
-  - **c · Bonuslu sabit puan:** kazanılan her el 1000 getirir; 20 dakikadan önce biterse kalan
-    her saniye 1, 300 hamleden az biterse kalan her hamle 2 puan eklenir. Aşama çarpmaz; Aşama 1'in
-    üstündeki her aşama 250 ekler.
-  - **Örnek el:** Spider, 200 hamle, 15 dakika. a: Aşama 1'de 1150, Aşama 2'de 2300, Aşama 3'te
-    3450 (üç elin serisi 6900). b: 1120, 1680, 2240 (seri 5040). c: 1500, 1750, 2000 (seri 5250).
-    Klasik solitaire, 120 hamle, 5 dakika, Aşama 1: a 1610, b 1665, c 2260.
-  - Kısaca: a'da aşama en hızlı büyür, uzun seriler çok öne geçer; b'de puan her hamlede görünür
-    biçimde artar ("her hamlede puanı göster" ayarına en uygun olan); c'de puan en dengeli, aşama
-    yalnız küçük bir ek getirir.
+- **Formül: a (Kemal 16 Kasım).** Çarpanlı taban, aşama çarpanlı: her el bir tabandan başlar; her
+  hamle ve geçen süre tabandan düşer, kazanılan el bir alt sınırın altına inmez; sonuç aşamayla
+  çarpılır (Aşama 2'de iki katı). Kodda tek yerde: `src/kart/puan.ts`; sayılar
+  `src/oyun/ayarlar.json` → puan (KKM → Oyunlar → Ayarlar). **Formül Kemal onaylı, sayılar deneme
+  varsayılanı** (Kemal onaylamadı): taban 2000, her hamle 2, her dakika 30 puan, en az 200.
+  - **Örnek el:** Spider, 200 hamle, 15 dakika: Aşama 1'de 1150, Aşama 2'de 2300, Aşama 3'te 3450
+    (üç elin serisi 6900). Klasik solitaire, 120 hamle, 5 dakika, Aşama 1: 1610.
+  - Tarihçe: 15 Kasım'daki puan paketinde öbür adaylar b · hamle başı puan ve c · bonuslu sabit
+    puandı (`?puan=b` / `?puan=c` ile denenirdi); 16 Kasım'da kalktılar.
 - **Kodda duranlar (6. paket; öneri, Kemal'in onayı yok):** masanın üst satırında "Puan" ve
   "Aşama"; puan, biriken seri puanı ile bu elin "şimdi bitse" puanının toplamıdır. Seri de en iyi
   puan gibi oyun ve zorluk başına ayrı tutulur (soru, 7). Oyun sonunda bu elin puanı, seri puanı,
@@ -884,9 +880,8 @@ Açık kalanlar sayı ya da seçim; web denemesinde ve ilgili paket gelince soru
 4. Kart oyunu: Aylık ödülde hangi ay hangi Düzada nesnesi ya da simgesi? **Değişti:** rozet yerine
    pul koleksiyonu (Kemal 15 Kasım akşam; 8.1). Kazanma, yer ve yazı cevaplandı; her pulun
    tasarımı ayrı çalışılır, konuları [Kemal].
-5. Kart oyunu: Puan hesabı hangi aday olsun? Neden: formülü Kemal seçecek (15 Kasım). Nasıl
-   denenir: adres sonuna `?puan=a`, `?puan=b`, `?puan=c`. Adaylar (8.3): a · çarpanlı taban
-   (şu anki varsayılan) · b · hamle başı puan · c · bonuslu sabit puan.
+5. Kart oyunu: Puan hesabı hangi aday olsun? **Cevaplandı** (16 Kasım): a · çarpanlı taban (8.3).
+   Açık kalan: sayılar (deneme varsayılanı).
 6. Kart oyunu: Klasik solitaire'de açılan kartlar destenin altına kaç kez dönsün? Neden: deste
    bitince ne olacağı belgede yoktu; şimdilik standart olan sınırsız. Adaylar: sınırsız
    (önerilen) · 3 kart çekmede üç kez, 1 kart çekmede bir kez · ayarlardan seçilsin.

@@ -151,6 +151,13 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   (bilgisayarda iPad Mini boyutunda denendi); iPhone 13 boyutunda içerik ekrandan uzun olduğu için
   görüntü önce ve sonra aynı. Gerçek telefonda denenmedi. Ekran görüntüleri:
   `docs/ekran/mucadeleler-ust-bosluk/` (önce-sonra).
+- 16 Kasım 2026 (öneri; `ajans/puan-a`; Kemal kararı): puan formülü kesinleşti, **a · çarpanlı
+  taban (aşama çarpanlı)**. b ve c adayları ve adresle aday denemesi kalktı; adres sonundaki
+  `?puan=` artık bir şey yapmaz. Ekranda değişen yok: puan zaten a ile hesaplanıyordu. Deneme
+  günlerinde a ile toplanan seri ve en iyi puan korunur; b ve c ile toplananlar okunmaz. Sayılar
+  (2000 taban, hamle başı 2, dakikada 30, en az 200) deneme varsayılanı, Kemal onaylamadı; KKM →
+  Oyunlar → Ayarlar'da "Puan · a · çarpanlı taban" bölümünde. Bilgisayarda iPhone 13 boyutunda
+  denendi; gerçek telefonda denenmedi. Ekran görüntüsü: `docs/ekran/puan-a/` (sonra).
 - Sırada: 9. paket (kartpostal etkinliği); pul görselleri tasarlandıkça tek tek.
 
 ## Paketler
@@ -278,32 +285,32 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   kapalıysa puan ve aşama görünmez. Dil: Türkçe / English, anında bütün ekran. Deste: yalnız sade
   deste. Ekran görüntüleri: `docs/ekran-goruntuleri/ayar-*.png`.
 - KKM için (Kemal, 15 Kasım): `docs/ekran-goruntuleri/liste.json` (KKM'nin Ekran görüntüleri
-  sekmesi) ve `src/oyun/ayarlar.json` (KKM'nin Ayarlar sekmesi: geri al hakkı, puan adayı, üç
-  adayın sayıları). Oyun bu sayıları dosyadan okur; `?geriAlHak=` ve `?puan=` deneme için çalışır.
+  sekmesi) ve `src/oyun/ayarlar.json` (KKM'nin Ayarlar sekmesi: geri al hakkı, puan sayıları).
+  Oyun bu sayıları dosyadan okur; `?geriAlHak=` deneme için çalışır (`?puan=` 16 Kasım'da kalktı).
 - Bu pakette yok: sade destenin dört renkli hâli (öneri; deste seçimine ikinci seçenek olarak
   sonra), kart köşesindeki harflerin dile göre değişmesi (Kemal'e soru; şimdilik iki dilde A, J,
   Q, K), seslerin kendisi (12. paket).
 
-### 6. Puan ve en iyi puan (Kemal, 15 Kasım; örnek oyun) · bitti (formül seçimi Kemal'de; `ajans/puan`)
+### 6. Puan ve en iyi puan (Kemal, 15 Kasım; örnek oyun) · bitti (formül a, Kemal 16 Kasım; `ajans/puan`, `ajans/puan-a`)
 
 - Süre ve hamleye göre çarpanlı puan, "tüm zamanların en iyisi"; oyun sonu ekranında ve ayar açıksa
   masanın bilgi satırında (belge 8.3).
 - Formül ve çarpanlar [Kemal]; bu paket yapılırken ajans 2-3 aday getirir, Kemal seçer (Kemal,
   15 Kasım soru turu). En iyi puan oyun ve zorluk başına ayrı; günlük mücadele eli seriye sayılır
   (Kemal, 15 Kasım soru turu).
-- Yapılan: kurallar ve üç aday `src/kart/puan.ts`'te, ekrandan ayrı; testleri `testler/puan.test.ts`.
+- Yapılan: kurallar ve formül `src/kart/puan.ts`'te, ekrandan ayrı; testleri `testler/puan.test.ts`.
   Kazanınca elin puanı seriye eklenir, aşama bir artar; eli bırakınca seri sıfırlanır; en iyi
   puan (en yüksek seri puanı) oyun ve zorluk başına ayrı. Seri ve en iyi puan telefonun
-  tarayıcısında saklanır, sayfa kapanıp açılınca sürer. Adaylar (belge 8.3): a · çarpanlı taban
-  (varsayılan), b · hamle başı puan, c · bonuslu sabit puan; adres sonuna `?puan=b` yazılarak
-  denenir. Bütün sayılar aday, Kemal seçecek.
+  tarayıcısında saklanır, sayfa kapanıp açılınca sürer. Formül: a · çarpanlı taban, aşama çarpanlı
+  (Kemal, 16 Kasım; belge 8.3). b ve c adayları ve `?puan=` denemesi 16 Kasım'da kalktı. Sayılar
+  deneme varsayılanı, Kemal seçecek.
 - Ekranda: üst satırda "Puan" ve "Aşama" (ayarlar gelene kadar hep görünür); oyun sonunda "Bu el",
   "Seri puanı", "Yeni aşama", "Yeni en iyi"; oyun seçiminde "En iyi: …"; eli bırakma sorusu
   ("[YER TUTUCU: eli bırakma sorusu]", Evet / Hayır). Ekran görüntüleri:
   `docs/ekran-goruntuleri/puan-*.png`.
 - Bu pakette yok: günlük mücadele (8. paket; puan kodu hazır), kaybetme ekranı (kaybetmenin tanımı
   Kemal'e soru), ayardaki "her hamlede puanı göster" (5. paket).
-- Neye bağlı: 4. paket (süre ve hamle sayacı), Kemal'in formül kararı.
+- Neye bağlı: 4. paket (süre ve hamle sayacı), Kemal'in formül kararı (16 Kasım: a).
 
 ### 7. Ana ekran ve Ben sekmesi (Kemal, 15 Kasım; örnek oyun) · bitti (`ajans/ana-ekran`; Kemal birleştirince kesinleşir)
 
@@ -445,5 +452,5 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   birleştirince kesinleşir).
 - 3. Klasik solitaire, geri al ve ipucuyla (`ajans/klasik-solitaire`, 15 Kasım 2026; önce
   `ajans/geri-al-ipucu`, sonra bu birleşince kesinleşir).
-- 6. Puan ve en iyi puan (`ajans/puan`, 15 Kasım 2026; formül seçimi Kemal'de; Kemal birleştirince
-  kesinleşir).
+- 6. Puan ve en iyi puan (`ajans/puan`, 15 Kasım 2026); formül a, b ve c kalktı (`ajans/puan-a`,
+  16 Kasım 2026; Kemal birleştirince kesinleşir).

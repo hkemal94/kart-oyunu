@@ -18,7 +18,7 @@ import {
   type GunlukEl,
 } from './oyun/gunluk';
 import { ElBirakmaSorusu } from './ekranlar/masaOrtak';
-import { kayitOku, kayitYaz, puanAdayi, puanAnahtari, seriBitir } from './kart/puan';
+import { kayitOku, kayitYaz, puanAnahtari, seriBitir } from './kart/puan';
 import { GUNLUK_SECIM_ANAHTARI, sonSecimOku, sonSecimYaz, type SonSecim } from './oyun/sonSecim';
 import { yarimElOku, yarimElSil, type YarimEl } from './oyun/yarimEl';
 import { Ayarlar } from './ekranlar/Ayarlar';
@@ -135,8 +135,7 @@ export function Uygulama() {
     const y = yarimElOku(localStorage);
     if (y) {
       // Bırakılan el kaybedilmiş sayılır: o oyun ve zorluğun serisi biter (8.3)
-      const aday = puanAdayi(location.search);
-      kayitYaz(localStorage, aday, seriBitir(kayitOku(localStorage, aday), puanAnahtari(y.oyun, y.zorluk)));
+      kayitYaz(localStorage, seriBitir(kayitOku(localStorage), puanAnahtari(y.oyun, y.zorluk)));
     }
     yarimElSil(localStorage);
     setYarimEl(null);
@@ -160,8 +159,7 @@ export function Uygulama() {
   const gunlukEliBirak = () => {
     const y = gunlukYarimElOku(localStorage);
     if (y) {
-      const aday = puanAdayi(location.search);
-      kayitYaz(localStorage, aday, seriBitir(kayitOku(localStorage, aday), puanAnahtari(y.el.oyun, y.el.zorluk)));
+      kayitYaz(localStorage, seriBitir(kayitOku(localStorage), puanAnahtari(y.el.oyun, y.el.zorluk)));
     }
     gunlukYarimElSil(localStorage);
     if (gunlukBirak) gunlukBaslat(gunlukBirak);
