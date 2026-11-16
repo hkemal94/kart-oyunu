@@ -260,6 +260,21 @@ export function oynanabilirKartlar(masa: KlondikeMasasi): Set<string> {
   return sonuc;
 }
 
+// Koyulaşacak kartlar (Kemal, 15 Kasım gece: "Bir kart en öndeyse koyu olmaz"). Oynanamayan açık
+// kartlar koyulaşır; ama en öndeki kart (sütunun en üstteki kartı, açılanların ve temellerin en
+// üstteki kartı) oynanamasa da hiç koyulaşmaz. Kapalı kartlar listeye girmez.
+export function koyulasacakKartlar(masa: KlondikeMasasi): Set<string> {
+  const oynanir = oynanabilirKartlar(masa);
+  const sonuc = new Set<string>();
+  const arkadakiler = (yigin: Kart[]) => {
+    for (let i = 0; i < yigin.length - 1; i++) if (yigin[i].acik && !oynanir.has(yigin[i].id)) sonuc.add(yigin[i].id);
+  };
+  masa.sutunlar.forEach(arkadakiler);
+  arkadakiler(masa.acilan);
+  masa.temeller.forEach(arkadakiler);
+  return sonuc;
+}
+
 // ---------------------------------------------------------------------------------------------
 // Kendiliğinden bitirme (yol haritası 4. paket; Kemal, 15 Kasım). Ekrandan ayrı; testleri
 // testler/bitirme.test.ts. Oyun bunu kendisi başlatmaz: masada "Bitir" düğmesi çıkar, basınca kartlar

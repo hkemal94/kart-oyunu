@@ -37,7 +37,7 @@ import {
   geriAl,
   ipuclari,
   kazandiMi,
-  oynanabilirKartlar,
+  koyulasacakKartlar,
   spiderDagit,
   SPIDER_DIZI,
   SPIDER_SUTUN_SAYISI,
@@ -143,7 +143,7 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
   // Masa ekranı doldurur; kart alanı bilgi satırı ile alt şerit arasındaki yükseklik (masaOrtak.tsx)
   const { masaRef, blokRef, alanRef, alan } = useMasaBlogu();
   const hareket = useHareket(alanRef);
-  const oynanabilir = useMemo(() => oynanabilirKartlar(masa), [masa]);
+  const koyulasacak = useMemo(() => koyulasacakKartlar(masa), [masa]);
 
   const kazandi = kazandiMi(masa);
   // Süre: el başında başlar, kazanınca durur
@@ -468,8 +468,8 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
                 left = surukleme.x - surukleme.tutX - alanR.left;
                 top = surukleme.y - surukleme.tutY - alanR.top + (konumlar[c][i] - konumlar[c][surukleme.sira]);
               }
-              // O an hiçbir yere gidemeyen açık kart biraz koyu (ayar; kurallar src/kart/spider.ts)
-              const soluk = ayarlar.koyulastir && k.acik && !oynanabilir.has(k.id);
+              // O an hiçbir yere gidemeyen, arkada kalan açık kart biraz koyu; en öndeki kart hiç koyu olmaz (ayar; kurallar src/kart/spider.ts)
+              const soluk = ayarlar.koyulastir && koyulasacak.has(k.id);
               const sinif = [
                 'kart-yeri',
                 tasinan ? 'tasiniyor' : '',

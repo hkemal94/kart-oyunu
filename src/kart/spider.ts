@@ -237,3 +237,15 @@ export function oynanabilirKartlar(masa: SpiderMasasi): Set<string> {
   });
   return sonuc;
 }
+
+// Koyulaşacak kartlar (Kemal, 15 Kasım gece: "Bir kart en öndeyse koyu olmaz"). Oynanamayan açık
+// kartlar koyulaşır; ama sütunun en önündeki (en üstteki, son görünen) kart oynanamasa da hiç
+// koyulaşmaz. Kapalı kartlar listeye girmez. Dönen: koyu çizilecek kartların kimlikleri.
+export function koyulasacakKartlar(masa: SpiderMasasi): Set<string> {
+  const oynanir = oynanabilirKartlar(masa);
+  const sonuc = new Set<string>();
+  masa.sutunlar.forEach((s) => {
+    for (let i = 0; i < s.length - 1; i++) if (s[i].acik && !oynanir.has(s[i].id)) sonuc.add(s[i].id);
+  });
+  return sonuc;
+}

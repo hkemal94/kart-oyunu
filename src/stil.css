@@ -238,6 +238,9 @@ button:disabled { cursor: default; }
 .alt-sayfa-ust { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
 .geri-dugmesi { display: flex; align-items: center; gap: 2px; border: none; background: transparent; padding: 4px 0; font-size: 14px; color: var(--lacivert); opacity: 0.7; }
 .yer-tutucu-yazi { margin: 0; padding: 22px 14px; border: 1px dashed rgba(14, 28, 79, 0.3); border-radius: 12px; font-size: 13px; opacity: 0.75; text-align: center; }
+.hakkinda { display: flex; flex-direction: column; gap: 6px; text-align: center; }
+.hakkinda-ad { margin: 6px 0 0; font-size: 22px; font-weight: 600; color: var(--lacivert, #0E1C4F); }
+.hakkinda-alt { margin: 0 0 8px; font-size: 13px; opacity: 0.7; letter-spacing: 0.04em; }
 .istatistik { width: 100%; border-collapse: collapse; background: var(--lacivert); color: var(--krem); border-radius: 14px; overflow: hidden; font-size: 13px; font-variant-numeric: tabular-nums; }
 .istatistik th, .istatistik td { padding: 10px 6px; text-align: center; }
 .istatistik thead th { font-size: 11px; font-weight: 600; opacity: 0.6; }
@@ -364,3 +367,10 @@ button:disabled { cursor: default; }
 .pul-seri .pul.buyuk { margin-left: 6px; }
 .pul-ceyrek figcaption { font-size: 11px; opacity: 0.7; }
 .pul-not { margin: 0; font-size: 11px; opacity: 0.6; }
+
+/* Açılış (Kemal, 15 Kasım gece: oyunun adı geldi): uzun telefonda yelpaze büyür, ad ve alt yazı ortada derli toplu */
+.acilis .alt-yazi { letter-spacing: 0.06em; }
+@media (min-height: 760px) {
+  .acilis .yelpaze { transform: scale(1.2); transform-origin: center bottom; margin: 0 0 26px; }
+  .acilis .alt-yazi { font-size: 15px; margin-bottom: 18px; }
+}
