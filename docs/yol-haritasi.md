@@ -138,6 +138,12 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   açık kartlar koyulaşır (Spider ve klasik; klasikte açılanların ve temellerin en üstteki kartı da
   koyu olmaz). Bilgisayarda telefon boyutunda (390x844) denendi; gerçek telefonda denenmedi. Ekran
   görüntüleri: `docs/ekran-goruntuleri/ad-*.png`.
+- 16 Kasım 2026 (öneri; `ajans/ben-ust-bosluk`; Kemal: "Yap"): Ben sekmesinde ve bütün alt
+  sayfalarında (Pul koleksiyonu, İstatistik, Nasıl oynanır, Yardım, Oyun hakkında, Gizlilik) içerik
+  artık ekranın ortasına inmiyor; başlığın hemen altından başlıyor, üstte boşluk kalmıyor. Ayarlar
+  zaten ekranın üstüne açılan kutu, değişmedi. Ana ekran, Mücadeleler, oyun seçimi ve masa
+  değişmedi. Bilgisayarda iPhone 13 boyutunda denendi; gerçek telefonda denenmedi. Ekran
+  görüntüleri: `docs/ekran/ben-ust-bosluk/` (önce-sonra). Bu iş bitti.
 - Sırada: 9. paket (kartpostal etkinliği); pul görselleri tasarlandıkça tek tek.
 
 ## Paketler
