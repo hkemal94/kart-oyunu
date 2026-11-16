@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { m, sayi } from '../metinler';
-import { enIyiOku, kayitOku, puanAdayi, puanAnahtari } from '../kart/puan';
+import { enIyiOku, kayitOku, puanAnahtari } from '../kart/puan';
 import { KartYuzu } from '../kart/KartYuzu';
 import type { RenkSayisi } from '../kart/kart';
 import type { CekmeSayisi } from '../kart/klondike';
@@ -25,7 +25,7 @@ interface Ozellik {
 }
 
 export function OyunSecimi({ renk, renkSec, spiderBasla, cekme, cekmeSec, klasikBasla, ayarAc, istatistikAc }: Ozellik) {
-  const [kayit] = useState(() => kayitOku(localStorage, puanAdayi(location.search)));
+  const [kayit] = useState(() => kayitOku(localStorage));
   const enIyi = (anahtar: string) => {
     const p = enIyiOku(kayit, anahtar);
     return p === null ? m('secim.enIyiYok') : m('secim.enIyi', sayi(p));

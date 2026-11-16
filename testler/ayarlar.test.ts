@@ -14,7 +14,7 @@ import tr from '../src/metinler/tr.json' with { type: 'json' };
 import en from '../src/metinler/en.json' with { type: 'json' };
 import kkmAyarlari from '../src/oyun/ayarlar.json' with { type: 'json' };
 import { GERI_AL_HAK_DENEME_VARSAYILANI } from '../src/kart/geriAlHakki.ts';
-import { ADAY_A, ADAY_B, ADAY_C, PUAN_ADAYI_VARSAYILANI } from '../src/kart/puan.ts';
+import { PUAN_SAYILARI } from '../src/kart/puan.ts';
 
 const bellek = (): Depo & { veri: Map<string, string> } => {
   const veri = new Map<string, string>();
@@ -115,8 +115,8 @@ test('KKM ayar dosyasında yalnız sayı değerleri var', () => {
 
 test('oyun geri al hakkını ve puan sayılarını KKM ayar dosyasından okur', () => {
   assert.equal(GERI_AL_HAK_DENEME_VARSAYILANI, deger('yardimcilar', 'geriAlHak'));
-  assert.equal(PUAN_ADAYI_VARSAYILANI, ['a', 'b', 'c'][(deger('puan', 'aday') as number) - 1]);
-  for (const k of Object.keys(ADAY_A) as (keyof typeof ADAY_A)[]) assert.equal(ADAY_A[k], deger('puanA', k));
-  for (const k of Object.keys(ADAY_B) as (keyof typeof ADAY_B)[]) assert.equal(ADAY_B[k], deger('puanB', k));
-  for (const k of Object.keys(ADAY_C) as (keyof typeof ADAY_C)[]) assert.equal(ADAY_C[k], deger('puanC', k));
+  for (const k of Object.keys(PUAN_SAYILARI) as (keyof typeof PUAN_SAYILARI)[]) assert.equal(PUAN_SAYILARI[k], deger('puan', k));
+  // Formül a seçildi (Kemal, 16 Kasım): aday seçimi ve b, c bölümleri dosyada yok
+  assert.deepEqual(Object.keys(bolumler.puan.ayarlar).sort(), ['enAz', 'hamleBasi', 'saniyeBasi', 'taban']);
+  assert.ok(!('puanA' in bolumler) && !('puanB' in bolumler) && !('puanC' in bolumler));
 });

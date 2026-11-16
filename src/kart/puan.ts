@@ -11,37 +11,14 @@
 // - Günlük mücadele eli de seriye sayılır (8. paket). O paket yalnız aynı işlevleri çağırır:
 //   kazanınca elKazanildi, kaybedince ya da bırakınca seriBitir. Burada ayrıca bir şey gerekmez.
 //
-// Formül Kemal'in: ajans üç aday getirdi (a, b, c). Deneme için adres sonuna ?puan=b gibi yazılır.
-// Aşağıdaki BÜTÜN SAYILAR ADAY, KEMAL SEÇECEK: karar değildir, kod çalışsın diye konuldu.
-// Sayılar ve seçili aday src/oyun/ayarlar.json'dan gelir (KKM → Oyunlar → Ayarlar); buradaki
+// Formül Kemal'in (16 Kasım): a · çarpanlı taban (aşama çarpanlı). b ve c adayları kalktı.
+// Formül onaylı; aşağıdaki SAYILAR DENEME VARSAYILANI, Kemal sayıları onaylamadı.
+// Sayılar src/oyun/ayarlar.json → puan bölümünden gelir (KKM → Oyunlar → Ayarlar); buradaki
 // sayılar yalnız dosyada değer yoksa kullanılan yedektir.
 
 import type { SpiderMasasi } from './spider';
 import type { KlondikeMasasi } from './klondike';
 import { ayarSayisi } from '../oyun/ayarOku.ts';
-
-// Bir aday bölümünün sayılarını dosyadan okur; yoksa yedek
-function dosyadan<T extends Record<string, number>>(bolum: string, yedek: T): T {
-  const sonuc = { ...yedek };
-  for (const k of Object.keys(yedek) as (keyof T & string)[]) {
-    (sonuc as Record<string, number>)[k] = ayarSayisi(bolum, k, yedek[k]);
-  }
-  return sonuc;
-}
-
-export type PuanAdayi = 'a' | 'b' | 'c';
-export const PUAN_ADAYLARI: PuanAdayi[] = ['a', 'b', 'c'];
-// Seçim gelene kadar varsayılan aday: ayarlar.json → puan → aday (1 = a, 2 = b, 3 = c).
-// ADAY, KEMAL SEÇECEK.
-export const PUAN_ADAYI_VARSAYILANI: PuanAdayi =
-  PUAN_ADAYLARI[ayarSayisi('puan', 'aday', 1) - 1] ?? 'a';
-const ADRES_ANAHTARI = 'puan';
-
-// Adresteki ?puan= değerini okur; yoksa ya da bozuksa varsayılan aday.
-export function puanAdayi(adresSorgusu: string): PuanAdayi {
-  const ham = new URLSearchParams(adresSorgusu).get(ADRES_ANAHTARI)?.trim().toLowerCase();
-  return PUAN_ADAYLARI.includes(ham as PuanAdayi) ? (ham as PuanAdayi) : PUAN_ADAYI_VARSAYILANI;
-}
 
 // ---------------------------------------------------------------------------------------------
 // Bir elin puana giren özeti. Masadan çıkarılır (spiderOzeti, klondikeOzeti); geri alınınca masa
@@ -50,100 +27,37 @@ export function puanAdayi(adresSorgusu: string): PuanAdayi {
 export type Oyun = 'spider' | 'klasik';
 
 export interface ElOzeti {
-  oyun: Oyun;
   hamle: number;
   saniye: number;
-  ilerleme: number; // Spider: tamamlanan dizi; klasik solitaire: temeldeki kart
-  acilanKapali: number; // el başında kapalı olup açılan kart sayısı
 }
 
-// El başında sütunlarda kapalı duran kart sayısı (belge 1.1 ve 1.2)
-const SPIDER_ILK_KAPALI = 44; // 54 kart dağıtılır, 10'u açık
-const KLONDIKE_ILK_KAPALI = 21; // 28 kart dağıtılır, 7'si açık
-
-const kapaliSay = (sutunlar: { acik: boolean }[][]) =>
-  sutunlar.reduce((t, s) => t + s.filter((k) => !k.acik).length, 0);
-
 export function spiderOzeti(masa: SpiderMasasi, saniye: number): ElOzeti {
-  return {
-    oyun: 'spider',
-    hamle: masa.hamle,
-    saniye,
-    ilerleme: masa.tamamlanan.length,
-    acilanKapali: Math.max(0, SPIDER_ILK_KAPALI - kapaliSay(masa.sutunlar)),
-  };
+  return { hamle: masa.hamle, saniye };
 }
 
 export function klondikeOzeti(masa: KlondikeMasasi, saniye: number): ElOzeti {
-  return {
-    oyun: 'klasik',
-    hamle: masa.hamle,
-    saniye,
-    ilerleme: masa.temeller.reduce((t, y) => t + y.length, 0),
-    acilanKapali: Math.max(0, KLONDIKE_ILK_KAPALI - kapaliSay(masa.sutunlar)),
-  };
+  return { hamle: masa.hamle, saniye };
 }
 
 // ---------------------------------------------------------------------------------------------
-// Üç aday. Her biri bir elin puanını verir: özet, elin aşaması (1, 2, 3…) ve el kazanıldı mı.
-// Masada gösterilen puan "şimdi bitse" değeridir (kazanildi = false); el kazanılınca kesin puan
-// kazanildi = true ile hesaplanır. Bütün sayılar ADAY, KEMAL SEÇECEK.
+// Formül a · Çarpanlı taban (Kemal onaylı formül, 16 Kasım): her el sabit bir tabanla başlar; her
+// hamle ve geçen süre tabandan düşer (bir alt sınırın altına inmez); sonuç aşama sayısıyla çarpılır
+// (Aşama 2'de iki katı). Masada gösterilen puan "şimdi bitse" değeridir; el kazanılınca aynı
+// hesap kesin puan olur. Sayılar DENEME VARSAYILANI, Kemal onaylamadı.
 
-// Aday a · Çarpanlı taban: her el sabit bir tabanla başlar; her hamle ve geçen süre tabandan
-// düşer (bir alt sınırın altına inmez); sonuç aşama sayısıyla çarpılır (Aşama 2'de iki katı).
-export const ADAY_A = dosyadan('puanA', {
-  taban: 2000, // ADAY, KEMAL SEÇECEK
-  hamleBasi: 2, // her hamle tabandan düşer. ADAY, KEMAL SEÇECEK
-  saniyeBasi: 0.5, // her saniye tabandan düşer (dakikada 30). ADAY, KEMAL SEÇECEK
-  enAz: 200, // kazanılan el en az bu kadar getirir. ADAY, KEMAL SEÇECEK
-});
+const sayi = (anahtar: string, yedek: number) => ayarSayisi('puan', anahtar, yedek);
 
-function adayA(o: ElOzeti, asama: number): number {
-  const ham = ADAY_A.taban - ADAY_A.hamleBasi * o.hamle - Math.floor(ADAY_A.saniyeBasi * o.saniye);
-  return Math.max(ADAY_A.enAz, ham) * asama;
-}
+export const PUAN_SAYILARI = {
+  taban: sayi('taban', 2000), // DENEME VARSAYILANI
+  hamleBasi: sayi('hamleBasi', 2), // her hamle tabandan düşer. DENEME VARSAYILANI
+  saniyeBasi: sayi('saniyeBasi', 0.5), // her saniye tabandan düşer (dakikada 30). DENEME VARSAYILANI
+  enAz: sayi('enAz', 200), // kazanılan el en az bu kadar getirir. DENEME VARSAYILANI
+};
 
-// Aday b · Hamle başı puan: puan oynarken toplanır. Her ilerleme (Spider'da tamamlanan dizi,
-// klasik solitaire'de temele giden kart) ve açılan her kapalı kart puan getirir; her hamle bir
-// puan götürür. El kazanılınca hızlı bitirene süre bonusu eklenir. Toplam, aşama başına yarım
-// kat büyür (Aşama 2'de 1,5 katı, Aşama 3'te 2 katı).
-export const ADAY_B = dosyadan('puanB', {
-  dizi: 100, // Spider'da tamamlanan her dizi. ADAY, KEMAL SEÇECEK
-  temelKarti: 15, // klasik solitaire'de temele giden her kart. ADAY, KEMAL SEÇECEK
-  acilanKart: 5, // açılan her kapalı kart. ADAY, KEMAL SEÇECEK
-  hamleBasi: 1, // her hamle götürür. ADAY, KEMAL SEÇECEK
-  sureTavani: 1200, // süre bonusu: bu kadar saniyeden (20 dakika) önce biten ele, kalan her saniye bir puan. ADAY, KEMAL SEÇECEK
-  asamaArtisi: 0.5, // aşama başına çarpana eklenen. ADAY, KEMAL SEÇECEK
-});
-
-function adayB(o: ElOzeti, asama: number, kazanildi: boolean): number {
-  const ilerleme = o.ilerleme * (o.oyun === 'spider' ? ADAY_B.dizi : ADAY_B.temelKarti);
-  const oyunda = Math.max(0, ilerleme + o.acilanKapali * ADAY_B.acilanKart - o.hamle * ADAY_B.hamleBasi);
-  const bonus = kazanildi ? Math.max(0, ADAY_B.sureTavani - o.saniye) : 0;
-  return Math.round((oyunda + bonus) * (1 + ADAY_B.asamaArtisi * (asama - 1)));
-}
-
-// Aday c · Bonuslu sabit puan: kazanılan her el sabit bir puan getirir; üstüne hızlı bitirene
-// süre bonusu, az hamleyle bitirene hamle bonusu eklenir. Aşama çarpmaz, her aşama sabit bir ek
-// getirir (Aşama 2'de bir ek, Aşama 3'te iki ek).
-export const ADAY_C = dosyadan('puanC', {
-  taban: 1000, // ADAY, KEMAL SEÇECEK
-  sureTavani: 1200, // bu kadar saniyeden (20 dakika) önce biten ele kalan her saniye bir puan. ADAY, KEMAL SEÇECEK
-  hamleTavani: 300, // bu kadar hamleden az bitene kalan her hamle için hamleBonusu. ADAY, KEMAL SEÇECEK
-  hamleBonusu: 2, // ADAY, KEMAL SEÇECEK
-  asamaEki: 250, // Aşama 1'in üstündeki her aşama için. ADAY, KEMAL SEÇECEK
-});
-
-function adayC(o: ElOzeti, asama: number): number {
-  const sure = Math.max(0, ADAY_C.sureTavani - o.saniye);
-  const hamle = Math.max(0, ADAY_C.hamleTavani - o.hamle) * ADAY_C.hamleBonusu;
-  return ADAY_C.taban + sure + hamle + ADAY_C.asamaEki * (asama - 1);
-}
-
-export function elPuani(aday: PuanAdayi, o: ElOzeti, asama: number, kazanildi: boolean): number {
-  if (aday === 'b') return adayB(o, asama, kazanildi);
-  if (aday === 'c') return adayC(o, asama);
-  return adayA(o, asama);
+export function elPuani(o: ElOzeti, asama: number): number {
+  const p = PUAN_SAYILARI;
+  const ham = p.taban - p.hamleBasi * o.hamle - Math.floor(p.saniyeBasi * o.saniye);
+  return Math.max(p.enAz, ham) * asama;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -178,9 +92,9 @@ export interface KazancSonucu {
 }
 
 // El kazanıldı: elin puanı seriye eklenir, aşama bir artar; seri puanı en iyiyi geçerse en iyi olur.
-export function elKazanildi(k: PuanKaydi, anahtar: string, aday: PuanAdayi, o: ElOzeti): KazancSonucu {
+export function elKazanildi(k: PuanKaydi, anahtar: string, o: ElOzeti): KazancSonucu {
   const seri = seriOku(k, anahtar);
-  const puan = elPuani(aday, o, seri.asama, true);
+  const puan = elPuani(o, seri.asama);
   const yeni: Seri = { puan: seri.puan + puan, asama: seri.asama + 1 };
   const eski = enIyiOku(k, anahtar);
   const yeniEnIyi = eski === null || yeni.puan > eski;
@@ -202,19 +116,20 @@ export function seriBitir(k: PuanKaydi, anahtar: string): PuanKaydi {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Saklama. Deneme sırasında her adayın kaydı ayrı durur (bir adayın puanı öbürünü bozmasın);
-// Kemal seçince yalnız seçilen aday kalır.
+// Saklama. Puan telefonun tarayıcısında saklanır. Deneme günlerinde her aday ayrı anahtarda
+// duruyordu (kartOyunu.puan.a, .b, .c); formül a seçildi, a'nın anahtarı aynen sürer (oyuncunun
+// puanı kaybolmaz). Eski b ve c kayıtları okunmaz, zararsızca durur.
 
 export interface Depo {
   getItem(anahtar: string): string | null;
   setItem(anahtar: string, deger: string): void;
 }
 
-const depoAnahtari = (aday: PuanAdayi) => `kartOyunu.puan.${aday}`;
+export const DEPO_ANAHTARI = 'kartOyunu.puan.a';
 
-export function kayitOku(depo: Depo, aday: PuanAdayi): PuanKaydi {
+export function kayitOku(depo: Depo): PuanKaydi {
   try {
-    const ham = depo.getItem(depoAnahtari(aday));
+    const ham = depo.getItem(DEPO_ANAHTARI);
     if (!ham) return bosKayit();
     const v = JSON.parse(ham) as Partial<PuanKaydi>;
     return { seriler: v.seriler ?? {}, enIyi: v.enIyi ?? {} };
@@ -223,9 +138,9 @@ export function kayitOku(depo: Depo, aday: PuanAdayi): PuanKaydi {
   }
 }
 
-export function kayitYaz(depo: Depo, aday: PuanAdayi, k: PuanKaydi): void {
+export function kayitYaz(depo: Depo, k: PuanKaydi): void {
   try {
-    depo.setItem(depoAnahtari(aday), JSON.stringify(k));
+    depo.setItem(DEPO_ANAHTARI, JSON.stringify(k));
   } catch {
     // Tarayıcı saklamaya izin vermezse oyun yine oynanır; yalnız puan kapanınca kaybolur.
   }

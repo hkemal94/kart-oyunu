@@ -151,11 +151,11 @@ test('günlük yarım el normal yarım elle karışmaz', () => {
 test('günlük el seriye sayılır: kazanınca aşama artar, bırakınca seri biter', () => {
   // Günlük elin puan anahtarı normal elinkiyle aynıdır (oyun ve zorluk); aynı seri sürer
   const anahtar = puanAnahtari('spider', 2);
-  const ozet: ElOzeti = { oyun: 'spider', hamle: 200, saniye: 900, ilerleme: 8, acilanKapali: 44 };
+  const ozet: ElOzeti = { hamle: 200, saniye: 900 };
   let k = bosKayit();
-  k = elKazanildi(k, anahtar, 'a', ozet).kayit; // normal el
+  k = elKazanildi(k, anahtar, ozet).kayit; // normal el
   assert.equal(seriOku(k, anahtar).asama, 2);
-  const gunlukKazanc = elKazanildi(k, anahtar, 'a', ozet); // günlük el
+  const gunlukKazanc = elKazanildi(k, anahtar, ozet); // günlük el
   k = gunlukKazanc.kayit;
   assert.equal(gunlukKazanc.yeniAsama, 3);
   assert.equal(seriOku(k, anahtar).puan, 1150 + 2300);
