@@ -261,6 +261,10 @@ button:disabled { cursor: default; }
 /* Dikeyde ortalama: ilk ve son öğedeki otomatik pay; içerik uzunsa pay sıfırlanır, kaydırılır */
 .sekme-ekrani > :first-child, .cerceve > .secim > :first-child { margin-top: auto; }
 .sekme-ekrani > :last-child, .cerceve > .secim > :last-child { margin-bottom: auto; }
+/* Ben sekmesi ve alt sayfaları dikeyde ortalanmaz (Kemal, 16 Kasım): içerik başlığın hemen altından
+   başlar, üstte boşluk kalmaz; kalan boşluk altta. Ana ekran, Mücadeleler, oyun seçimi değişmez. */
+.sekme-ekrani.ben > :first-child { margin-top: 0; }
+.sekme-ekrani.ben > :last-child { margin-bottom: 0; }
 .acilis { padding: calc(var(--kenar) + env(safe-area-inset-top)) var(--kenar) calc(var(--kenar) + env(safe-area-inset-bottom)); }
 /* Ana ekran: uzun telefonda öğeler büyür, ortada büyük boşluk kalmaz (kompakt) */
 .ana-ekran { justify-content: flex-start; gap: clamp(14px, 3.2vh, 34px); }
