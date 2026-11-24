@@ -32,6 +32,8 @@ button:disabled { cursor: default; }
 .kart.kirmizi { color: var(--kart-kirmizi); }
 .kart.siyah { color: var(--kart-siyah); }
 .kart.arka { background: var(--kiremit); border: 2px solid var(--krem); }
+/* Sürek Kulübü destesinin arka yüzü (görsel KartYuzu.tsx'ten gelir); ince krem kenar üst üste binen kartları ayırır */
+.kart.arka.surek { background-color: var(--lacivert); background-size: cover; background-position: center; border: 1px solid var(--krem); }
 .kose { position: absolute; top: 0; left: 0; display: flex; align-items: baseline; gap: 1px; font-weight: 600; line-height: 1; letter-spacing: -0.04em; }
 .orta-simge { position: absolute; left: 0; right: 0; bottom: 8%; text-align: center; line-height: 1; }
 

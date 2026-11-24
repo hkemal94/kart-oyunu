@@ -16,5 +16,14 @@ export interface Kart {
   acik: boolean;
 }
 
+// Kartın hangi setten geldiği (1 ya da 2; klasik iskambildeki iki deste gibi, arka yüzü renginden
+// ayrılır). Spider iki desteyle oynanır: kimliği "dizi-takım-değer", ilk dört dizi 1. set, son dört
+// dizi 2. set (her set 52 kart). Klasik solitaire ve kimliği olmayan kart tek deste: 1. set.
+export type KartSeti = 1 | 2;
+export function kartSeti(id: string | undefined): KartSeti {
+  const dizi = id?.match(/^(\d+)-/);
+  return dizi && Number(dizi[1]) >= 4 ? 2 : 1;
+}
+
 // Spider zorluğu: 1 renk (yalnız maça), 2 renk (maça ve kupa), 4 renk (belge 1.2).
 export type RenkSayisi = 1 | 2 | 4;

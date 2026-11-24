@@ -1,8 +1,32 @@
 {
   "oyun": "Düzada Cards Club",
   "kaynak": "https://hkemal94.github.io/kart-oyunu/",
-  "not": "Oyunun adı Düzada Cards Club (Kemal, 15 Kasım 2026); 'kart-oyunu' depo adı, çalışma adı olarak kalır. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ana ekran, Ben sekmesi ve ince kenarlı masa görüntüleri öneri dalından (ajans/ana-ekran); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor. Günlük mücadele görüntüleri (gunluk-*.png) öneri dalından (ajans/gunluk-mucadele); saat 15 Kasım 2026'ya sabitlendi, takvimdeki yıldızlar yalnız geliştirmede çalışan hazır veriden (?deneme=takvim). Telefon yorumları görüntüleri (yorum-*.png) öneri dalından (ajans/telefon-yorumlari-1); koyu kartlar hazır deneme ellerinde (?deneme=cift, ?deneme=klasik-orta). Kendiliğinden bitirme görüntüleri (bitir-*.png) öneri dalından (ajans/kendiliginden-bitirme); bitmeye yakın el yalnız geliştirmede çalışan hazır veriden (?deneme=klasik-bitir). Hareketler (dağıtma, kayma, akış) yalnız videoda görünür; videolar depoya konmadı. Pul koleksiyonu görüntüleri (pul-*.png) öneri dalından (ajans/pul-koleksiyonu); saat 15 Kasım 2026'ya sabitlendi, kazanılmış pullar yalnız geliştirmede çalışan hazır veriden (?deneme=pullar). Oyunun adı ve koyulaştırma düzeltmesi görüntüleri (ad-*.png) öneri dalından (ajans/kemal-notlari-15-11); koyu kartlar hazır deneme ellerinde (?deneme=klasik-orta, ?deneme=uzun).",
+  "not": "Oyunun adı Düzada Cards Club (Kemal, 15 Kasım 2026); 'kart-oyunu' depo adı, çalışma adı olarak kalır. Görüntüler bilgisayarda telefon boyutunda (Playwright) alındı; gerçek telefonda değil. Ana ekran, Ben sekmesi ve ince kenarlı masa görüntüleri öneri dalından (ajans/ana-ekran); ana dala birleşince yayındaki oyun da böyle görünür. Eski görüntüler önceki paketlerden, karşılaştırma için duruyor. Günlük mücadele görüntüleri (gunluk-*.png) öneri dalından (ajans/gunluk-mucadele); saat 15 Kasım 2026'ya sabitlendi, takvimdeki yıldızlar yalnız geliştirmede çalışan hazır veriden (?deneme=takvim). Telefon yorumları görüntüleri (yorum-*.png) öneri dalından (ajans/telefon-yorumlari-1); koyu kartlar hazır deneme ellerinde (?deneme=cift, ?deneme=klasik-orta). Kendiliğinden bitirme görüntüleri (bitir-*.png) öneri dalından (ajans/kendiliginden-bitirme); bitmeye yakın el yalnız geliştirmede çalışan hazır veriden (?deneme=klasik-bitir). Hareketler (dağıtma, kayma, akış) yalnız videoda görünür; videolar depoya konmadı. Pul koleksiyonu görüntüleri (pul-*.png) öneri dalından (ajans/pul-koleksiyonu); saat 15 Kasım 2026'ya sabitlendi, kazanılmış pullar yalnız geliştirmede çalışan hazır veriden (?deneme=pullar). Oyunun adı ve koyulaştırma düzeltmesi görüntüleri (ad-*.png) öneri dalından (ajans/kemal-notlari-15-11); koyu kartlar hazır deneme ellerinde (?deneme=klasik-orta, ?deneme=uzun). Sürek Kulübü destesinin arka yüzü görüntüleri (surek-*.png) öneri dalından (ajans/surek-deste-arkalari, 24 Kasım 2026).",
   "goruntuler": [
+    {
+      "dosya": "surek-1-spider-masa.png",
+      "baslik": "Spider (4 renk), Sürek Kulübü destesi: kapalı kartlarda iki set karışık; 1. set lacivert-kiremit, 2. set ege-kırmızı arka yüz",
+      "tarih": "2026-11-24",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "surek-2-klasik-masa.png",
+      "baslik": "Klasik solitaire, Sürek Kulübü destesi: tek deste, bütün kapalı kartlar 1. set (lacivert-kiremit)",
+      "tarih": "2026-11-24",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "surek-3-ayarlar.png",
+      "baslik": "Ayarlar → Deste: 'Sürek Kulübü destesi' (varsayılan) ve 'Sade deste'",
+      "tarih": "2026-11-24",
+      "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "surek-4-spider-yakin.png",
+      "baslik": "Yakın plan: Spider sütunlarında ve dağıtma destesinde iki setin arka yüzü",
+      "tarih": "2026-11-24",
+      "cihaz": "telefon görüntüsünden kesit (390x844)"
+    },
     {
       "dosya": "pul-1-ben-oduller.png",
       "baslik": "Ben → Ödüller: 'Pul koleksiyonu' kartı (son üç pul, kaç pul toplandığı); pullar yer tutucu",

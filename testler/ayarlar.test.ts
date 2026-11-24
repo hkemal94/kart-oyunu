@@ -52,7 +52,17 @@ test('bozuk ya da eksik kayıt varsayılana döner', () => {
   assert.equal(o.solEl, false);
   assert.equal(o.dil, null);
   assert.equal(o.titresim, false);
-  assert.equal(o.deste, 'sade');
+  assert.equal(o.deste, 'surek');
+});
+
+test('deste: varsayılan Sürek Kulübü destesi; sade seçilince saklanır; eski kayıttaki sade Sürek olur (24 Kasım)', () => {
+  assert.equal(VARSAYILAN_AYARLAR.deste, 'surek');
+  const depo = bellek();
+  ayarlariYaz(depo, { ...VARSAYILAN_AYARLAR, deste: 'sade' });
+  assert.equal(ayarlariOku(depo).deste, 'sade');
+  // Sürek destesinden önceki kayıt: sade tek seçenekti, seçilmiş sayılmaz
+  depo.setItem(AYAR_ANAHTARI, JSON.stringify({ solEl: true, deste: 'sade' }));
+  assert.equal(ayarlariOku(depo).deste, 'surek');
 });
 
 test('saklamaya izin vermeyen tarayıcıda oyun durmaz', () => {
@@ -119,4 +129,16 @@ test('oyun geri al hakkını ve puan sayılarını KKM ayar dosyasından okur', 
   // Formül a seçildi (Kemal, 16 Kasım): aday seçimi ve b, c bölümleri dosyada yok
   assert.deepEqual(Object.keys(bolumler.puan.ayarlar).sort(), ['enAz', 'hamleBasi', 'saniyeBasi', 'taban']);
   assert.ok(!('puanA' in bolumler) && !('puanB' in bolumler) && !('puanC' in bolumler));
+});
+
+test('kartın seti: Spider\'da ilk dört dizi 1. set, son dördü 2. set; klasik solitaire 1. set (24 Kasım)', async () => {
+  const { kartSeti } = await import('../src/kart/kart.ts');
+  const { spiderKartlari } = await import('../src/kart/spider.ts');
+  for (const renk of [1, 2, 4] as const) {
+    const setler = spiderKartlari(renk).map((k) => kartSeti(k.id));
+    assert.equal(setler.filter((s) => s === 1).length, 52);
+    assert.equal(setler.filter((s) => s === 2).length, 52);
+  }
+  assert.equal(kartSeti('kupa-13'), 1);
+  assert.equal(kartSeti(undefined), 1);
 });

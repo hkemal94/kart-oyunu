@@ -23,6 +23,7 @@ import { GUNLUK_SECIM_ANAHTARI, sonSecimOku, sonSecimYaz, type SonSecim } from '
 import { yarimElOku, yarimElSil, type YarimEl } from './oyun/yarimEl';
 import { Ayarlar } from './ekranlar/Ayarlar';
 import { dilSec } from './metinler';
+import { desteSec } from './kart/KartYuzu';
 import { ayarlariOku, ayarlariYaz, ilkDil, type OyuncuAyarlari } from './oyun/oyuncuAyarlari';
 import { denemeMasasi, gunlukDenemesi, klondikeDenemesi, pulDenemesi, type DenemeTuru, type KlondikeDenemeTuru } from './kart/deneme';
 
@@ -50,6 +51,7 @@ function denemeOku() {
 function ilkAyarlar(): OyuncuAyarlari {
   const a = ayarlariOku(localStorage);
   dilSec(ilkDil(location.search, a.dil, navigator.language));
+  desteSec(a.deste);
   return a;
 }
 
@@ -63,6 +65,7 @@ export function Uygulama() {
   const ayarDegistir = (yeni: Partial<OyuncuAyarlari>) => {
     const a = { ...ayarlar, ...yeni };
     if (yeni.dil) dilSec(yeni.dil); // bütün yazılar anında değişir
+    if (yeni.deste) desteSec(yeni.deste); // kapalı kartların arka yüzü anında değişir
     ayarlariYaz(localStorage, a);
     setAyarlar(a);
   };

@@ -4,7 +4,13 @@
 
 export type Dil = 'tr' | 'en';
 export const DILLER: Dil[] = ['tr', 'en'];
-export type Deste = 'sade';
+// Desteler (belge 4): Sürek Kulübü destesi ücretsiz ve varsayılan (Kemal, 14 Kasım), sade deste
+// ücretsiz. Sürek destesinin şimdilik yalnız arka yüzü var (24 Kasım); ön yüzü sade deste gibi.
+export type Deste = 'surek' | 'sade';
+export const DESTELER: Deste[] = ['surek', 'sade'];
+// Sürek destesi gelmeden önce saklanan "sade" bir seçim değildi (tek seçenekti). Bu sürüm
+// işaretiyle saklanmamış kayıtta deste varsayılana (Sürek) döner.
+const DESTE_SURUMU = 2;
 
 export interface OyuncuAyarlari {
   ses: boolean; // kart sesleri (ses paketi gelince çalışır, 12. paket)
@@ -15,7 +21,7 @@ export interface OyuncuAyarlari {
   puaniGoster: boolean; // masanın bilgi satırında puan ve aşama
   koyulastir: boolean; // o an oynanamayan açık kartlar bir iki ton koyu (Kemal, 15 Kasım)
   dil: Dil | null; // null: henüz seçilmedi, telefonun diline göre açılır
-  deste: Deste; // şimdilik tek seçenek: sade deste
+  deste: Deste; // kart arka yüzü bu desteden (ön yüzler şimdilik iki destede de sade)
 }
 
 // Varsayılanlar (öneri): sesler açık, sağ el, sayaçlar ve puan görünür. Oynanamayan kartları
@@ -29,7 +35,7 @@ export const VARSAYILAN_AYARLAR: OyuncuAyarlari = {
   puaniGoster: true,
   koyulastir: true,
   dil: null,
-  deste: 'sade',
+  deste: 'surek',
 };
 
 export interface Depo {
@@ -44,7 +50,7 @@ export function ayarlariOku(depo: Depo): OyuncuAyarlari {
   try {
     const ham = depo.getItem(AYAR_ANAHTARI);
     if (!ham) return { ...VARSAYILAN_AYARLAR };
-    const v = JSON.parse(ham) as Partial<Record<keyof OyuncuAyarlari, unknown>>;
+    const v = JSON.parse(ham) as Partial<Record<keyof OyuncuAyarlari | 'desteSurumu', unknown>>;
     const evetHayir = (k: 'ses' | 'mahalleSesi' | 'titresim' | 'solEl' | 'sayaclariGizle' | 'puaniGoster' | 'koyulastir') =>
       typeof v[k] === 'boolean' ? (v[k] as boolean) : VARSAYILAN_AYARLAR[k];
     return {
@@ -56,7 +62,8 @@ export function ayarlariOku(depo: Depo): OyuncuAyarlari {
       puaniGoster: evetHayir('puaniGoster'),
       koyulastir: evetHayir('koyulastir'),
       dil: DILLER.includes(v.dil as Dil) ? (v.dil as Dil) : null,
-      deste: 'sade',
+      deste:
+        v.desteSurumu === DESTE_SURUMU && DESTELER.includes(v.deste as Deste) ? (v.deste as Deste) : VARSAYILAN_AYARLAR.deste,
     };
   } catch {
     return { ...VARSAYILAN_AYARLAR };
@@ -65,7 +72,7 @@ export function ayarlariOku(depo: Depo): OyuncuAyarlari {
 
 export function ayarlariYaz(depo: Depo, a: OyuncuAyarlari): void {
   try {
-    depo.setItem(AYAR_ANAHTARI, JSON.stringify(a));
+    depo.setItem(AYAR_ANAHTARI, JSON.stringify({ ...a, desteSurumu: DESTE_SURUMU }));
   } catch {
     // Tarayıcı saklamaya izin vermezse ayar yalnız bu açılışta geçerli olur.
   }
