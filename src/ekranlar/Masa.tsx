@@ -545,7 +545,8 @@ export function Masa({ renk, anaEkran, oyunSecimi, ayarlar, ayarAc, devam, basla
               {Array.from({ length: destedenKalan }, (_, i) => (
                 <KartYuzu
                   key={i}
-                  kart={{ takim: 'maca', deger: 1, acik: false }}
+                  // Her yığın bir dağıtımın ilk kartının setini (arka yüzünü) gösterir
+                  kart={{ takim: 'maca', deger: 1, acik: false, id: masa.deste[i * SPIDER_SUTUN_SAYISI]?.id }}
                   genislik={kartEn}
                   stil={{ position: 'absolute', left: i * yelpazeAdim, top: 0 }}
                 />

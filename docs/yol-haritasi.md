@@ -158,6 +158,15 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   (2000 taban, hamle başı 2, dakikada 30, en az 200) deneme varsayılanı, Kemal onaylamadı; KKM →
   Oyunlar → Ayarlar'da "Puan · a · çarpanlı taban" bölümünde. Bilgisayarda iPhone 13 boyutunda
   denendi; gerçek telefonda denenmedi. Ekran görüntüsü: `docs/ekran/puan-a/` (sonra).
+- 24 Kasım 2026 (öneri; `ajans/surek-deste-arkalari`; Kemal: "iki desteyi otomatik ata, farklı
+  renklerde aynı desende olsun"): 14. paketin ilk adımı, Sürek Kulübü destesinin arka yüzü. Desen
+  ince dikey şerit, ortada krem oval içinde siyah Kangal; iki set iki renkte (klasik iskambildeki iki
+  deste gibi): 1. set lacivert-kiremit, 2. set ege-kırmızı. Spider iki desteyle oynandığı için kapalı
+  kartlar iki setten karışık gelir (ilk dört dizi 1. set, son dört dizi 2. set); klasik solitaire tek
+  deste, hep 1. set. Ayarlar → Deste'de "Sürek Kulübü destesi" (varsayılan) ve "Sade deste" (eski düz
+  kiremit arka yüz) seçilir. Ön yüzler iki destede de şimdilik sade. Daha önce saklanan "sade"
+  seçimi seçim sayılmadı (tek seçenekti); herkes Sürek destesiyle açar. Bilgisayarda iPhone 13
+  boyutunda denendi; gerçek telefonda denenmedi. Ekran görüntüleri: `docs/ekran-goruntuleri/surek-*.png`.
 - Sırada: 9. paket (kartpostal etkinliği); pul görselleri tasarlandıkça tek tek.
 
 ## Paketler
@@ -399,10 +408,15 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   tutucu kart. "Aç" ve "reklam izle, bir el dene" görünür ama web'de gerçek değildir.
 - Sade Meyhane bu pakette yok (Kemal, 15 Kasım: görseli gelince karar).
 
-### 14. Sürek Kulübü destesi (görseller)
+### 14. Sürek Kulübü destesi (görseller) · arka yüz bitti (`ajans/surek-deste-arkalari`; Kemal birleştirince kesinleşir), ön yüzler bekliyor
 
 - Arka yüz, 52 ön yüz ve 2 joker; merch destesiyle aynı tasarım (belge 4.1). Oyuna girince
   varsayılan deste olur.
+- Yapılan (24 Kasım): arka yüz, iki set iki renkte aynı desen (1. set lacivert-kiremit, 2. set
+  ege-kırmızı; Kemal: "iki desteyi otomatik ata"). Görseller `src/assets/surek-arka-*.webp`; kartın
+  hangi setten olduğu `src/kart/kart.ts` → `kartSeti`. Ayarlarda deste seçimi açıldı, varsayılan
+  Sürek Kulübü destesi.
+- Bu adımda yok: ön yüzler ve jokerler (çizim stili Kemal'de).
 - Neye bağlı: arka yüz için Kemal'in yorumu, ön yüz çizim stili, 2. paketteki okunurluk sonucu.
 
 ### 15. Sade Meyhane masası · bekliyor
@@ -425,6 +439,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ## Bitenler
 
+- 14. paketin ilk adımı: Sürek Kulübü destesinin arka yüzü, iki set iki renkte (`ajans/surek-deste-arkalari`,
+  24 Kasım 2026; Kemal birleştirince kesinleşir).
 - Mücadeleler ve oyun seçiminde içerik başlığın hemen altından başlar (`ajans/mucadeleler-ust-bosluk`,
   16 Kasım 2026; Kemal birleştirince kesinleşir).
 - Oyunun adı (Düzada Cards Club) ve en öndeki kartın koyu olmaması (`ajans/kemal-notlari-15-11`,

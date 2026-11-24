@@ -1,5 +1,5 @@
 import { m, seciliDil, type MetinAnahtari } from '../metinler';
-import { DILLER, type OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
+import { DESTELER, DILLER, type OyuncuAyarlari } from '../oyun/oyuncuAyarlari';
 
 // Ayarlar (yol haritası 5; belge 2, "Ayarlar"). Oyun seçiminden ve masadaki küçük düğmeden açılır;
 // masanın üstüne gelir, kapanınca el kaldığı yerden sürer. Değişiklik anında geçerli olur ve
@@ -75,7 +75,11 @@ export function Ayarlar({ ayarlar, degistir, kapat }: Ozellik) {
           <div className="ayar-secim">
             <span>{m('ayar.deste')}</span>
             <div className="secenekler">
-              <button className="secili">{m('ayar.deste.sade')}</button>
+              {DESTELER.map((d) => (
+                <button key={d} className={d === ayarlar.deste ? 'secili' : ''} onClick={() => degistir({ deste: d })}>
+                  {m(`ayar.deste.${d}` as MetinAnahtari)}
+                </button>
+              ))}
             </div>
           </div>
         </section>

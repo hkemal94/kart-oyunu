@@ -516,6 +516,10 @@ birden çok deste seçilebilir; biri Kems'in satacağı fiziksel deste.
   paketler ekranında görünür, ilerideki oyunlarda kullanılır.
 - **Kulüp izi:** arka yüz ve kutu, as kartları, maça ası özel; minik logolar ve dokunuşlar,
   boğmadan (Kemal). Arka yüz "şovlu", ortasında illüstrasyon.
+- **Arka yüz ve iki set** (Kemal, 24 Kasım: "iki desteyi otomatik ata, farklı renklerde aynı desende
+  olsun"): ince dikey şerit, ortada krem oval içinde siyah Kangal. Klasik iskambildeki iki deste gibi
+  iki set: 1. set lacivert-kiremit, 2. set ege-kırmızı. Spider iki seti birlikte, klasik solitaire
+  yalnız 1. seti kullanır. Oyuncu set seçmez; set kartın kendisinden gelir.
 - **Renkler:** kulüp paleti bu deste için esner, daha renkli ve şovlu (Kemal).
 - **Oyundaki yeri:** fiziksel destenin oyundaki eşi; oyun destenin vitrini olur. **Ücretsiz ve
   varsayılan deste** (Kemal, 14 Kasım): oyuncu oyunu ilk açtığında bu desteyle oynar.
