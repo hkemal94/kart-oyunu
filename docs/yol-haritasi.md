@@ -167,6 +167,12 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   kiremit arka yüz) seçilir. Ön yüzler iki destede de şimdilik sade. Daha önce saklanan "sade"
   seçimi seçim sayılmadı (tek seçenekti); herkes Sürek destesiyle açar. Bilgisayarda iPhone 13
   boyutunda denendi; gerçek telefonda denenmedi. Ekran görüntüleri: `docs/ekran-goruntuleri/surek-*.png`.
+- 26 Kasım 2026 (öneri; `ajans/spider-gri-kural`; Kemal: "Sıralı dizideyse gri olmasın"): Spider'da
+  gri kural değişti. Aynı takımdan, birer birer küçülerek giden dizinin her kartı açık renkte kalır,
+  o an gidecek yeri olmasa da (ör. K-Q-J-10♠'nin dördü de açık). Yalnız sırayı bozan bir kartın
+  altında kalıp taşınamayan açık kartlar gri (ör. 7♠ üstünde 6♥ varsa 7♠ gri). En öndeki kart yine
+  hiç griye dönmez; klasik solitaire değişmedi. Bilgisayarda 390x844 boyutunda denendi; gerçek
+  telefonda denenmedi. Ekran görüntüsü: `docs/ekran-goruntuleri/gri-1-spider-sirali-dizi.png`.
 - Sırada: 9. paket (kartpostal etkinliği); pul görselleri tasarlandıkça tek tek.
 
 ## Paketler
@@ -439,6 +445,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ## Bitenler
 
+- Spider gri kuralı: sıralı dizi gri olmaz (`ajans/spider-gri-kural`, 26 Kasım 2026; Kemal
+  birleştirince kesinleşir).
 - 14. paketin ilk adımı: Sürek Kulübü destesinin arka yüzü, iki set iki renkte (`ajans/surek-deste-arkalari`,
   24 Kasım 2026; Kemal birleştirince kesinleşir).
 - Mücadeleler ve oyun seçiminde içerik başlığın hemen altından başlar (`ajans/mucadeleler-ust-bosluk`,

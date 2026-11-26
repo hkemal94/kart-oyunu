@@ -186,3 +186,35 @@ test('Klasik koyulaşma: sütunun, açılanların ve temelin en öndeki kartı k
   // Dolgu sütunlarının tek açık papazları da en önde: koyu değil
   for (const s of masa.sutunlar) assert.ok(!koyu.has(s[s.length - 1].id));
 });
+
+// --- Gri kural: sıralı dizi gri olmaz (Kemal, 26 Kasım) ---------------------------------------
+
+test('Spider gri kural: aynı takım sıralı dizinin her kartı açık, o an gidecek yeri olmasa da', () => {
+  const on = k(10, 'maca');
+  const dokuz = k(9, 'maca');
+  const masa = spiderMasa([[k(3, 'karo', false), on, dokuz]]); // dolgu papazlar: 10'un gidecek yeri yok
+  assert.ok(!spider.oynanabilirKartlar(masa).has(on.id)); // eski kurala göre griydi
+  assert.ok(!spider.koyulasacakKartlar(masa).has(on.id));
+  assert.ok(!spider.koyulasacakKartlar(masa).has(dokuz.id));
+});
+
+test('Spider gri kural: K-Q-J-10 aynı takım dizisinin dördü de açık', () => {
+  const dizi = [k(13, 'maca'), k(12, 'maca'), k(11, 'maca'), k(10, 'maca')];
+  const koyu = spider.koyulasacakKartlar(spiderMasa([[k(5, 'kupa', false), ...dizi]]));
+  dizi.forEach((kart) => assert.ok(!koyu.has(kart.id)));
+});
+
+test('Spider gri kural: sırayı bozan kartın altında kalan kart gri; takım ya da sıra bozulunca', () => {
+  const yedi = k(7, 'maca');
+  const alti = k(6, 'kupa'); // başka takım: 7♠ ile birlikte taşınamaz
+  const koyu = spider.koyulasacakKartlar(spiderMasa([[yedi, alti], [k(8, 'karo')]]));
+  assert.ok(koyu.has(yedi.id)); // 8♦ altına gidebilirdi ama üstündeki 6♥ yüzünden taşınamaz
+  assert.ok(!koyu.has(alti.id)); // en önde
+  // Sıralı dizinin altında sırayı bozan kart: altındakiler gri, dizi açık
+  const bes = k(5, 'maca');
+  const dort = k(4, 'kupa');
+  const uc = k(3, 'kupa');
+  const koyu2 = spider.koyulasacakKartlar(spiderMasa([[k(1, 'sinek', false), bes, dort, uc]]));
+  assert.ok(koyu2.has(bes.id));
+  assert.ok(!koyu2.has(dort.id) && !koyu2.has(uc.id));
+});

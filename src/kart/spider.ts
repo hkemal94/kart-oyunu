@@ -223,6 +223,7 @@ export function ciftDokunusHedefi(masa: SpiderMasasi, kaynak: number, sira: numb
 // gidebiliyorsa oynanabilir; gidemiyorsa ya da başka bir kartın altında kalıp taşınamıyorsa
 // oynanamaz. Boş sütuna her dizi gidebildiği için boş sütun varken taşınabilir her dizi oynanır.
 // Kapalı kartlar listeye girmez. Dönen: oynanabilir kartların kimlikleri.
+// 26 Kasım'dan beri gri kuralı bunu kullanmaz (aşağıda koyulasacakKartlar); kural ve testleri duruyor.
 export function oynanabilirKartlar(masa: SpiderMasasi): Set<string> {
   const sonuc = new Set<string>();
   masa.sutunlar.forEach((s, kaynak) => {
@@ -238,14 +239,19 @@ export function oynanabilirKartlar(masa: SpiderMasasi): Set<string> {
   return sonuc;
 }
 
-// Koyulaşacak kartlar (Kemal, 15 Kasım gece: "Bir kart en öndeyse koyu olmaz"). Oynanamayan açık
-// kartlar koyulaşır; ama sütunun en önündeki (en üstteki, son görünen) kart oynanamasa da hiç
-// koyulaşmaz. Kapalı kartlar listeye girmez. Dönen: koyu çizilecek kartların kimlikleri.
+// Koyulaşacak kartlar (gri kural). Kemal, 26 Kasım: "Sıralı dizideyse gri olmasın." Açık bir kart,
+// kendisinden sütunun sonuna kadar aynı takımdan, birer birer küçülerek giden bir dizi oluşturuyorsa
+// (tasinabilirMi) açık renkte kalır; o an gidecek yeri olmasa da. Yalnız sırayı bozan bir kartın
+// altında kaldığı için taşınamayan açık kartlar koyulaşır. Örnek: 10♠ üstünde 9♠ ikisi de açık;
+// 7♠ üstünde 6♥ varsa 7♠ koyu. Eski kural ("o an bir yere gidebiliyorsa açık", oynanabilirKartlar)
+// sıralı dizileri de koyulaştırıyordu; o fonksiyon duruyor ama gri kuralı artık onu kullanmaz.
+// Sütunun en önündeki kart hiç koyulaşmaz (Kemal, 15 Kasım gece: "Bir kart en öndeyse koyu
+// olmaz"); tasinabilirMi onun için zaten doğrudur. Kapalı kartlar listeye girmez.
+// Dönen: koyu çizilecek kartların kimlikleri.
 export function koyulasacakKartlar(masa: SpiderMasasi): Set<string> {
-  const oynanir = oynanabilirKartlar(masa);
   const sonuc = new Set<string>();
-  masa.sutunlar.forEach((s) => {
-    for (let i = 0; i < s.length - 1; i++) if (s[i].acik && !oynanir.has(s[i].id)) sonuc.add(s[i].id);
+  masa.sutunlar.forEach((s, sutun) => {
+    for (let i = 0; i < s.length - 1; i++) if (s[i].acik && !tasinabilirMi(masa, sutun, i)) sonuc.add(s[i].id);
   });
   return sonuc;
 }
