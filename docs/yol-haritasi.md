@@ -173,6 +173,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   altında kalıp taşınamayan açık kartlar gri (ör. 7♠ üstünde 6♥ varsa 7♠ gri). En öndeki kart yine
   hiç griye dönmez; klasik solitaire değişmedi. Bilgisayarda 390x844 boyutunda denendi; gerçek
   telefonda denenmedi. Ekran görüntüsü: `docs/ekran-goruntuleri/gri-1-spider-sirali-dizi.png`.
+  Aynı öneride (Kemal, 26 Kasım) Ayarlar'daki açıklama: "Sırası bozulan dizinin altında kalan kartlar
+  biraz koyu görünür" (İngilizcesi de).
 - Sırada: 9. paket (kartpostal etkinliği); pul görselleri tasarlandıkça tek tek.
 
 ## Paketler
