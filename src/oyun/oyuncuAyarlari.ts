@@ -19,7 +19,7 @@ export interface OyuncuAyarlari {
   solEl: boolean; // alt şeritteki düğmeler ve deste yer değiştirir
   sayaclariGizle: boolean; // süre ve hamle görünmez
   puaniGoster: boolean; // masanın bilgi satırında puan ve aşama
-  koyulastir: boolean; // o an oynanamayan açık kartlar bir iki ton koyu (Kemal, 15 Kasım)
+  koyulastir: boolean; // o an oynanamayan açık kartlar bir iki ton koyu (Kemal, 15 Kasım); Spider 26 Kasım'dan beri farklı: yalnız sırası bozulan dizinin altındakiler
   dil: Dil | null; // null: henüz seçilmedi, telefonun diline göre açılır
   deste: Deste; // kart arka yüzü bu desteden (ön yüzler şimdilik iki destede de sade)
 }
