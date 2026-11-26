@@ -312,6 +312,10 @@ oynanamayan açık kartlar bir iki ton koyu görünür; başka bir kartın altı
 Kapalı kartlar bunun dışında. "Oynanabilir" (kural, ekrandan ayrı: `oynanabilirKartlar`): kartın
 kendisi ya da üstünde durduğu birlikte taşınabilir dizi o an kurala uygun bir yere gidebiliyor.
 Klasikte açılanlarda ve temelde yalnız en üstteki kart alınabilir. Ayarlar'dan kapatılır (2).
+Spider'da 26 Kasım'dan beri gri kuralı başka (Kemal: "Sıralı dizideyse gri olmasın"): aynı takımdan,
+birer birer küçülerek sütunun sonuna kadar giden dizinin her kartı açık renkte kalır, o an gidecek
+yeri olmasa da; yalnız sırayı bozan bir kartın altında kaldığı için taşınamayan açık kartlar gri olur
+(`koyulasacakKartlar`, `tasinabilirMi`). En öndeki kart yine hiç koyulaşmaz. Klasikte kural aynı kaldı.
 
 Oyuncu ne yapar, neden eğlenceli: kısa, kendi hızında bir düzen kurma işi; her el yeni bir
 bulmaca, kaybetmenin cezası yok, yeni el bir dokunuş uzakta. Her elin ücretsiz geri al hakları ve
