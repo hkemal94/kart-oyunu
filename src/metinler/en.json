@@ -79,7 +79,7 @@
   "ayar.puaniGoster": "Show score after every move",
   "ayar.puaniGoster.aciklama": "Score and stage at the top of the table",
   "ayar.koyulastir": "Dim unplayable cards",
-  "ayar.koyulastir.aciklama": "Cards buried under a broken sequence look slightly darker",
+  "ayar.koyulastir.aciklama": "In Spider, cards under a broken sequence look darker; in Klondike, cards that cannot move",
   "ayar.bolum.dil": "Language and deck",
   "ayar.dil": "Language",
   "ayar.dil.tr": "Türkçe",

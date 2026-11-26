@@ -175,6 +175,11 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
   telefonda denenmedi. Ekran görüntüsü: `docs/ekran-goruntuleri/gri-1-spider-sirali-dizi.png`.
   Aynı öneride (Kemal, 26 Kasım) Ayarlar'daki açıklama: "Sırası bozulan dizinin altında kalan kartlar
   biraz koyu görünür" (İngilizcesi de).
+- 26 Kasım 2026 (öneri; `ajans/ayar-aciklamasi`; Kemal: "Klasik eski kurala dönsün"): yalnız
+  Ayarlar'daki açıklama yazısı değişti, iki oyunu da anlatıyor: "Spider'da sırası bozulan dizinin
+  altındaki, klasik solitaire'de hiçbir yere gidemeyen kartlar koyu" (İngilizcesi de; telefon
+  boyutunda iki satıra sığsın diye kısaldı). Klasikte koyulaştırma eski kuralda kalır; oyunda başka bir şey değişmedi. Ekran görüntüsü:
+  `docs/ekran-goruntuleri/aciklama-1-ayarlar.png`.
 - Sırada: 9. paket (kartpostal etkinliği); pul görselleri tasarlandıkça tek tek.
 
 ## Paketler
@@ -447,6 +452,8 @@ sonra "güzel mi". Kemal "şimdi" derse bir paket öne geçer.
 
 ## Bitenler
 
+- Ayarlar'daki koyulaştırma açıklaması iki oyunu anlatır; klasik eski kuralda kalır (`ajans/ayar-aciklamasi`,
+  26 Kasım 2026; Kemal birleştirince kesinleşir).
 - Spider gri kuralı: sıralı dizi gri olmaz (`ajans/spider-gri-kural`, 26 Kasım 2026; Kemal
   birleştirince kesinleşir).
 - 14. paketin ilk adımı: Sürek Kulübü destesinin arka yüzü, iki set iki renkte (`ajans/surek-deste-arkalari`,

@@ -79,7 +79,7 @@
   "ayar.puaniGoster": "Her hamlede puanı göster",
   "ayar.puaniGoster.aciklama": "Masanın üstünde puan ve aşama",
   "ayar.koyulastir": "Oynanamayan kartları koyulaştır",
-  "ayar.koyulastir.aciklama": "Sırası bozulan dizinin altında kalan kartlar biraz koyu görünür",
+  "ayar.koyulastir.aciklama": "Spider'da sırası bozulan dizinin altındaki, klasik solitaire'de hiçbir yere gidemeyen kartlar koyu",
   "ayar.bolum.dil": "Dil ve deste",
   "ayar.dil": "Dil",
   "ayar.dil.tr": "Türkçe",

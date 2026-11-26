@@ -315,7 +315,8 @@ Klasikte açılanlarda ve temelde yalnız en üstteki kart alınabilir. Ayarlar'
 Spider'da 26 Kasım'dan beri gri kuralı başka (Kemal: "Sıralı dizideyse gri olmasın"): aynı takımdan,
 birer birer küçülerek sütunun sonuna kadar giden dizinin her kartı açık renkte kalır, o an gidecek
 yeri olmasa da; yalnız sırayı bozan bir kartın altında kaldığı için taşınamayan açık kartlar gri olur
-(`koyulasacakKartlar`, `tasinabilirMi`). En öndeki kart yine hiç koyulaşmaz. Klasikte kural aynı kaldı.
+(`koyulasacakKartlar`, `tasinabilirMi`). En öndeki kart yine hiç koyulaşmaz. Klasik eski kuralda kalır (Kemal, 26 Kasım): o an hiçbir yere
+gidemeyen açık kart koyu. Ayarlar'daki açıklama iki oyunu ayrı anar.
 
 Oyuncu ne yapar, neden eğlenceli: kısa, kendi hızında bir düzen kurma işi; her el yeni bir
 bulmaca, kaybetmenin cezası yok, yeni el bir dokunuş uzakta. Her elin ücretsiz geri al hakları ve

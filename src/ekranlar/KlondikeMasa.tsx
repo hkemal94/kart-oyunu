@@ -59,6 +59,7 @@ import { klondikeOzeti } from '../kart/puan';
 // yoksa sallanır (Kemal, 15 Kasım). Desteye dokununca kart açılır; deste bitince açılanlar destenin
 // altına döner. Geri al ve ipucu Spider'daki gibi. Yeni elde kartlar desteden teker teker uçar; o an
 // oynanamayan açık kartlar biraz koyu (ayardan kapanır; Kemal'in telefon yorumları, 15 Kasım).
+// Not: Spider 26 Kasım'dan beri farklı çalışır (yalnız sırası bozulan dizinin altındakiler koyu); klasik bu kuralda kalır.
 // Kendiliğinden bitirme (4. paket; Kemal, 15 Kasım): bütün kartlar açık, deste ve açılanlar boşken
 // masada "Bitir" düğmesi çıkar; basınca kartlar en küçükten birer birer temellere kayar (akan sıra
 // hızıyla). Bitirme tek geri al adımıdır; sürerken masaya dokununca hemen biter.
