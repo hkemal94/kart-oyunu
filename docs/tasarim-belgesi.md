@@ -315,7 +315,14 @@ Klasikte açılanlarda ve temelde yalnız en üstteki kart alınabilir. Ayarlar'
 Spider'da 26 Kasım'dan beri gri kuralı başka (Kemal: "Sıralı dizideyse gri olmasın"): aynı takımdan,
 birer birer küçülerek sütunun sonuna kadar giden dizinin her kartı açık renkte kalır, o an gidecek
 yeri olmasa da; yalnız sırayı bozan bir kartın altında kaldığı için taşınamayan açık kartlar gri olur
-(`koyulasacakKartlar`, `tasinabilirMi`). En öndeki kart yine hiç koyulaşmaz. Klasikte kural aynı kaldı.
+(`koyulasacakKartlar`, `tasinabilirMi`). En öndeki kart yine hiç koyulaşmaz.
+Klasikte de 26 Kasım'dan beri aynı kural (Kemal: "Klasik solitaire de Spider gibi olsun — sıralı dizi
+açık, yalnız sırası bozulanların altındakiler koyu"): sütunda renkleri sırayla değişen, birer birer
+küçülerek sütunun sonuna kadar giden açık dizinin her kartı açık renkte kalır, o an gidecek yeri
+olmasa da; yalnız sırası bozulan bir kartın altında kalan açık kartlar koyu olur. Oyunun kendi
+hamleleri sütunlarda hep böyle dizi bıraktığı için klasikte sütunlarda koyu kart normalde hiç çıkmaz.
+Açılanlar ve temeller değişmedi: en üstteki kart hiç koyulaşmaz, altındaki açık kartlar koyu (3 kart
+çekmede yelpazedeki arka iki kart görünür).
 
 Oyuncu ne yapar, neden eğlenceli: kısa, kendi hızında bir düzen kurma işi; her el yeni bir
 bulmaca, kaybetmenin cezası yok, yeni el bir dokunuş uzakta. Her elin ücretsiz geri al hakları ve

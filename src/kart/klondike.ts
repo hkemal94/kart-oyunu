@@ -241,6 +241,8 @@ export function ciftDokunusHedefi(masa: KlondikeMasasi, yer: Yer): Hedef | null 
 // kart, kendisi ya da üstünde durduğu birlikte taşınabilir dizi o an kurala uygun bir yere (temel
 // ya da sütun) gidebiliyorsa oynanabilir. Açılanlarda ve temelde yalnız en üstteki kart alınabilir;
 // altındakiler oynanamaz. Kapalı kartlar (deste dahil) listeye girmez.
+// 26 Kasım'dan beri gri kuralı sütunlarda bunu kullanmaz (koyulasacakKartlar); açılanlarda ve temellerde
+// kullanır. Kural ve testleri duruyor.
 export function oynanabilirKartlar(masa: KlondikeMasasi): Set<string> {
   const sonuc = new Set<string>();
   masa.sutunlar.forEach((s, no) => {
@@ -260,16 +262,29 @@ export function oynanabilirKartlar(masa: KlondikeMasasi): Set<string> {
   return sonuc;
 }
 
-// Koyulaşacak kartlar (Kemal, 15 Kasım gece: "Bir kart en öndeyse koyu olmaz"). Oynanamayan açık
-// kartlar koyulaşır; ama en öndeki kart (sütunun en üstteki kartı, açılanların ve temellerin en
-// üstteki kartı) oynanamasa da hiç koyulaşmaz. Kapalı kartlar listeye girmez.
+// Koyulaşacak kartlar (gri kural). Kemal, 26 Kasım: "Klasik solitaire de Spider gibi olsun — sıralı
+// dizi açık, yalnız sırası bozulanların altındakiler koyu; açıklama iki oyun için de doğru kalsın."
+// Sütunlarda: açık bir kart, kendisinden sütunun sonuna kadar oyunun kuralıyla birlikte taşınabilen
+// bir dizi kuruyorsa (renkleri sırayla değişen, birer birer küçülen açık kartlar; tasinabilirMi) açık
+// renkte kalır, o an gidecek yeri olmasa da. Yalnız sırayı bozan bir kartın altında kaldığı için
+// taşınamayan açık kartlar koyulaşır. Sütunun en önündeki kart hiç koyulaşmaz (Kemal, 15 Kasım gece:
+// "Bir kart en öndeyse koyu olmaz"); tasinabilirMi onun için zaten doğrudur. Kapalı kartlar listeye girmez.
+// Not: oyunun kendi hamleleri sütunlarda hep kurala uygun açık dizi bıraktığı için sütunlarda koyu kart
+// normalde hiç çıkmaz (geri al da yalnız önceki geçerli masaya döner).
+// Açılanlar ve temeller değişmedi (eski kural, oynanabilirKartlar): en üstteki kart hiç koyulaşmaz,
+// altındaki açık kartlar alınamadığı için koyudur (3 kart çekmede yelpazedeki arka kartlar).
+// Dönen: koyu çizilecek kartların kimlikleri.
 export function koyulasacakKartlar(masa: KlondikeMasasi): Set<string> {
-  const oynanir = oynanabilirKartlar(masa);
   const sonuc = new Set<string>();
+  masa.sutunlar.forEach((s, no) => {
+    for (let sira = 0; sira < s.length - 1; sira++) {
+      if (s[sira].acik && !tasinabilirMi(masa, { tur: 'sutun', no, sira })) sonuc.add(s[sira].id);
+    }
+  });
+  const oynanir = oynanabilirKartlar(masa);
   const arkadakiler = (yigin: Kart[]) => {
     for (let i = 0; i < yigin.length - 1; i++) if (yigin[i].acik && !oynanir.has(yigin[i].id)) sonuc.add(yigin[i].id);
   };
-  masa.sutunlar.forEach(arkadakiler);
   arkadakiler(masa.acilan);
   masa.temeller.forEach(arkadakiler);
   return sonuc;

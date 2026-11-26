@@ -447,6 +447,12 @@
       "baslik": "Spider: aynı takım sıralı diziler açık renkte, gidecek yeri olmasa da; yalnız sırayı bozan kartın altında kalanlar gri (Kemal, 26 Kasım)",
       "tarih": "2026-11-26",
       "cihaz": "telefon (dikey, 390x844)"
+    },
+    {
+      "dosya": "gri-2-klasik-sirali-dizi.png",
+      "baslik": "Klasik solitaire: renk değişerek sıralı giden diziler açık renkte, gidecek yeri olmasa da; yalnız sırası bozulanın altındakiler koyu (Kemal, 26 Kasım)",
+      "tarih": "2026-11-26",
+      "cihaz": "telefon (dikey, 390x844)"
     }
   ]
 }

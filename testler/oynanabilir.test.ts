@@ -218,3 +218,77 @@ test('Spider gri kural: sırayı bozan kartın altında kalan kart gri; takım y
   assert.ok(koyu2.has(bes.id));
   assert.ok(!koyu2.has(dort.id) && !koyu2.has(uc.id));
 });
+
+// --- Klasik gri kural: Spider gibi, sıralı dizi gri olmaz (Kemal, 26 Kasım) --------------------
+
+test('Klasik gri kural: renk değişerek birer küçülen dizinin her kartı açık, o an gidecek yeri olmasa da', () => {
+  const on = k(10, 'kupa');
+  const dokuz = k(9, 'maca');
+  const sekiz = k(8, 'karo');
+  const masa = klondikeMasa([[k(4, 'sinek', false), on, dokuz, sekiz]]); // dolgu papazlar: 10'un gidecek yeri yok
+  assert.ok(!klondike.oynanabilirKartlar(masa).has(on.id)); // eski kurala göre koyuydu
+  const koyu = klondike.koyulasacakKartlar(masa);
+  [on, dokuz, sekiz].forEach((kart) => assert.ok(!koyu.has(kart.id)));
+});
+
+test('Klasik gri kural: sırası bozulan dizinin altındakiler koyu, üstteki sıralı kısım açık', () => {
+  const yedi = k(7, 'maca');
+  const alti = k(6, 'sinek'); // aynı renk: 7♠ ile birlikte taşınamaz
+  const bes = k(5, 'kupa');
+  const koyu = klondike.koyulasacakKartlar(klondikeMasa([[k(2, 'karo', false), yedi, alti, bes], [k(8, 'kupa')]]));
+  assert.ok(koyu.has(yedi.id)); // 8♥ altına gidebilirdi ama üstündeki 6♣ yüzünden taşınamaz
+  assert.ok(!koyu.has(alti.id) && !koyu.has(bes.id));
+});
+
+test('Klasik gri kural: açılanlar ve temeller eskisi gibi; en üstteki açık, altındakiler koyu', () => {
+  const acilanAlt = k(3, 'kupa');
+  const acilanUst = k(12, 'karo');
+  const temelAs = k(1, 'maca');
+  const temelIki = k(2, 'maca');
+  const temeller = klondike.TEMEL_TAKIMLARI.map(() => [] as Kart[]);
+  temeller[klondike.temelNo('maca')] = [temelAs, temelIki];
+  const koyu = klondike.koyulasacakKartlar(klondikeMasa([], { acilan: [acilanAlt, acilanUst], temeller }));
+  assert.ok(koyu.has(acilanAlt.id) && !koyu.has(acilanUst.id));
+  assert.ok(koyu.has(temelAs.id) && !koyu.has(temelIki.id));
+});
+
+test('Klasik gri kural: oyunun kendi hamleleri ve geri al sütunlarda hiç koyu kart bırakmaz', () => {
+  // Rastgele hamlelerle (ipucu, sütundan sütuna, temelden geri, çekme, geri al) çok sayıda el oynanır;
+  // her adımda sütunlardaki koyu kart sayısı sıfır olmalı.
+  let x = 7;
+  const rastgele = () => ((x = (x * 1103515245 + 12345) % 2147483648) / 2147483648);
+  for (let el = 0; el < 40; el++) {
+    let masa = klondike.klondikeDagit(el % 2 ? 3 : 1, rastgele);
+    const gecmis: klondike.KlondikeMasasi[] = [];
+    for (let adim = 0; adim < 300; adim++) {
+      const sutunKartlari = new Set(masa.sutunlar.flat().map((kart) => kart.id));
+      const koyu = [...klondike.koyulasacakKartlar(masa)].filter((id) => sutunKartlari.has(id));
+      assert.equal(koyu.length, 0, `el ${el}, adım ${adim}`);
+      const zar = rastgele();
+      let yeni: klondike.KlondikeMasasi | null = null;
+      if (zar < 0.1 && gecmis.length) {
+        const g = klondike.geriAl(masa, gecmis);
+        if (g) {
+          masa = g.masa;
+          gecmis.splice(0, gecmis.length, ...g.gecmis);
+          continue;
+        }
+      } else if (zar < 0.5) {
+        const ip = klondike.ipuclari(masa)[0];
+        if (ip) yeni = ip.tur === 'cek' ? klondike.cek(masa) : klondike.tasi(masa, ip.yer, ip.hedef);
+      } else {
+        // Kurala uyan her türlü taşıma denemesi: herhangi bir yerden herhangi bir hedefe
+        const yerler: klondike.Yer[] = [{ tur: 'acilan' }, ...masa.temeller.map((_, no) => ({ tur: 'temel' as const, no }))];
+        masa.sutunlar.forEach((s, no) => s.forEach((_, sira) => yerler.push({ tur: 'sutun', no, sira })));
+        const hedefler: klondike.Hedef[] = [{ tur: 'temel' }, ...masa.sutunlar.map((_, no) => ({ tur: 'sutun' as const, no }))];
+        const yer = yerler[Math.floor(rastgele() * yerler.length)];
+        const hedef = hedefler[Math.floor(rastgele() * hedefler.length)];
+        yeni = klondike.tasi(masa, yer, hedef) ?? (zar > 0.9 ? klondike.cek(masa) : null);
+      }
+      if (yeni) {
+        gecmis.push(masa);
+        masa = yeni;
+      }
+    }
+  }
+});
